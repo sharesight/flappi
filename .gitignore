@@ -1,0 +1,24 @@
+.DS_Store
+log/*
+tmp
+.autotest
+.bundle
+.project
+coverage
+test/coverage
+help
+.idea
+.rvmrc
+.ruby-version
+.ruby-gemset
+.settings/org.eclipse.core.resources.prefs
+.override_db
+.use_spork
+*.swp
+.sass-cache/
+*.swo
+TODO
+
+# ignore personal files
+_ignore
+.envrc
