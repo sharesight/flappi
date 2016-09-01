@@ -1,0 +1,37 @@
+=begin
+@api {<%= endpoint.method_name %>} <%= strip_version(endpoint.path) %>.json <%= endpoint.title %>
+
+@apiName <%= endpoint.api_name %>
+@apiGroup <%= endpoint.api_group %>
+@apiVersion <%= endpoint.api_version %>
+
+@apiDescription
+  <%= endpoint.description %>
+
+@apiUse OAuthHeaders
+
+<% for param_item in endpoint.params %>
+@apiParam {<%= param_item.type %>} <%= bracket_optional(param_item) %>
+  <%= param_item.description %>
+<% end %>
+
+@apiParamExample Request Example
+    {<%= endpoint.method_name %>} "<%= endpoint.path %>.json"
+
+<% for response_item in response %>
+@apiSuccess (200 Success) {<%= response_item.type %>} <%= qname_from(response_item.name) %>
+  <%= response_item.description %>
+<% end %>
+
+@apiSuccessExample {json} Response Example
+<%= endpoint.response_example %>
+
+@apiError (400 Bad Request) {Integer} error
+  Internal error code
+@apiError (400 Bad Request) {Integer} transaction_id
+  Unique identifier for this API transaction.
+@apiError (400 Bad Request) {Integer} reason
+  Detailed error message what went wrong.
+
+@apiUse OauthErrors
+=end
