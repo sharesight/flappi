@@ -1,14 +1,8 @@
 module Flappi
-  module Config
+  class Config
 
-    mattr_accessor :definition_paths
-    mattr_accessor :version_plan
-    def self.definition_paths
-      Settings.api_builder.definition_paths
-    end
+    attr_accessor :definition_paths
+    attr_accessor :version_plan
 
-    def self.version_plan
-      Settings.api_builder.version_plan.constantize
-    end
   end
 end
