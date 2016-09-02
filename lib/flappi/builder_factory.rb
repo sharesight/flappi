@@ -26,7 +26,7 @@ module Flappi
     # Call me from a controller to build the appropriate API response
     # and return it
     def self.build_and_respond(controller)
-      endpoint_name = controller.class.name.match(/::(\w+)Controller$/).captures.first
+      endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
       version_param = controller.params[:version]
       full_version = 'v2.' + version_param if version_param
 
