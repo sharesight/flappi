@@ -51,7 +51,7 @@ module Flappi
           map { |av| av[:allowed_flavours].map { |fl| Flappi::Version.new(av[:version], fl) } }.
           flatten.
           sort {|a,b| a.to_s <=> b.to_s}.
-          uniq)
+          uniq {|a| a.to_s })
     end
 
     # Given a version text, parse and return an Flappi::Version
