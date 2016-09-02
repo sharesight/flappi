@@ -1,7 +1,7 @@
 module Examples
   class V2VersionPlan
 
-    extend ApiBuilder::VersionPlan
+    extend Flappi::VersionPlan
 
     # Version numbers are of the form [text][N][,]+[-flavour]
 

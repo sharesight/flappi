@@ -1,4 +1,6 @@
 # Build an API response from a definition
+require 'uri'
+require 'active_support/core_ext/hash/conversions'
 
 module Flappi
   class ResponseBuilder
@@ -247,7 +249,7 @@ module Flappi
         end
       end
 
-      subst_uri = URI.parse(subst_path)
+      subst_uri = ::URI.parse(subst_path)
       raise "Link path contains unsubstituted params #{path}" if subst_uri.path =~ /:\w+/
 
       query_params = passed_query_params.clone

@@ -1,7 +1,7 @@
 
 module Flappi
 
-  module Flappi::VersionPlan
+  module VersionPlan
 
     #====== Flappi::Version plan DSL follows ======
 
@@ -54,7 +54,7 @@ module Flappi
           uniq)
     end
 
-    # Given a version text, parse and return an Flappi::Flappi::Version
+    # Given a version text, parse and return an Flappi::Version
     def parse_version(version_text)
       version_text_stripped = version_text.sub(/^[A-Za-z]*/, '')
       tagged_version_components = version_text_stripped.split(/(?=[.\-])/) # positive lookahead regular expression retains separators on start
@@ -69,11 +69,11 @@ module Flappi
     end
 
     # Given a semicolon separated list of (full) version texts,
-    # parse and return an Flappi::Flappi::Versions
+    # parse and return an Flappi::Versions
     # The text 'default' in the list is substituted by the default_versions
     # Used to parse a list of allowed versions defined against an OAuth application
     def parse_versions(versions_text, default_versions=[])
-      if default_versions.is_a? Flappi::Flappi::Versions
+      if default_versions.is_a? Flappi::Versions
         default_versions = default_versions.versions_array
       elsif default_versions.is_a? String
         default_versions = parse_versions(default_versions).versions_array
@@ -97,7 +97,7 @@ module Flappi
     # before: version_number - not supported yet
     # after: version_nunber - not supported yet
     def expand_version_rule(*version_rule_args)
-      version_rules = ArgUtils.paired_args(*version_rule_args)
+      version_rules = Flappi::Utils::ArgUtils.paired_args(*version_rule_args)
 
       supported_versions = []
       version_rules.each do |version_rule|

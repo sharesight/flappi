@@ -1,4 +1,6 @@
-require 'minitest'
+require 'minitest/autorun'
+require 'shoulda'
+
 require 'flappi'
 
 class TestDef

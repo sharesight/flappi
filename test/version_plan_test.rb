@@ -1,11 +1,16 @@
-require 'test_helper'
+require 'minitest/autorun'
+require 'shoulda'
 
-class Flappi::VersionPlanTest < ActiveSupport::TestCase
+require 'flappi'
+
+require 'examples/v2_version_plan'
+
+class Flappi::VersionPlanTest < MiniTest::Test
 
   context 'using v2_version_plan' do
 
     should 'return available_version_definitions' do
-      expect_versions = Examples::V2VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-mobile')
+      expect_versions = Examples::V2VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-ember;v2.1-flat;v2.1-mobile')
       assert_equal expect_versions,
                    Examples::V2VersionPlan.available_version_definitions
     end
