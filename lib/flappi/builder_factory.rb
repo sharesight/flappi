@@ -31,7 +31,7 @@ module Flappi
       full_version = 'v2.' + version_param if version_param
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
-      raise "Endpoint #{endpoint_name} is not defined to API Builder" unless definition_klass
+      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
 
       Rails.logger.debug "  definition_klass = #{definition_klass}"
 
