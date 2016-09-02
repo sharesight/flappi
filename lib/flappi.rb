@@ -2,7 +2,7 @@ require 'active_support'
 require 'active_support/core_ext/module/delegation'
 
 Dir[File.dirname(__FILE__) + '/flappi/**/*.rb'].each do |file|
-  require file unless file.realpath.include? '/optional/'
+  require file unless file.include? '/optional/'
 end
 
 require 'flappi/railtie' if defined?(Rails)
