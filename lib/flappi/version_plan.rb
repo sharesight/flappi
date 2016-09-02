@@ -109,7 +109,7 @@ module Flappi
         end
       end
 
-      Flappi::Versions.new(supported_versions)
+      Flappi::Versions.new(supported_versions.uniq)
     end
 
     private

@@ -29,7 +29,7 @@ module Flappi
 
     def document_as_version
       return version_plan.minimum_version if @version_rule.nil?
-      supported_versions = version_plan.expand_version_rule(@version_rule).uniq
+      supported_versions = version_plan.expand_version_rule(@version_rule)
       return version_plan.minimum_version if supported_versions.blank?
 
       raise "Multiple versions supported #{supported_versions} - not allowed by documenter as yet in #{endpoint_simple_name}" if supported_versions.size > 1
