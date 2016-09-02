@@ -41,7 +41,7 @@ module Flappi
       controller.controller_params = controller.params  # Give the mixin access to params
       controller.controller_query_parameters = controller.request.query_parameters.except(:access_token)
       controller.controller_url = controller.request.url
-      controller.version_plan = Flappi::Config.version_plan
+      controller.version_plan = Flappi.configuration.version_plan
 
       controller.endpoint    # init endpoint data from mixin
 
@@ -51,7 +51,7 @@ module Flappi
 
       endpoint_supported_versions = controller.supported_versions
       Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
-      unless endpoint_supported_versions.include? Flappi::Config.version_plan.parse_version(full_version)
+      unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version)
         msg = "Version #{full_version} not supported by endpoint"
         controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
         return false
@@ -90,7 +90,7 @@ module Flappi
       documenter_definition.singleton_class.send(:include, definition)
       documenter_definition.defining_class = definition
       documenter_definition.mode = :doc
-      documenter_definition.version_plan = Flappi::Config.version_plan
+      documenter_definition.version_plan = Flappi.configuration.version_plan
 
       unless documenter_definition.respond_to? :endpoint
         raise 'API definition must include <endpoint> method'

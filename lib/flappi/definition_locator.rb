@@ -12,10 +12,10 @@ module Flappi
     end
 
     def self.paths_array
-      if Flappi::Config.definition_paths.is_a? Array
-        Flappi::Config.definition_paths
+      if Flappi.configuration.definition_paths.is_a? Array
+        Flappi.configuration.definition_paths
       else
-        [Flappi::Config.definition_paths]
+        [Flappi.configuration.definition_paths]
       end
     end
   end
