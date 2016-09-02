@@ -28,7 +28,7 @@ module Flappi
     def self.build_and_respond(controller)
       endpoint_name = controller.class.name.match(/::(\w+)Controller$/).captures.first
       version_param = controller.params[:version]
-      full_version = 'v2.' + version_param
+      full_version = 'v2.' + version_param if version_param
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
       raise "Endpoint #{endpoint_name} is not defined to API Builder" unless definition_klass
@@ -49,12 +49,14 @@ module Flappi
         raise "Builderfactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
 
-      endpoint_supported_versions = controller.supported_versions
-      Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
-      unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version)
-        msg = "Version #{full_version} not supported by endpoint"
-        controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
-        return false
+      if Flappi.configuration.version_plan
+        endpoint_supported_versions = controller.supported_versions
+        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
+        unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version)
+          msg = "Version #{full_version} not supported by endpoint"
+          controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
+          return false
+        end
       end
 
       # validate parameters

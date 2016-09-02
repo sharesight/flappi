@@ -28,6 +28,8 @@ module Flappi
     end
 
     def document_as_version
+      return '0.0.0' unless version_plan
+
       return version_plan.minimum_version if @version_rule.nil?
       supported_versions = version_plan.expand_version_rule(@version_rule)
       return version_plan.minimum_version if supported_versions.blank?
@@ -102,6 +104,7 @@ module Flappi
 
     # Endpoint methods
     def version(version_rule)
+      raise "No version plan is defined - cannot use 'version'" unless version_plan
       @version_rule = version_rule
     end
 

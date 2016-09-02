@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   s.add_runtime_dependency 'activesupport', '>4.2.7'
+  s.add_runtime_dependency 'recursive-open-struct'
 
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'shoulda'
