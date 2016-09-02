@@ -117,7 +117,7 @@ module Flappi
       end
 
       puts "Returning versions from #{supported_versions}.uniq"
-      res = Flappi::Versions.new(supported_versions.uniq)
+      res = Flappi::Versions.new(supported_versions.uniq {|a| a.to_s })
       puts "res = #{res}"
       res
     end
