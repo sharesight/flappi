@@ -97,29 +97,19 @@ module Flappi
     # before: version_number - not supported yet
     # after: version_nunber - not supported yet
     def expand_version_rule(*version_rule_args)
-      vargs = *version_rule_args
-      puts "expand_version_rule #{vargs}"
       version_rules = Flappi::Utils::ArgUtils.paired_args(*version_rule_args)
 
       supported_versions = []
       version_rules.each do |version_rule|
         case version_rule[0]
           when :equals
-            versions_array = available_version_definitions.versions_array
-            puts "equals versions_array=#{versions_array}"
-            supported_versions += versions_array.select do |av|
-              puts "Selecting #{av} if equal to #{parse_version(version_rule[1])}"
-              av == parse_version(version_rule[1])
-            end
+            supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
           else
             raise "Rule type #{version_rule[0]} not supported yet, sorry..."
         end
       end
 
-      puts "Returning versions from #{supported_versions}.uniq"
-      res = Flappi::Versions.new(supported_versions.uniq {|a| a.to_s })
-      puts "res = #{res}"
-      res
+      Flappi::Versions.new(supported_versions.uniq {|a| a.to_s })
     end
 
     private
