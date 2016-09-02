@@ -1,6 +1,8 @@
 module Flappi
   module Config
 
+    mattr_accessor :definition_paths
+    mattr_accessor :version_plan
     def self.definition_paths
       Settings.api_builder.definition_paths
     end
