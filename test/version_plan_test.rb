@@ -3,7 +3,7 @@ require 'shoulda'
 
 require 'flappi'
 
-require 'examples/v2_version_plan'
+require_relative 'examples/v2_version_plan'
 
 class Flappi::VersionPlanTest < MiniTest::Test
 

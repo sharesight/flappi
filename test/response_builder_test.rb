@@ -5,7 +5,6 @@ require 'flappi'
 
 class TestDef
   include ::Flappi::Definition
-
 end
 
 class ::Flappi::ResponseBuilderTest < MiniTest::Test

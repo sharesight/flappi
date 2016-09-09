@@ -16,6 +16,7 @@ GEM
     concurrent-ruby (1.0.2)
     i18n (0.7.0)
     minitest (5.9.0)
+    rake (11.2.2)
     recursive-open-struct (1.0.1)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -33,6 +34,7 @@ PLATFORMS
 DEPENDENCIES
   flappi!
   minitest
+  rake
   shoulda
 
 BUNDLED WITH

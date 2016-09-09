@@ -9,7 +9,7 @@ module Flappi
     end
 
     def strip_version(full_path)
-      full_path.sub /^\/api\/v\d+/, ''
+      full_path.sub( /^\/api\/v\d+/, '')
     end
 
     def bracket_optional(param_item)

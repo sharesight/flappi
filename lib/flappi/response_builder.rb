@@ -80,7 +80,8 @@ module Flappi
     # name and block - create a named array of objects creating fields inside the block
     # name, value and block - as above but call the block with either one value (if scalar), or each of its items (if array)
     # hash of options including :name, :value
-    #  compact - remove any fields with nil values
+    #  :compact - remove any fields with nil values
+    # TODO: Enumerable not Array ?
     def objects(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
@@ -97,7 +98,7 @@ module Flappi
         if value.nil?
           block.call
         elsif value.is_a?(Array)
-          block.call *value
+          block.call(*value)
         else
           block.call value
         end
@@ -158,13 +159,15 @@ module Flappi
     # :path => path to expand into link, include parameters with :param
     # shorthand one param is :key, two is :key, :path
     def link(*link_params)
-      (@link_defs ||= []) <<
-          if link_params.is_a? Array
-            raise "link takes 1/2 params, not: #{link_params}" unless (1..2).cover? link_params.size
-            Hash[link_params.each_with_index.map {|p, idx| [[:key, :path][idx], p]}]
-          else
-            link_params
-          end
+      link_def = if link_params.is_a? Array
+        raise "link takes 1/2 params, not: #{link_params}" unless (1..2).cover? link_params.size
+        Hash[link_params.each_with_index.map {|p, idx| [[:key, :path][idx], p]}]
+      else
+        link_params
+      end
+
+      raise "link to an endpoint apart from :self needs a path" unless link[:key]==:self || link[:path]
+      (@link_defs ||= []) << link_def
     end
 
     def query(block)
@@ -244,7 +247,7 @@ module Flappi
       used_params = []
       controller_params.each do |pname, pvalue|
         if subst_path =~ /:#{pname}/
-          subst_path.gsub! /:#{pname}/, pvalue
+          subst_path.gsub!( /:#{pname}/, pvalue)
           used_params << pname
         end
       end

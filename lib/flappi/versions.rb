@@ -21,8 +21,6 @@ module Flappi
       "[#{string_versions.join(', ')}]"
     end
 
-    delegate :size, to: :versions_array
-
     def ==(other)
       versions_array == other.versions_array
     end

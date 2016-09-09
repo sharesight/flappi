@@ -1,12 +1,15 @@
 # Common helpers for each builder, include into DocBuilder, ResponseBuilder, etc.
 
+# @private
 module Flappi
   module Common
 
+    # @private
     NAMED_TYPES = {
         :boolean_type => 'Boolean'
     }
 
+    # @private
     attr_accessor :source_definition
 
     # Extract the common arguments on each definition
