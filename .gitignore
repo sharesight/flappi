@@ -22,3 +22,6 @@ TODO
 # ignore personal files
 _ignore
 .envrc
+.yardoc/
+doc/
+tasks/
