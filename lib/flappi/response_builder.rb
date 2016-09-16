@@ -1,6 +1,7 @@
 # Build an API response from a definition
 require 'uri'
 require 'active_support/core_ext/hash/conversions'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module Flappi
   class ResponseBuilder
@@ -11,6 +12,11 @@ module Flappi
     attr_accessor :controller_query_parameters
     attr_accessor :controller_url
     attr_reader :query_block
+
+    def initialize
+      @query_block = nil
+      @link_defs = nil
+    end
 
     # Call this with a block that builds the API response
     def build(options, &_block)
@@ -166,11 +172,11 @@ module Flappi
         link_params
       end
 
-      raise "link to an endpoint apart from :self needs a path" unless link[:key]==:self || link[:path]
+      raise "link to an endpoint apart from :self needs a path" unless link_def[:key]==:self || link_def[:path]
       (@link_defs ||= []) << link_def
     end
 
-    def query(block)
+    def query(&block)
       @query_block = block
     end
 

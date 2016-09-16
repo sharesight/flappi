@@ -44,7 +44,7 @@ module Flappi
     end
 
     def require_arg(args, arg_name)
-      raise "Expecting #{arg_name} to be defined (in...)" unless args.key?(arg_name)
+      raise "Expecting #{arg_name} to be defined (in #{args&.keys&.join(', ')})" unless args&.key?(arg_name)
     end
 
     def name_for_type(type_arg)
