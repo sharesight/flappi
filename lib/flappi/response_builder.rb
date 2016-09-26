@@ -66,6 +66,7 @@ module Flappi
     # creating its fields inside the block
     def object(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
+      return if def_args.key?(:when) && !def_args[:when]
 
       @current_source = def_args[:value] || @current_source
 
@@ -91,6 +92,7 @@ module Flappi
     def objects(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
+      return if def_args.key?(:when) && !def_args[:when]
 
       values = def_args[:value] || def_args[:values] || @current_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
@@ -122,6 +124,7 @@ module Flappi
     #  hash of options including :name, :value
     def field(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
+      require_arg def_args, :name
       require_arg def_args, :name
 
       value = field_value(def_args, block)

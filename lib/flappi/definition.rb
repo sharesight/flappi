@@ -123,6 +123,7 @@ module Flappi
     #   @option options [String] :name the name of the object
     #   @option options [Object] :value the object to extract fields from
     #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
+    #   @option options [Boolean] :when if false, omit this object
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object (passed as value)
     def object(*args_or_name, &block)
@@ -147,6 +148,7 @@ module Flappi
     #   @param name (String) the name of the array field
     #   @param value (Object) either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Boolean] :compact remove nil entries from the result array
+    #   @option options [Boolean] :when if false, omit this object
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements. The block will be called for each array value in sequence.
     #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
     #
@@ -155,6 +157,7 @@ module Flappi
     #   @option options [String] :name the name of the array field
     #   @option options [Object] :value either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Boolean] :compact remove nil entries from the result array
+    #   @option options [Boolean] :when if false, omit this object
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
     def objects(*args_or_name, &block)
@@ -180,6 +183,7 @@ module Flappi
     #   Define a field with named options
     #   @option options [String] :name the name of the field
     #   @option options [Object] :value if given, the value to output
+    #   @option options [Boolean] :when if false, omit this object
     #   @yield A block that will be called to return the field value
     #   @yieldparam  [Object] current_source the current source object
     def field(*args_or_name, &block)
