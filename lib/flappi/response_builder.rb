@@ -192,7 +192,7 @@ module Flappi
       (@link_defs ||= []) << link_def
     end
 
-    def query(&block)
+    def query(block)
       @query_block = block
     end
 
