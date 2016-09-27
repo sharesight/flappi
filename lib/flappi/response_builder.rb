@@ -140,14 +140,9 @@ module Flappi
     #
     # TODO: Polymorphism needs to be able to absolutely specify fields for doco
     def reference(*args_or_name, block)
+      # Check the args
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
-
-      @put_stack.push(reference_record = new_h)
-      block.call
-      @put_stack.pop
-
-
       name = def_args[:name]
 
       if def_args.key(:for) ^ def_args.key(:type)
@@ -161,6 +156,12 @@ module Flappi
         ref_type = def_args[:type]
         return unless ref_type == def_args[:for]  # Skip where the polymorph isn't us
       end
+
+      # This reference is to be generated
+
+      @put_stack.push(reference_record = new_h)
+      block.call
+      @put_stack.pop
 
       ref_id = reference_record[:id]
       put_field "#{name}_id", ref_id
