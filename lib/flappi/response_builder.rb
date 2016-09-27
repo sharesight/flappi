@@ -145,11 +145,11 @@ module Flappi
       require_arg def_args, :name
       name = def_args[:name]
 
-      if def_args.key(:for) ^ def_args.key(:type)
+      if def_args.key?(:for) ^ def_args.key?(:type)
         raise "polymorphic reference #{name} must specify :type and :for"
       end
 
-      if def_args.key(:for) && def_args.key(:type)
+      if def_args.key?(:for) && def_args.key?(:type)
         ref_type = def_args[:type]
         return unless ref_type == def_args[:for]  # Skip where the polymorph isn't us
       end
@@ -257,7 +257,7 @@ module Flappi
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
       path_matcher = Regexp.new source_definition.endpoint_info[:path].gsub(/\/:\w+\//, '\/[^\/]+\/')
 
-      # puts "Using matcher #{path_matcher} on #{controller_url}"
+      puts "Using matcher #{path_matcher} on #{controller_url}"
       matches = controller_url.match(path_matcher)
       return controller_url unless matches
 
@@ -268,12 +268,15 @@ module Flappi
       subst_path = path
       used_params = []
       controller_params.each do |pname, pvalue|
-        if subst_path =~ /:#{pname}/
-          subst_path.gsub!( /:#{pname}/, pvalue)
+        subex = /:#{pname}([^\w]|\z)/
+        #puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
+        if subst_path =~ subex
+          subst_path.gsub!( subex, "#{pvalue}\\1" )
           used_params << pname
         end
       end
 
+      #puts "Made path #{subst_path}"
       subst_uri = ::URI.parse(subst_path)
       raise "Link path contains unsubstituted params #{path}" if subst_uri.path =~ /:\w+/
 

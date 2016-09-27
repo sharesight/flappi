@@ -48,7 +48,7 @@ module Flappi
     # Return all the available version definitions
     def available_version_definitions
       Flappi::Versions.new(@available_versions.
-          map { |av| av[:allowed_flavours].map { |fl| Flappi::Version.new(av[:version], fl) } }.
+          map { |av| av[:allowed_flavours].map { |fl| Flappi::Version.new(av[:version], fl, self) } }.
           flatten.
           sort {|a,b| a.to_s <=> b.to_s}.
           uniq {|a| a.to_s })
@@ -65,14 +65,15 @@ module Flappi
       else
         [version_components, '']
       end
-      Flappi::Version.new(version_array, flavour)
+
+      Flappi::Version.new(version_array, flavour, self)
     end
 
     # Given a semicolon separated list of (full) version texts,
     # parse and return an Flappi::Versions
     # The text 'default' in the list is substituted by the default_versions
     # Used to parse a list of allowed versions defined against an OAuth application
-    def parse_versions(versions_text, default_versions=[])
+    def parse_versions(versions_text, default_versions=[], normalise_each=false)
       if default_versions.is_a? Flappi::Versions
         default_versions = default_versions.versions_array
       elsif default_versions.is_a? String
@@ -80,13 +81,19 @@ module Flappi
       end
 
       versions_array = (versions_text || '').split(';').map {|v| v.strip}
-      Flappi::Versions.new(versions_array.map do |version_text|
+      complete_versions_array = versions_array.map do |version_text|
         if version_text == 'default'
           default_versions
         else
           [parse_version(version_text)]
         end
-      end.flatten)
+      end.flatten
+
+      if normalise_each
+        complete_versions_array = complete_versions_array.map {|v| v.normalise }
+      end
+      
+      Flappi::Versions.new(complete_versions_array)
     end
 
     # Given a version rule (defined against an endpoint), parse this into an array of supported versions
@@ -110,6 +117,10 @@ module Flappi
       end
 
       Flappi::Versions.new(supported_versions.uniq {|a| a.to_s })
+    end
+
+    def version_sig_size
+      @version_sig_size ||= @available_versions.map {|v| v[:version].size }.max
     end
 
     private

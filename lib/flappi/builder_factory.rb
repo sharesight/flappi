@@ -41,6 +41,7 @@ module Flappi
       controller.controller_params = controller.params  # Give the mixin access to params
       controller.controller_query_parameters = controller.request.query_parameters.except(:access_token)
       controller.controller_url = controller.request.url
+      # puts "controller.request.url=#{controller.request.url}"
       controller.version_plan = Flappi.configuration.version_plan
 
       controller.endpoint    # init endpoint data from mixin
@@ -52,7 +53,7 @@ module Flappi
       if Flappi.configuration.version_plan
         endpoint_supported_versions = controller.supported_versions
         Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
-        unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version)
+        unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version).normalise
           msg = "Version #{full_version} not supported by endpoint"
           controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
           return false

@@ -4,9 +4,20 @@ module Flappi
     attr_reader :version_array
     attr_reader :flavour
 
-    def initialize(version_array, flavour)
+    def initialize(version_array, flavour, version_plan)
+      @version_plan = version_plan
       @version_array = version_array
       @flavour = flavour.blank? ? :_blank : flavour.to_sym
+    end
+
+    def normalise
+      unless @version_plan.version_sig_size==version_array.size
+       Flappi::Version.new(@version_array.fill(0, version_array.size, @version_plan.version_sig_size - version_array.size),
+                @flavour,
+                @version_plan)
+      else
+        self
+      end
     end
 
     def to_s
