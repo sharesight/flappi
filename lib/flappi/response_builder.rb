@@ -149,9 +149,6 @@ module Flappi
         raise "polymorphic reference #{name} must specify :type and :for"
       end
 
-      raise "reference #{name} must yield a block returning hash" unless reference_record.is_a?(Hash)
-      raise "reference #{name} must yield a hash with an :id" unless reference_record.key?(:id)
-
       if def_args.key(:for) && def_args.key(:type)
         ref_type = def_args[:type]
         return unless ref_type == def_args[:for]  # Skip where the polymorph isn't us
@@ -162,6 +159,9 @@ module Flappi
       @put_stack.push(reference_record = new_h)
       block.call
       @put_stack.pop
+
+      raise "reference #{name} must yield a block returning hash" unless reference_record.is_a?(Hash)
+      raise "reference #{name} must yield a hash with an :id" unless reference_record.key?(:id)
 
       ref_id = reference_record[:id]
       put_field "#{name}_id", ref_id
