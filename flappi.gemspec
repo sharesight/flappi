@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'flappi'
-  s.version     = '0.0.0'
-  s.date        = '2016-09-02'
+  s.version     = '0.1.0'
+  s.date        = '2016-09-28'
   s.summary     = "Flappi API Builder"
   s.description = "A flexible DSL-based API builder"
   s.authors     = ["Richard Parratt", "Sharesight"]
