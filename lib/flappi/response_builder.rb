@@ -135,7 +135,8 @@ module Flappi
     # call this with either:
     #  name and block - create a reference to the object created by the block, which must include an ID field
     #  hash of options including :name, :value
-    #   type: creates a polymorphic relation and specify the generate time type
+    #   type: creates a polymorphic relation and specify the name of the type
+    #   for: for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
     #
     # TODO: Polymorphism needs to be able to absolutely specify fields for doco
     def reference(*args_or_name, block)
@@ -146,14 +147,25 @@ module Flappi
       block.call
       @put_stack.pop
 
+
       name = def_args[:name]
+
+      if def_args.key(:for) ^ def_args.key(:type)
+        raise "polymorphic reference #{name} must specify :type and :for"
+      end
+
       raise "reference #{name} must yield a block returning hash" unless reference_record.is_a?(Hash)
       raise "reference #{name} must yield a hash with an :id" unless reference_record.key?(:id)
+
+      if def_args.key(:for) && def_args.key(:type)
+        ref_type = def_args[:type]
+        return unless ref_type == def_args[:for]  # Skip where the polymorph isn't us
+      end
+
       ref_id = reference_record[:id]
       put_field "#{name}_id", ref_id
 
       if def_args.key?(:type)
-        ref_type = def_args[:type]
         put_field "#{name}_type", ref_type
         ref_key = ref_type.to_s.pluralize
       else
