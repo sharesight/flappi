@@ -12,6 +12,7 @@ module Flappi
     attr_accessor :controller_query_parameters
     attr_accessor :controller_url
     attr_reader :query_block
+    attr_accessor :requested_version
 
     def initialize
       @query_block = nil
@@ -125,7 +126,8 @@ module Flappi
     def field(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
-      require_arg def_args, :name
+
+      return unless version_included(def_args)
 
       value = field_value(def_args, block)
       # Rails.logger.debug "Field #{def_args[:name]} <= #{value} current_source=#{@current_source}"
@@ -299,5 +301,14 @@ module Flappi
       # puts "expanded=#{expanded}, subst_query=#{subst_query}"
       expanded
     end
+
+    def version_included(def_args)
+      return true unless def_args.key?(:version)
+      version_rule = def_args[:version]
+
+      supported_versions = version_plan.expand_version_rule(version_rule)
+      supported_versions.include?(requested_version)
+    end
+
   end
 end

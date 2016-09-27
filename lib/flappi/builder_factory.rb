@@ -55,11 +55,14 @@ module Flappi
 
         endpoint_supported_versions = controller.supported_versions
         Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
-        unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version).normalise
+        normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
+        unless endpoint_supported_versions.include? normalised_version
           msg = "Version #{full_version} not supported by endpoint"
           controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
           return false
         end
+
+        controller.requested_version = normalised_version
       end
 
       # validate parameters

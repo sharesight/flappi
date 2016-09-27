@@ -22,6 +22,8 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       @response_builder.source_definition = TestDef.new
       @response_builder.controller_params = { portfolio_id: '123', extra: '456', auth_token: 'xyzzy', controller: 'test', action: 'test' }
       @response_builder.controller_query_parameters = {}
+
+      @test_proc = lambda() { |_cp| {a: 1, b: 200} }
     end
 
     context 'build' do
@@ -47,14 +49,12 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       end
 
       should 'yield to block with object created using query block' do
-        @response_builder.query do
-          { a: 1, b: 100 }
-        end
+        @response_builder.query(@test_proc)
 
         yielded = false
         built_response = @response_builder.build(type: TestObject) do |obj|
           yielded = true
-          assert_equal( { a: 1, b: 100 }, obj)
+          assert_equal( { a: 1, b: 200 }, obj)
         end
 
         assert yielded
@@ -130,9 +130,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
         end
 
         should 'put field with name and value from query into response' do
-          @response_builder.query do
-            { a: 1, b: 200 }
-          end
+          @response_builder.query @test_proc
 
           built_response = @response_builder.build({}) do
             @response_builder.field :b, nil
@@ -142,9 +140,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
         end
 
         should 'put field with name and value from block into response' do
-          @response_builder.query do
-            { a: 1, b: 200 }
-          end
+          @response_builder.query @test_proc
 
           field_block = lambda { |_q| 555 }
 
@@ -197,7 +193,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
         end
 
         should 'work on own path where no query params' do
-          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint')
+          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', {}, true)
         end
 
         should 'work on own path with query params' do
@@ -205,12 +201,12 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_params.merge @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?a=1&other=test',
-                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', { a: '1', other: 'test' })
+                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', { a: '1', other: 'test' }, true)
         end
 
         should 'work on referenced path where no query params' do
           assert_equal 'http://server/test/portfolios/123/ref',
-                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref')
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref', {}, true)
         end
 
       end
