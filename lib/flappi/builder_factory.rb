@@ -47,10 +47,12 @@ module Flappi
       controller.endpoint    # init endpoint data from mixin
 
       unless endpoint_name == controller.endpoint_simple_name
-        raise "Builderfactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
+        raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
 
       if Flappi.configuration.version_plan
+        raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless full_version
+
         endpoint_supported_versions = controller.supported_versions
         Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
         unless endpoint_supported_versions.include? Flappi.configuration.version_plan.parse_version(full_version).normalise

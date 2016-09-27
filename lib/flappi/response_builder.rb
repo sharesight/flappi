@@ -284,7 +284,7 @@ module Flappi
       query_params.delete_if {|k,_v| used_params.include? k }
 
       src_query_hash = CGI::parse(subst_uri.query || '').with_indifferent_access
-      puts "src_query_hash=#{src_query_hash}, subst_all_query_params=#{subst_all_query_params}, query_params=#{query_params}"
+      # puts "src_query_hash=#{src_query_hash}, subst_all_query_params=#{subst_all_query_params}, query_params=#{query_params}"
       if subst_all_query_params
         subst_query = src_query_hash.merge(query_params)
       else
@@ -296,7 +296,7 @@ module Flappi
       expanded = controller_base_url + subst_uri.path
       expanded += "?#{subst_query.to_query}" unless subst_query.empty?
 
-      puts "expanded=#{expanded}, subst_query=#{subst_query}"
+      # puts "expanded=#{expanded}, subst_query=#{subst_query}"
       expanded
     end
   end

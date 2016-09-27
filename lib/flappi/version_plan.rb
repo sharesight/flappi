@@ -56,8 +56,8 @@ module Flappi
 
     # Given a version text, parse and return an Flappi::Version
     def parse_version(version_text)
-      version_text_stripped = version_text.sub(/^[A-Za-z]*/, '')
-      tagged_version_components = version_text_stripped.split(/(?=[.\-])/) # positive lookahead regular expression retains separators on start
+      version_text_stripped = version_text&.sub(/^[A-Za-z]*/, '')
+      tagged_version_components = version_text_stripped&.split(/(?=[.\-])/) || [] # positive lookahead regular expression retains separators on start
       version_components = tagged_version_components.map {|v| v.sub(/^[.\-]/, '')}
 
       version_array, flavour = if tagged_version_components.last.index('-')==0
@@ -92,7 +92,7 @@ module Flappi
       if normalise_each
         complete_versions_array = complete_versions_array.map {|v| v.normalise }
       end
-      
+
       Flappi::Versions.new(complete_versions_array)
     end
 
