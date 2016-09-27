@@ -50,9 +50,9 @@ module Flappi
 
       links = Hash[(@link_defs || []).map do |link_def|
           expanded_link = if link_def[:key]==:self
-            expand_link_path(source_definition.endpoint_info[:path], controller_query_parameters)
+            expand_link_path(source_definition.endpoint_info[:path], controller_query_parameters, true)
           else
-            expand_link_path(link_def[:path])
+            expand_link_path(link_def[:path], controller_query_parameters, false)
           end
           [link_def[:key], expanded_link]
       end]
@@ -257,14 +257,14 @@ module Flappi
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
       path_matcher = Regexp.new source_definition.endpoint_info[:path].gsub(/\/:\w+\//, '\/[^\/]+\/')
 
-      puts "Using matcher #{path_matcher} on #{controller_url}"
+      # puts "Using matcher #{path_matcher} on #{controller_url}"
       matches = controller_url.match(path_matcher)
       return controller_url unless matches
 
       controller_url[0...matches.begin(0)]
     end
 
-    def expand_link_path(path, passed_query_params={})
+    def expand_link_path(path, passed_query_params, subst_all_query_params)
       subst_path = path
       used_params = []
       controller_params.each do |pname, pvalue|
@@ -283,10 +283,20 @@ module Flappi
       query_params = passed_query_params.clone
       query_params.delete_if {|k,_v| used_params.include? k }
 
-      subst_query = (subst_uri.query || {}).merge(query_params)
+      src_query_hash = CGI::parse(subst_uri.query || '').with_indifferent_access
+      puts "src_query_hash=#{src_query_hash}, subst_all_query_params=#{subst_all_query_params}, query_params=#{query_params}"
+      if subst_all_query_params
+        subst_query = src_query_hash.merge(query_params)
+      else
+        subst_query = Hash[src_query_hash.map do |k,v|
+          query_params.key?(k.to_sym) ? [k,v.first] : nil
+        end.compact]
+      end
 
       expanded = controller_base_url + subst_uri.path
       expanded += "?#{subst_query.to_query}" unless subst_query.empty?
+
+      puts "expanded=#{expanded}, subst_query=#{subst_query}"
       expanded
     end
   end
