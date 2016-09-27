@@ -204,6 +204,15 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
                        @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', { a: '1', other: 'test' }, true)
         end
 
+        should 'work on path with replaceable query params' do
+          @response_builder.controller_query_parameters = { a: '1', other: 'test', b:100, c: 'Not Me' }
+          @response_builder.controller_params.merge @response_builder.controller_query_parameters
+
+          assert_equal 'http://server/test/123/endpoint?b=88',
+                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint?b=88',
+                        { a: '1', other: 'test', b:100 }, false)
+        end
+
         should 'work on referenced path where no query params' do
           assert_equal 'http://server/test/portfolios/123/ref',
                        @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref', {}, true)
