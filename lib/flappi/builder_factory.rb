@@ -65,6 +65,16 @@ module Flappi
         controller.requested_version = normalised_version
       end
 
+      # Merge in default values where one is defined and we don't have an actual parameter
+      controller.params.merge! Hash[controller.endpoint_info[:params].select do |defined_param|
+        !controller.params.key?(defined_param[:name]) && defined_param[:default]
+      end.
+      map do |defined_param|
+        [defined_param[:name], defined_param[:default]]
+      end]
+
+      # puts "After default params=#{controller.params}"
+
       # validate parameters
       controller.endpoint_info[:params].each do |defined_param|
         # puts "Check parameter #{defined_param}"
@@ -146,7 +156,9 @@ module Flappi
     end
 
     def self.validate_param(src, type)
-      puts "validate_param #{src}, type #{type.to_s}"
+      # puts "validate_param #{src}, type #{type.to_s}"
+      return nil if src.nil?
+
       case type&.to_s
         when nil
           true

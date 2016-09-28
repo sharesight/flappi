@@ -308,8 +308,10 @@ module Flappi
     #   Define a parameter
     #   @option options [String] :name the name of the parameter
     #   @option options [Symbol] :type the parameter type, defaults to String
+    #   @option options [Object] :default a default value when the parameter is not supplied
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
+    #   @option options [Integer] :fail code Code to return when fail is true
     # TODO: document block
     def param(*args_or_name, &block)
       def_args = extract_definition_args(args_or_name)
@@ -318,6 +320,7 @@ module Flappi
       endpoint_info[:params] <<
           { name: def_args[:name],
             type: name_for_type(def_args[:type]),
+            default: def_args[:default],
             description: def_args[:doc],
             optional: def_args.key?(:optional) ? def_args[:optional] : true,
             validation_block: block,
