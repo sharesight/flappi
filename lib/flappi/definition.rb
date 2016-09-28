@@ -28,9 +28,17 @@ module Flappi
     # @private
     attr_reader :delegate
     # @private
-    attr_accessor :version_plan
-    # @private
     attr_accessor :defining_class
+
+    # @private
+    def version_plan
+      @delegate.version_plan
+    end
+
+    # @private
+    def version_plan=(vp)
+      @delegate.version_plan = vp
+    end
 
     # @private
     def endpoint_info
@@ -124,6 +132,7 @@ module Flappi
     #   @option options [Object] :value the object to extract fields from
     #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
     #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object (passed as value)
     def object(*args_or_name, &block)
@@ -158,6 +167,7 @@ module Flappi
     #   @option options [Object] :value either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Boolean] :compact remove nil entries from the result array
     #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
     def objects(*args_or_name, &block)
@@ -184,6 +194,7 @@ module Flappi
     #   @option options [String] :name the name of the field
     #   @option options [Object] :value if given, the value to output
     #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.
     #   @yield A block that will be called to return the field value
     #   @yieldparam  [Object] current_source the current source object
     def field(*args_or_name, &block)

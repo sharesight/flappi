@@ -13,6 +13,7 @@ module Flappi
     attr_accessor :controller_url
     attr_reader :query_block
     attr_accessor :requested_version
+    attr_accessor :version_plan
 
     def initialize
       @query_block = nil
@@ -68,6 +69,7 @@ module Flappi
     def object(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       return if def_args.key?(:when) && !def_args[:when]
+      return unless version_wanted(def_args)
 
       @current_source = def_args[:value] || @current_source
 
@@ -94,6 +96,7 @@ module Flappi
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
       return if def_args.key?(:when) && !def_args[:when]
+      return unless version_wanted(def_args)
 
       values = def_args[:value] || def_args[:values] || @current_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
@@ -127,7 +130,8 @@ module Flappi
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
-      return unless version_included(def_args)
+      return if def_args.key?(:when) && !def_args[:when]
+      return unless version_wanted(def_args)
 
       value = field_value(def_args, block)
       # Rails.logger.debug "Field #{def_args[:name]} <= #{value} current_source=#{@current_source}"
@@ -302,11 +306,11 @@ module Flappi
       expanded
     end
 
-    def version_included(def_args)
+    def version_wanted(def_args)
       return true unless def_args.key?(:version)
       version_rule = def_args[:version]
 
-      supported_versions = version_plan.expand_version_rule(version_rule)
+      supported_versions = version_plan.class.expand_version_rule(*version_rule)
       supported_versions.include?(requested_version)
     end
 

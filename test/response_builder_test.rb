@@ -4,6 +4,8 @@ require 'pp'
 
 require 'flappi'
 
+require_relative 'examples/v2_version_plan'
+
 class TestDef
   include ::Flappi::Definition
 end
@@ -22,6 +24,9 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       @response_builder.source_definition = TestDef.new
       @response_builder.controller_params = { portfolio_id: '123', extra: '456', auth_token: 'xyzzy', controller: 'test', action: 'test' }
       @response_builder.controller_query_parameters = {}
+      version_plan = Examples::V2VersionPlan.new
+      @response_builder.version_plan = version_plan
+      @response_builder.requested_version = Examples::V2VersionPlan.parse_version('V2.1')
 
       @test_proc = lambda() { |_cp| {a: 1, b: 200} }
     end
@@ -85,6 +90,18 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           end
 
           assert_equal({ 'a' => 100 }, built_response)
+        end
+
+        should 'do nothing when the version is unmatched' do
+          built_response = @response_builder.build({}) do
+            object_block = lambda do |_s|
+              @response_builder.field :a, 100, nil
+            end
+
+            @response_builder.object({inline_always: true, version: { equals: 'v2.0' } }, object_block)
+          end
+
+          assert_equal({ }, built_response)
         end
       end
 
@@ -218,6 +235,20 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
                        @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref', {}, true)
         end
 
+      end
+
+      context 'version_included' do
+        should 'return true when no version specified args' do
+          assert @response_builder.send(:version_wanted, {name: 'test', value: 100})
+        end
+
+        should 'return true when a requested version specified' do
+          assert @response_builder.send(:version_wanted, {name: 'test', value: 100, version: { equals: 'v2.1' } })
+        end
+
+        should 'return false when a non-requested version specified' do
+          refute @response_builder.send(:version_wanted, {name: 'test', value: 100, version: { equals: 'v2.0' } })
+        end
       end
     end
   end
