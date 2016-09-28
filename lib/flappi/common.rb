@@ -23,6 +23,8 @@ module Flappi
           args_or_name.with_indifferent_access
         when Array
           case args_or_name.size
+            when 0
+              {}
             when 1
               if args_or_name[0].is_a?(Hash)
                 args_or_name[0].with_indifferent_access
@@ -37,9 +39,46 @@ module Flappi
                 { name: args_or_name[0], value: args_or_name[1] }.with_indifferent_access
               end
 
+            when 3
+              { name: args_or_name[0], value: args_or_name[1] }.merge(args_or_name[2]).with_indifferent_access
+
+            else
+              raise "Unexpected >3 positional arguments at #{args_or_name}"
           end
         else
           { name: args_or_name }.with_indifferent_access
+      end
+    end
+
+    # Extract the common arguments on a definition
+    # that doesn't take a name
+    # A hash is a simple hash of options
+    # the second arg is taken as the value
+    # hashed options follow
+    def extract_definition_args_nameless(args)
+      # puts "extract_definition_args_nameless(#{args})"
+      case args
+        when Hash
+          args.with_indifferent_access
+        when Array
+          case args.size
+            when 0
+              {}
+            when 1
+              if args[0].is_a?(Hash)
+                args[0].with_indifferent_access
+              else
+                { value: args[0] }.with_indifferent_access
+              end
+
+            when 2
+              { value: args[0] }.merge(args[1]).with_indifferent_access
+
+            else
+              raise "Unexpected >2 positional arguments at #{args}"
+          end
+        else
+          { value: args }.with_indifferent_access
       end
     end
 

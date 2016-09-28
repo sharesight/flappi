@@ -39,6 +39,7 @@ module Flappi
 
       @response_tree = new_h
       @put_stack = [@response_tree]
+      @hash_stack = []
       @references = new_h
       @current_source = base_object
 
@@ -91,6 +92,7 @@ module Flappi
     # name, value and block - as above but call the block with either one value (if scalar), or each of its items (if array)
     # hash of options including :name, :value
     #  :compact - remove any fields with nil values
+    #  :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
     # TODO: Enumerable not Array ?
     def objects(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
@@ -100,13 +102,17 @@ module Flappi
 
       values = def_args[:value] || def_args[:values] || @current_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
-      # puts "objects - put_stack=#{@put_stack}"
 
-      @put_stack.last[def_args[:name]] = objects_array = []
+      @hash_stack.push(@hash_key)
+      objects_result = def_args[:hashed] ? new_h : []
+      @put_stack.last[def_args[:name]] = objects_result
+
+      # puts "+++objects, name=#{def_args[:name]}, @hash_key=#{@hash_key}, @put_stack = #{@put_stack}"
 
       values.each do |value|
         @current_source = value
         @put_stack.push(object_hash = new_h)
+
         if value.nil?
           block.call
         elsif value.is_a?(Array)
@@ -114,11 +120,23 @@ module Flappi
         else
           block.call value
         end
-        objects_array << object_hash
-        objects_array.compact! if def_args[:compact]
+
+        if objects_result.is_a?(Hash)
+          raise "No hash_key defined for hashed objects #{def_args[:name]}" unless @hash_key
+
+          # puts "Set objects_result[#{@hash_key}] = #{object_hash}"
+          objects_result[@hash_key] = object_hash
+        else
+          objects_result << object_hash
+          objects_result.compact! if def_args[:compact]
+        end
+
         @put_stack.pop
         @current_source = nil
       end
+
+      @hash_key = @hash_stack.pop
+      # puts "--- objects, name=#{def_args[:name]}, @hash_key=#{@hash_key}, @put_stack = #{@put_stack}"
     end
 
     # call this with either:
@@ -136,6 +154,18 @@ module Flappi
       value = field_value(def_args, block)
       # Rails.logger.debug "Field #{def_args[:name]} <= #{value} current_source=#{@current_source}"
       put_field def_args[:name], value
+    end
+
+    # Define the hash key for an objects(:hashed)
+    def hash_key(*args, block)
+      # TODO: can't be nested
+      def_args = extract_definition_args_nameless(args)
+
+      return if def_args.key?(:when) && !def_args[:when]
+      return unless version_wanted(def_args)
+
+      @hash_key = field_value(def_args, block)
+      # puts "hash_key = #{@hash_key}"
     end
 
     # call this with either:
@@ -271,18 +301,19 @@ module Flappi
     end
 
     def expand_link_path(path, passed_query_params, subst_all_query_params)
+      # puts "expand_link_path path=#{path}, passed_query_params=#{passed_query_params}, subst_all_query_params=#{subst_all_query_params}"
       subst_path = path
       used_params = []
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
-        #puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
+        # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
         if subst_path =~ subex
           subst_path.gsub!( subex, "#{pvalue}\\1" )
           used_params << pname
         end
       end
 
-      #puts "Made path #{subst_path}"
+      # puts "Made path #{subst_path}"
       subst_uri = ::URI.parse(subst_path)
       raise "Link path contains unsubstituted params #{path}" if subst_uri.path =~ /:\w+/
 
@@ -302,7 +333,7 @@ module Flappi
       expanded = controller_base_url + subst_uri.path
       expanded += "?#{subst_query.to_query}" unless subst_query.empty?
 
-      # puts "expanded=#{expanded}, subst_query=#{subst_query}"
+      # puts "expanded=#{expanded}, subst_query=#{subst_query}, subst_uri=#{subst_uri}"
       expanded
     end
 
@@ -310,7 +341,7 @@ module Flappi
       return true unless def_args.key?(:version)
       version_rule = def_args[:version]
 
-      supported_versions = version_plan.class.expand_version_rule(*version_rule)
+      supported_versions = version_plan.expand_version_rule(*version_rule)
       supported_versions.include?(requested_version)
     end
 

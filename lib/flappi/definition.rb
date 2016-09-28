@@ -31,6 +31,16 @@ module Flappi
     attr_accessor :defining_class
 
     # @private
+    def requested_version
+      @delegate.requested_version
+    end
+
+    # @private
+    def requested_version=(rv)
+      @delegate.requested_version = rv
+    end
+
+    # @private
     def version_plan
       @delegate.version_plan
     end
@@ -158,6 +168,8 @@ module Flappi
     #   @param value (Object) either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Boolean] :compact remove nil entries from the result array
     #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
+    #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements. The block will be called for each array value in sequence.
     #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
     #
@@ -168,6 +180,7 @@ module Flappi
     #   @option options [Boolean] :compact remove nil entries from the result array
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
+    #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
     def objects(*args_or_name, &block)
@@ -199,6 +212,11 @@ module Flappi
     #   @yieldparam  [Object] current_source the current source object
     def field(*args_or_name, &block)
       @delegate.field(*args_or_name, block)
+    end
+
+    # TODO: document me!
+    def hash_key(*args, &block)
+      @delegate.hash_key(*args, block)
     end
 
     # call this with either:
@@ -292,7 +310,8 @@ module Flappi
     #   @option options [Symbol] :type the parameter type, defaults to String
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
-    def param(*args_or_name)
+    # TODO: document block
+    def param(*args_or_name, &block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
@@ -300,7 +319,9 @@ module Flappi
           { name: def_args[:name],
             type: name_for_type(def_args[:type]),
             description: def_args[:doc],
-            optional: def_args.key?(:optional) ? def_args[:optional] : true
+            optional: def_args.key?(:optional) ? def_args[:optional] : true,
+            validation_block: block,
+            fail_code: def_args[:fail_code]
           }
     end
 

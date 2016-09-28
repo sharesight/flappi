@@ -79,9 +79,19 @@ module Flappi
 
         unless validate_param(controller.params[defined_param[:name]], defined_param[:type])
           msg = "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
-          controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
+          controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
           return false
         end
+
+        if defined_param[:validation_block]
+          error_text = defined_param[:validation_block].call(controller.params[defined_param[:name]])
+          if error_text
+            msg = "Parameter #{defined_param[:name]} failed validation: #{error_text}"
+            controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
+            return false
+          end
+        end
+
       end
 
       controller.respond_to do |format|
@@ -136,7 +146,7 @@ module Flappi
     end
 
     def self.validate_param(src, type)
-      # puts "validate_param #{src}, type #{type.to_s}"
+      puts "validate_param #{src}, type #{type.to_s}"
       case type&.to_s
         when nil
           true
