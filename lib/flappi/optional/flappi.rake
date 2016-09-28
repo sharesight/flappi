@@ -8,16 +8,22 @@ namespace :flappi do
         raise "Need to define at least once path in Flappi.configuration.definition_paths"
       end
 
-      unless Flappi.configuration.doc_target_path
+      unless Flappi.configuration.doc_target_path || Flappi.configuration.doc_target_paths
         raise "Need to define a doc target to generate docs"
       end
 
+      target_paths = Flappi.configuration.doc_target_paths || Flappi.configuration.doc_target_path
+      target_paths = {'*' => target_paths} unless target_paths.is_a?(Hash)
+
       Flappi.configuration.definition_paths.each do |path|
-        Flappi::Documenter.document "app/controllers",
-                  path.camelize.constantize,
-                  Flappi.configuration.doc_target_path,
-                  Flappi::ApiDocFormatter
+        target_paths.each do |document_version, to_path|
+          Flappi::Documenter.document "app/controllers",
+                    path.camelize.constantize,
+                    to_path,
+                    document_version,
+                    Flappi::ApiDocFormatter
         end
+      end
     end
   end
 end

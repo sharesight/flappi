@@ -10,9 +10,18 @@ module Flappi
     # When we run code during a documentation pass, stub everything
 
     class DocumentingStub
+      def to_ary
+        return [DocumentingStub.new]
+      end
+
       def method_missing(_meth_id, *_args, &_block)
         # puts "Note: #{_meth_id.id2name} missing, called from stub"
-        return DocumentingStub
+        return DocumentingStub.new
+      end
+
+      def self.method_missing(_meth_id, *_args, &_block)
+        # puts "Note: class.#{_meth_id.id2name} missing, called from stub"
+        return DocumentingStub.new
       end
     end
 
@@ -113,12 +122,13 @@ module Flappi
     end
 
     # Called to document an API call into a structure that can be templated into e.g. ApiDoc
-    def self.document(definition)
+    def self.document(definition, for_version)
       documenter_definition = DefDocumenter.new
       documenter_definition.singleton_class.send(:include, definition)
       documenter_definition.defining_class = definition
       documenter_definition.mode = :doc
       documenter_definition.version_plan = Flappi.configuration.version_plan
+      documenter_definition.requested_version = Flappi.configuration.version_plan.parse_version(for_version).normalise
 
       unless documenter_definition.respond_to? :endpoint
         raise 'API definition must include <endpoint> method'

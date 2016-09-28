@@ -74,8 +74,8 @@ module Flappi
 
       @current_source = def_args[:value] || @current_source
 
-      if def_args.key? :name
-        @put_stack.push(@put_stack.last[def_args[:name]] = new_h)
+      if def_args.key?(:name) || def_args.key?(:dynamic_key)
+          @put_stack.push(@put_stack.last[ def_args[:dynamic_key] || def_args[:name] ] = new_h)
         block.call @current_source
         @put_stack.pop
       elsif def_args[:inline_always]
@@ -335,14 +335,6 @@ module Flappi
 
       # puts "expanded=#{expanded}, subst_query=#{subst_query}, subst_uri=#{subst_uri}"
       expanded
-    end
-
-    def version_wanted(def_args)
-      return true unless def_args.key?(:version)
-      version_rule = def_args[:version]
-
-      supported_versions = version_plan.expand_version_rule(*version_rule)
-      supported_versions.include?(requested_version)
     end
 
   end

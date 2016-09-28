@@ -143,6 +143,7 @@ module Flappi
     #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
+    #   @option options [String] :dynamic_key Rather than a fixed name, specify a key that is valid at request time.
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object (passed as value)
     def object(*args_or_name, &block)
