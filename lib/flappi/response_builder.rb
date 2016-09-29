@@ -60,9 +60,9 @@ module Flappi
           [link_def[:key], expanded_link]
       end]
 
+      @response_tree.merge!(@references)
       @response_tree[:links] = links unless links.empty?
-
-      @response_tree.merge(@references)
+      @response_tree
     end
 
     # Call this with  name & block - create a named singular object
@@ -189,7 +189,7 @@ module Flappi
 
       if def_args.key?(:for) && def_args.key?(:type)
         ref_type = def_args[:type]
-        return unless ref_type == def_args[:for]  # Skip where the polymorph isn't us
+        return unless ref_type.to_s == def_args[:for].to_s.camelize  # Skip where the polymorph isn't us
       end
 
       # This reference is to be generated
@@ -205,8 +205,8 @@ module Flappi
       put_field "#{name}_id", ref_id
 
       if def_args.key?(:type)
-        put_field "#{name}_type", ref_type
-        ref_key = ref_type.to_s.pluralize
+        put_field "#{name}_type", ref_type if def_args.key?(:generate_from_type) # TODO: doc
+        ref_key = ref_type.to_s.underscore.pluralize
       else
         ref_key = name
       end
