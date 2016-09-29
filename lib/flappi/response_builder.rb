@@ -179,7 +179,9 @@ module Flappi
       # Check the args
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
+      # puts "reference #{def_args}"
       name = def_args[:name]
+      return unless version_wanted(def_args)
 
       if def_args.key?(:for) ^ def_args.key?(:type)
         raise "polymorphic reference #{name} must specify :type and :for"

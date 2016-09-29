@@ -290,8 +290,16 @@ module Flappi
 
     # Define an example response that will be included in documentation.
     # @param v (String) The response example.
-    def response_example(v)
-      endpoint_info[:response_example] = v
+    def response_example(*v)
+      raise 'response_example needs at least a text' if v.size==0
+      options, text = if v.size==1
+                         [{}, v[0]]
+                       else
+                         v
+                       end
+      return unless version_wanted(options)
+
+      endpoint_info[:response_example] = text
     end
 
     # Define an input parameter (inline or query string)
