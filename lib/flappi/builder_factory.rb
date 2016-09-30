@@ -127,6 +127,10 @@ module Flappi
       documenter_definition.singleton_class.send(:include, definition)
       documenter_definition.defining_class = definition
       documenter_definition.mode = :doc
+
+      normalised_version = Flappi.configuration.version_plan&.parse_version(for_version).normalise
+      documenter_definition.requested_version = normalised_version
+
       documenter_definition.version_plan = Flappi.configuration.version_plan
 
       unless documenter_definition.respond_to? :endpoint
@@ -140,10 +144,7 @@ module Flappi
         raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless for_version
 
         endpoint_supported_versions = documenter_definition.supported_versions
-        normalised_version = Flappi.configuration.version_plan.parse_version(for_version).normalise
         return nil unless endpoint_supported_versions.include? normalised_version
-
-        documenter_definition.requested_version = normalised_version
       end
 
       path = documenter_definition.endpoint_info[:path]

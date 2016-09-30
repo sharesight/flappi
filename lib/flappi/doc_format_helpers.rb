@@ -16,6 +16,13 @@ module Flappi
       optional = param_item[:optional]
       res = optional ? '[' : ''
       res << param_item[:name].to_s
+
+      if param_item[:default_doc]
+        res << "=#{param_item[:default_doc]}"
+      else
+       res << "=#{param_item[:default]}" unless param_item[:default].nil?
+      end
+
       res << ']' if optional
       res
     end

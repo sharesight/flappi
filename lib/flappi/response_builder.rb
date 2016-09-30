@@ -332,7 +332,9 @@ module Flappi
         end.compact]
       end
 
-      expanded = controller_base_url + subst_uri.path
+      expanded = controller_base_url
+      expanded += '/' unless expanded[-1]=='/' || subst_uri.path[0]=='/'
+      expanded += subst_uri.path
       expanded += "?#{subst_query.to_query}" unless subst_query.empty?
 
       # puts "expanded=#{expanded}, subst_query=#{subst_query}, subst_uri=#{subst_uri}"
