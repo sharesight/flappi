@@ -24,8 +24,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       @response_builder.source_definition = TestDef.new
       @response_builder.controller_params = { portfolio_id: '123', extra: '456', auth_token: 'xyzzy', controller: 'test', action: 'test' }
       @response_builder.controller_query_parameters = {}
-      version_plan = Examples::V2VersionPlan.new
-      @response_builder.version_plan = version_plan
+      @response_builder.version_plan = Examples::V2VersionPlan
       @response_builder.requested_version = Examples::V2VersionPlan.parse_version('V2.1')
 
       @test_proc = lambda() { |_cp| {a: 1, b: 200} }

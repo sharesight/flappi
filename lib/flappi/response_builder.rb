@@ -103,7 +103,7 @@ module Flappi
       values = def_args[:value] || def_args[:values] || @current_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
 
-      @hash_stack.push(@hash_key)
+      @hash_stack.push(@hash_key ||= nil)
       objects_result = def_args[:hashed] ? new_h : []
       @put_stack.last[def_args[:name]] = objects_result
 
