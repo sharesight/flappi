@@ -128,7 +128,6 @@ module Flappi
       documenter_definition.defining_class = definition
       documenter_definition.mode = :doc
       documenter_definition.version_plan = Flappi.configuration.version_plan
-      documenter_definition.requested_version = Flappi.configuration.version_plan.parse_version(for_version).normalise
 
       unless documenter_definition.respond_to? :endpoint
         raise 'API definition must include <endpoint> method'
@@ -136,6 +135,16 @@ module Flappi
       documenter_definition.endpoint
 
       # puts "After endpoint call documenter_definition.endpoint_info:"; pp documenter_definition.endpoint_info
+
+      if Flappi.configuration.version_plan
+        raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless for_version
+
+        endpoint_supported_versions = documenter_definition.supported_versions
+        normalised_version = Flappi.configuration.version_plan.parse_version(for_version).normalise
+        return nil unless endpoint_supported_versions.include? normalised_version
+
+        documenter_definition.requested_version = normalised_version
+      end
 
       path = documenter_definition.endpoint_info[:path]
       param_docs = documenter_definition.endpoint_info[:params]
@@ -150,8 +159,9 @@ module Flappi
           params: param_docs,
           api_name: definition.name.demodulize,
           api_group: documenter_definition.endpoint_info[:group],
-          api_version: documenter_definition.document_as_version,
-          response_example: documenter_definition.endpoint_info[:response_example]
+          api_version: documenter_definition.document_as_version(for_version),
+          response_example: documenter_definition.endpoint_info[:response_example],
+          request_example: documenter_definition.endpoint_info[:request_example] || path
         },
 
         # Query parameters, etc

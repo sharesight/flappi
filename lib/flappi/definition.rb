@@ -68,15 +68,18 @@ module Flappi
     end
 
     # @private
-    def document_as_version
-      return '0.0.0' unless version_plan
+    def document_as_version(documenting_version_text)
+      return documenting_version_text || '0.0.0' unless version_plan
 
-      return version_plan.minimum_version if @version_rule.nil?
-      supported_versions = version_plan.expand_version_rule(@version_rule)
-      return version_plan.minimum_version if supported_versions.blank?
+      supported_versions = @version_rule ? version_plan.expand_version_rule(@version_rule) : version_plan.available_version_definitions
+      return documenting_version_text || version_plan.minimum_version if supported_versions.blank?
 
-      raise "Multiple versions supported #{supported_versions} - not allowed by documenter as yet in #{endpoint_simple_name}" if supported_versions.size > 1
-      supported_versions.first
+      doc_version_matcher = version_plan.parse_version(documenting_version_text).normalise
+      use_versions = supported_versions.select {|v| v == doc_version_matcher }  # with wildcards
+
+      raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions.to_s} - not allowed by documenter as yet in #{endpoint_simple_name}" if use_versions.size > 1
+      raise "#{endpoint_info[:title]}: Version could not be determined, trying to document unsupported endpoint #{documenting_version_text}" if use_versions.empty?
+      use_versions.first
     end
 
     # @private
@@ -291,7 +294,19 @@ module Flappi
     # Define an example response that will be included in documentation.
     # @param v (String) The response example.
     def response_example(*v)
-      raise 'response_example needs at least a text' if v.size==0
+      set_example('response', v)
+    end
+
+    # Define an example request path (no scheme or host) that will be included in documentation.
+    # If not specified, the {#path} is used.
+    # @param v (String) The request example URL
+    def request_example(*v)
+      set_example('request', v)
+    end
+
+    # @private
+    def set_example(example_type, v)
+      raise "#{example_type}_example needs at least a text" if v.size==0
       options, text = if v.size==1
                          [{}, v[0]]
                        else
@@ -299,7 +314,7 @@ module Flappi
                        end
       return unless version_wanted(options)
 
-      endpoint_info[:response_example] = text
+      endpoint_info["#{example_type}_example".to_sym] = text
     end
 
     # Define an input parameter (inline or query string)

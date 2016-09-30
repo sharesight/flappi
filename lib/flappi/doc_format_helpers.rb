@@ -19,5 +19,6 @@ module Flappi
       res << ']' if optional
       res
     end
+
   end
 end
