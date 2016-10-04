@@ -1,3 +1,5 @@
+require_relative 'common'
+
 module Flappi
   # DSL for API construction.
   #

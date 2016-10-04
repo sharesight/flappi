@@ -3,6 +3,8 @@ require 'uri'
 require 'active_support/core_ext/hash/conversions'
 require 'active_support/core_ext/hash/indifferent_access'
 
+require_relative 'common'
+
 module Flappi
   class ResponseBuilder
 
