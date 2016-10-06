@@ -1,4 +1,5 @@
 # flappi
+
 ## Flexible API builder gem for Rails
 
 Flappi allows Rails APIs to be defined using a simple DSL that avoids repeated and fragmented code and allows the API definition to reflect the request/response structure.

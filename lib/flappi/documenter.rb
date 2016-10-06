@@ -2,7 +2,6 @@
 module Flappi
   class Documenter
 
-    # TODO: we will support generating different ApiDoc for different versions at some stage
     # Call to document all definitions under top_module
     def self.document(top_path, top_module, into_path, for_version, with_formatter)
       load_all_modules top_path + '/' + top_module.to_s.underscore

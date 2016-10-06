@@ -23,5 +23,4 @@ TODO
 _ignore
 .envrc
 .yardoc/
-doc/
 tasks/

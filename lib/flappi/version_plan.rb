@@ -18,7 +18,7 @@ module Flappi
     # define a flavour 'name'
     # If inside a version's block, defines flavours for the version, otherwise defines global flavours
     def flavour(name)
-      flavour = name # TODO: released, another way
+      flavour = name
 
       if @version_flavours.nil?
         (@available_versions ||  []).each do |v|

@@ -120,11 +120,6 @@ module Flappi
       @delegate.build options, &block
     end
 
-    # TODO: we may need this with adaptive versioning
-#    def include_when(test)
-#      yield if test
-#    end
-
     # Define an object (which will be rendered within json as name:hash).
     # Use this with a block that defines the fields of the object hash.
     #
@@ -220,17 +215,44 @@ module Flappi
       @delegate.field(*args_or_name, block)
     end
 
-    # TODO: document me!
+    # Define the hash key to be used in generating a hash from {#objects}
+    #
+    # @overload hash_key(value, options={})
+    #   Define the hash key as having a specified value
+    #   @param value (Object) the value for the hash key
+    #   @option options [Boolean] :when if false, omit this object
+    #
+    # @overload hash_key(options={})
+    #   Define the hash key with named options
+    #   @option options [Object] :value if given, the value to output
+    #   @option options [Boolean] :when if false, omit this object
+    #
     def hash_key(*args, &block)
       @delegate.hash_key(*args, block)
     end
 
-    # call this with either:
-    #  name and block - create a reference to the object created by the block, which must include an ID field
-    #  hash of options including :name, :value
-    #   type: creates a polymorphic relation and specify the generate time type
+    # Creates a sideloaded reference to an object created by the block. The object must include an ID field
     #
-    # TODO: Polymorphism needs to be able to absolutely specify fields for doco
+    # @overload reference(name, options={})
+    #   Define a reference sourcing data from the enclosing source object.
+    #   If no block is given, the reference object will be extracted from source_object[name], otherwise it will be the block return.
+    #   @param name (String) the name of the field
+    #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
+    #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
+    #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
+    #   @yield A block that will be called to return the referenced object
+    #   @yieldparam  [Object] current_source the current source object
+    #   @yieldreturn the referenced object
+    #
+    # @overload reference(name, value, options={})
+    #   Define a reference sourcing data from the enclosing source object.
+    #   If no block is given, the reference object will be extracted from source_object[name], otherwise it will be the block return.
+    #   @param name (String) the name of the field
+    #   @param value (Object) the referenced object
+    #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
+    #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
+    #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
+    #
     def reference(*args_or_name, &block)
       @delegate.reference(*args_or_name, block)
     end
@@ -329,6 +351,9 @@ module Flappi
     #   @option options [Symbol] :type the parameter type, defaults to String
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
+    #   @yield A block that will be called to validate the parameter
+    #   @yieldparam  [Object] param the actual parameter value to validate
+    #   @yieldreturn [String] nil if the parameter is valid, else a failure message
     #
     # @overload param(options={})
     #   Define a parameter
@@ -339,7 +364,9 @@ module Flappi
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
     #   @option options [Integer] :fail code Code to return when fail is true
-    # TODO: document block
+    #   @yield A block that will be called to validate the parameter
+    #   @yieldparam  [Object] param the actual parameter value to validate
+    #   @yieldreturn [String] nil if the parameter is valid, else a failure message
     def param(*args_or_name, &block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name

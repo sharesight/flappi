@@ -91,11 +91,10 @@ module Flappi
 
     # call this with either:
     # name and block - create a named array of objects creating fields inside the block
-    # name, value and block - as above but call the block with either one value (if scalar), or each of its items (if array)
+    # name, value and block - as above but call the block with either one value (if scalar), or each of its items (if non-hash Enumerable)
     # hash of options including :name, :value
     #  :compact - remove any fields with nil values
     #  :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
-    # TODO: Enumerable not Array ?
     def objects(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
@@ -117,7 +116,7 @@ module Flappi
 
         if value.nil?
           block.call
-        elsif value.is_a?(Array)
+        elsif !value.is_a?(Hash) && value.class.include?(Enumerable)
           block.call(*value)
         else
           block.call value
@@ -176,7 +175,6 @@ module Flappi
     #   type: creates a polymorphic relation and specify the name of the type
     #   for: for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
     #
-    # TODO: Polymorphism needs to be able to absolutely specify fields for doco
     def reference(*args_or_name, block)
       # Check the args
       def_args = extract_definition_args(args_or_name)
