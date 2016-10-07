@@ -1,6 +1,4 @@
-require 'test_helper'
-
-require 'flappi'
+require_relative 'test_helper'
 
 require_relative 'examples/v2_version_plan'
 

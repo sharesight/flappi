@@ -20,7 +20,7 @@
 
 <% for response_item in response %>
 @apiSuccess (200 Success) {<%= response_item.type %>} <%= qname_from(response_item.name) %>
-  <%= response_item.description %>
+<%= response_item.description %>
 <% end %>
 
 @apiSuccessExample {json} Response Example

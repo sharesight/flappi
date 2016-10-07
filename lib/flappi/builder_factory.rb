@@ -1,6 +1,7 @@
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
+require 'active_support/json'
 
 module Flappi
   module BuilderFactory
@@ -42,7 +43,7 @@ module Flappi
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
       raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
 
-      Rails.logger.debug "  definition_klass = #{definition_klass}"
+      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
 
       controller.singleton_class.send(:include, definition_klass)
       controller.defining_class = definition_klass
@@ -63,7 +64,7 @@ module Flappi
         raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless full_version
 
         endpoint_supported_versions = controller.supported_versions
-        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?"
+        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           msg = "Version #{full_version} not supported by endpoint"
@@ -128,7 +129,7 @@ module Flappi
       documenter_definition.defining_class = definition
       documenter_definition.mode = :doc
 
-      normalised_version = Flappi.configuration.version_plan&.parse_version(for_version).normalise
+      normalised_version = Flappi.configuration.version_plan&.parse_version(for_version)&.normalise
       documenter_definition.requested_version = normalised_version
 
       documenter_definition.version_plan = Flappi.configuration.version_plan

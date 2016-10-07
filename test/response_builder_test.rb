@@ -1,7 +1,5 @@
-require 'test_helper'
+require_relative 'test_helper'
 require 'pp'
-
-require 'flappi'
 
 require_relative 'examples/v2_version_plan'
 

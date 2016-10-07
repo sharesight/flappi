@@ -1,8 +1,5 @@
-require 'minitest/autorun'
-require 'shoulda'
+require_relative 'test_helper'
 require 'pp'
-
-require 'flappi'
 
 class ::Flappi::ResponseBuilderTest < MiniTest::Test
 
