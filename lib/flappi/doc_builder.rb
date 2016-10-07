@@ -1,5 +1,4 @@
 # Build API documentation from a definition
-require_relative 'common'
 require 'active_support/inflector'
 
 module Flappi
