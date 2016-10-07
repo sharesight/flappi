@@ -115,7 +115,7 @@ module Flappi
         if value.nil?
           block.call
         elsif !value.is_a?(Hash) && value.class.include?(Enumerable)
-          block.call(*value)
+          block.call(*value.to_a)
         else
           block.call value
         end
