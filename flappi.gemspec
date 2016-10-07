@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'shoulda'
   s.add_development_dependency 'rake' # slightly unconvinced
+  s.add_development_dependency 'simplecov'
 end

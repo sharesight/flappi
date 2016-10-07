@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'shoulda'
+require 'test_helper'
 require 'pp'
 
 require 'flappi'
@@ -102,6 +101,21 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
 
           assert_equal({ }, built_response)
         end
+
+        should 'raise an error when no name or inline_always' do
+          err = assert_raises RuntimeError do
+            @response_builder.build({}) do
+              object_block = lambda do |_s|
+                @response_builder.field :a, 100, nil
+              end
+
+              @response_builder.object({}, object_block)
+            end
+          end
+
+          assert_equal err.to_s, 'object requires either a name or inline_always: true'
+        end
+
       end
 
       context 'objects' do
@@ -120,6 +134,43 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           assert_equal({ 'my_object' =>  [{'a' => 11, 'b' => 22}, {'a' => 55, 'b' => 66}] }, built_response)
         end
 
+        should 'call block with no parameter for nil array values' do
+          built_response = @response_builder.build({}) do
+            object_block = lambda do |*value_or_nil|
+              @response_builder.field( :a, value_or_nil.empty? ? 'empty' : value_or_nil.first, nil)
+            end
+
+            @response_builder.objects(:my_object, [1, nil, 3], object_block)
+          end
+
+          assert_equal({ 'my_object' =>  [{'a' => 1}, {'a' => 'empty'}, {'a' => 3} ] }, built_response)
+        end
+
+        should 'call block with multiple parameters for array values' do
+          built_response = @response_builder.build({}) do
+            object_block = lambda do |number, name|
+              @response_builder.field( :number, number, nil)
+              @response_builder.field( :name, name, nil)
+            end
+
+            @response_builder.objects(:my_object, [[1, :one], [2, :two]], object_block)
+          end
+
+          assert_equal({ 'my_object' =>  [{'number' => 1, 'name' => :one}, {'number' => 2, 'name' => :two}] }, built_response)
+        end
+
+        should 'produce a hash with specified key' do
+          built_response = @response_builder.build({}) do
+            object_block = lambda do |number|
+              @response_builder.hash_key( "key_#{number}", nil)
+              @response_builder.field( :n, number, nil)
+            end
+
+            @response_builder.objects(:my_object, [1, 2], {hashed: true}, object_block)
+          end
+
+          assert_equal({ 'my_object' =>  {'key_1' => {'n' => 1}, 'key_2' => {'n' => 2}} }, built_response)
+        end
       end
 
       context 'link' do
@@ -132,7 +183,22 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           end
 
           assert_equal( {"links"=>{"self"=>"http://server/test/123/endpoint"}}, built_response)
+        end
+
+        should 'put defined link into response' do
+          @response_builder.controller_url = 'http://server/test/123/endpoint'
+          @response_builder.source_definition.path '/:portfolio_id/endpoint'
+
+          built_response = @response_builder.build({}) do
+            @response_builder.link(:self)
+            @response_builder.link({key: :other, path: '/other_endpoint?extra=:extra'})
           end
+
+          assert_equal( { "links"=>{"self"=>"http://server/test/123/endpoint",
+                          "other"=>"http://server/test/other_endpoint"}},
+            built_response)
+        end
+
       end
 
       context 'field' do
@@ -175,6 +241,35 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           assert_equal( { 'a' => 100 }, built_response)
         end
       end
+
+      context 'reference' do
+        should 'put an untyped reference into response' do
+          built_response = @response_builder.build({}) do
+            block = lambda do
+              @response_builder.field( :id, 999, nil)
+              @response_builder.field( :fv, 100, nil)
+            end
+
+            @response_builder.reference(:myref, block)
+          end
+
+          assert_equal( {"myref_id"=>999, "myref"=> [{"id"=>999, "fv"=>100}]}, built_response)
+        end
+
+        should 'put an typed polymorphic reference into response' do
+          built_response = @response_builder.build({}) do
+            block = lambda do
+              @response_builder.field( :id, 999, nil)
+              @response_builder.field( :fv, 100, nil)
+            end
+
+            @response_builder.reference({name: :myref, type: 'Thingy', for: 'thingy', generate_from_type: true}, block)
+          end
+
+          assert_equal( {"myref_id"=>999, "myref_type"=>"Thingy", "thingies"=> [{"id"=>999, "fv"=>100}]}, built_response)
+        end
+
+      end
     end
 
     context 'internals' do
@@ -200,6 +295,32 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
 
           assert_equal 'http://server/test', @response_builder.send(:controller_base_url)
         end
+      end
+
+      should 'cast_value' do
+        assert_equal nil, @response_builder.cast_value(nil, Flappi::Definition::BOOLEAN, nil)
+        assert_equal false, @response_builder.cast_value(false, Flappi::Definition::BOOLEAN, nil)
+        assert_equal true, @response_builder.cast_value(1, Flappi::Definition::BOOLEAN, nil)
+
+        assert_equal 1.234, @response_builder.cast_value("1.234", BigDecimal, nil)
+        assert_equal 1.235, @response_builder.cast_value("1.2345678", Float, 3)
+
+        assert_equal 567, @response_builder.cast_value("567", Integer, nil)
+
+        assert_equal( {value: 10}, @response_builder.cast_value({value: 10}, Hash, nil))
+      end
+
+      should 'access_member_somehow' do
+        assert_equal 1, @response_builder.access_member_somehow({a: 1}, 'a')
+        assert_equal 1, @response_builder.access_member_somehow({a: 1}, :a)
+
+        assert_equal 2, @response_builder.access_member_somehow({'b' => 2}, 'b')
+        assert_equal 2, @response_builder.access_member_somehow({'b' => 2}, :b)
+
+        refute @response_builder.access_member_somehow({'b' => 2}, :c)
+
+        assert_equal 3, @response_builder.access_member_somehow(OpenStruct.new(c: 3), 'c')
+        assert_equal 3, @response_builder.access_member_somehow(OpenStruct.new(c: 3), :c)
       end
 
       context 'expand_link_path' do

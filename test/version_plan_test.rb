@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'shoulda'
+require 'test_helper'
 
 require 'flappi'
 

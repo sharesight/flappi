@@ -60,7 +60,10 @@ module Flappi
           [link_def[:key], expanded_link]
       end]
 
-      @response_tree.merge!(@references)
+      @references.each do |k, r|
+        @response_tree[k] = r.to_a
+      end
+
       @response_tree[:links] = links unless links.empty?
       @response_tree
     end
@@ -217,11 +220,12 @@ module Flappi
     # :path => path to expand into link, include parameters with :param
     # shorthand one param is :key, two is :key, :path
     def link(*link_params)
-      link_def = if link_params.is_a? Array
-        raise "link takes 1/2 params, not: #{link_params}" unless (1..2).cover? link_params.size
-        Hash[link_params.each_with_index.map {|p, idx| [[:key, :path][idx], p]}]
+      raise "link takes 1/2 params, not: #{link_params}" unless (1..2).cover? link_params.size
+
+      link_def = if link_params.size==1 && link_params.first.is_a?(Hash)
+        link_params.first
       else
-        link_params
+       Hash[link_params.each_with_index.map {|p, idx| [[:key, :path][idx], p]}]
       end
 
       raise "link to an endpoint apart from :self needs a path" unless link_def[:key]==:self || link_def[:path]
@@ -256,11 +260,11 @@ module Flappi
     end
 
     def cast_value(src, type, precision)
-     # puts "cast_value #{src}, type #{type.to_s}"
+      # puts "cast_value #{src}, type #{type.to_s}"
       case type&.to_s
         when nil
           src
-        when 'BOOLEAN'
+        when 'boolean_type'
           if src.nil?
             nil
           else
