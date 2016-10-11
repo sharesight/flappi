@@ -238,6 +238,7 @@ module Flappi
     #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
     #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
     #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
+    #   @option options [Boolean] :link_id generate a link id name_id in the source location. Defaults to true
     #   @yield A block that will be called to return the referenced object
     #   @yieldparam  [Object] current_source the current source object
     #   @yieldreturn the referenced object
@@ -250,6 +251,7 @@ module Flappi
     #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
     #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
     #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
+    #   @option options [Boolean] :link_id generate a link id name_id in the source location. Defaults to true
     #
     def reference(*args_or_name, &block)
       @delegate.reference(*args_or_name, block)

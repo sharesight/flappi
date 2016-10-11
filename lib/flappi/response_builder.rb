@@ -202,8 +202,10 @@ module Flappi
       raise "reference #{name} must yield a block returning hash" unless reference_record.is_a?(Hash)
       raise "reference #{name} must yield a hash with an :id" unless reference_record.key?(:id)
 
-      ref_id = reference_record[:id]
-      put_field "#{name}_id", ref_id
+      unless def_args[:link_id] == false
+        ref_id = reference_record[:id]
+        put_field "#{name}_id", ref_id
+      end
 
       if def_args.key?(:type)
         put_field "#{name}_type", ref_type if def_args.key?(:generate_from_type) # TODO: doc
