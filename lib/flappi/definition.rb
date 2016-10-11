@@ -193,6 +193,7 @@ module Flappi
     #   If no block is given, the field value will be extracted from source_object[name], otherwise it will be the block return.
     #   @param name (String) the name of the field
     #   @option options [Boolean] :compact remove nil entries from the result array
+    #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.
     #   @yield A block that will be called to return the field value
     #   @yieldparam  [Object] current_source the current source object
     #
@@ -207,6 +208,7 @@ module Flappi
     #   @option options [Object] :value if given, the value to output
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.
+    #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.
     #   @yield A block that will be called to return the field value
     #   @yieldparam  [Object] current_source the current source object
     def field(*args_or_name, &block)

@@ -35,12 +35,19 @@ module Flappi
       require_arg def_args, :name
       return unless version_wanted(def_args)
 
+      # handle dynamic field names by bracketing either 'doc_name' or the word 'dynamic'
+      # with an underscore
+      use_name = def_args[:name]
+      if def_args[:name].is_a?(Flappi::BuilderFactory::DocumentingStub)
+        use_name = '_' + (def_args[:doc_name] || 'dynamic') + '_'
+      end
+
       # puts "field @object_path=#{get_object_path} def_args=#{def_args}"
-      @doc_targets.last << { name: get_object_path.clone + [def_args[:name]],
+      @doc_targets.last << { name: get_object_path.clone + [use_name],
                      type: name_for_type(def_args[:type]),
                      description: def_args[:doc] }
 
-      @id_type = name_for_type(def_args[:type]) if def_args[:name]=='_id'
+      @id_type = name_for_type(def_args[:type]) if use_name=='_id'
     end
 
     def reference(*args_or_name, block)
