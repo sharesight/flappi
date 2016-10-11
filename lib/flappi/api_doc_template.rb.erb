@@ -16,7 +16,7 @@
 <% end %>
 
 @apiParamExample Request Example
-    {<%= endpoint.method_name %>} "<%= endpoint.request_example %>.json"
+    {<%= endpoint.method_name %>} "<%= endpoint.request_example %>"
 
 <% for response_item in response %>
 @apiSuccess (200 Success) {<%= response_item.type %>} <%= qname_from(response_item.name) %>
