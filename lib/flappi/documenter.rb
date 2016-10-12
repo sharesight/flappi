@@ -4,13 +4,13 @@ module Flappi
 
     # Call to document all definitions under top_module
     def self.document(top_path, top_module, into_path, for_version, with_formatter)
-      load_all_modules top_path + '/' + top_module.to_s.underscore
+      load_all_modules top_path + '/' + top_module.to_s.underscore, top_module
       defs_to_document = builder_definitions(top_module)
 
-      # puts "Documenting definitions: #{defs_to_document} endpoint=#{ENV['endpoint']} version=#{for_version}"
+      FlappiLogger.i "Documenting definitions: #{defs_to_document} endpoint=#{ENV['endpoint']} version=#{for_version}"
       defs_to_document.map do |defi|
         next if ENV['endpoint'] && ENV['endpoint'] != defi.to_s
-        # puts "Documenting #{defi.to_s}"
+        FlappiLogger.d "Documenting #{defi.to_s}"
 
         into_file = (into_path + defi.to_s[top_module.to_s.length..-1].underscore).sub(/\/([^\/]+)$/, '/show_\1.rb')
         with_formatter.format(BuilderFactory.document(defi, for_version), into_file)
@@ -18,13 +18,22 @@ module Flappi
     end
 
     def self.builder_definitions(from)
-      all_the_modules(from).select {|m| m.ancestors.include? Flappi::Definition }
+      all_the_modules(from).select do |m|
+        m.ancestors.include?(Flappi::Definition) && m.method_defined?(:endpoint) && m.method_defined?(:respond)
+      end
     end
 
-    def self.load_all_modules(from)
+    def self.load_all_modules(from, top_module)
+      FlappiLogger.d "Loading from #{from} : #{top_module}"
       Dir.glob("#{from}/**/*.rb") do |file|
-        load file unless (@loaded ||= {})[file]
-        @loaded[file] = true
+        expected_klass = Module.const_get(top_module.to_s + '::' + File.basename(file, '.*').camelize) rescue nil
+        # The autoloader may load our module anyway here
+
+        unless all_the_modules(top_module).include?(expected_klass)
+          # puts "loading #{file}"
+
+          load file
+        end
       end
     end
 
