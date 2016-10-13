@@ -2,7 +2,7 @@ require 'active_support'
 require 'active_support/core_ext/module/delegation'
 
 # Require dependent files first and make sure order of required files is deterministic
-DEPENDENT_FILES = ['common.rb']
+DEPENDENT_FILES = ['common.rb', 'utils/param_types.rb']
 
 root_path = File.dirname(__FILE__) + '/flappi/'
 dependent_file_paths = DEPENDENT_FILES.map {|f| root_path + f }

@@ -6,7 +6,7 @@ require 'active_support/json'
 module Flappi
   module BuilderFactory
 
-    # extend Shared::Api::Versioning
+    extend Flappi::Utils::ParamTypes
 
     # When we run code during a documentation pass, stub everything
 
@@ -102,6 +102,7 @@ module Flappi
           controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
           return false
         end
+        controller.params[defined_param[:name]] = cast_param(controller.params[defined_param[:name]], defined_param[:type])
 
         if defined_param[:validation_block]
           error_text = defined_param[:validation_block].call(controller.params[defined_param[:name]])
@@ -177,26 +178,6 @@ module Flappi
       recursive_open_struct_klass.new(hashed_res, recurse_over_arrays: true)
     end
 
-    def self.validate_param(src, type)
-      # puts "validate_param #{src}, type #{type.to_s}"
-      return nil if src.nil?
 
-      case type&.to_s
-        when nil
-          true
-        when 'BOOLEAN'
-          src.is_a?(Boolean) || (src.size >= 1 && ['1','0','Y','N','T','F'].include?(src[0].upcase))
-        when 'BigDecimal', 'Float'
-          src.is_f?
-        when 'Integer'
-          src.is_i?
-        when 'Date'
-          return true if src.is_a?(Date)
-          Date.parse(src) rescue return false
-          true
-        else
-          true # No idea how to parse
-      end
-    end
   end
 end
