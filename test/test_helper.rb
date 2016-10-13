@@ -5,6 +5,7 @@ end
 
 require 'minitest/autorun'
 require 'shoulda'
+require 'mocha/mini_test'
 
 require 'flappi'
 

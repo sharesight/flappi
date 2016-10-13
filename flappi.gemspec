@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda'
   s.add_development_dependency 'rake' # slightly unconvinced
   s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'mocha'
 end
