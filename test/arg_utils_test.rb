@@ -4,6 +4,10 @@ class ::Flappi::ArgUtilsTest < MiniTest::Test
 
   context 'paired_args' do
 
+    should 'return empty array for no args' do
+      assert_equal [], Flappi::Utils::ArgUtils::paired_args
+    end
+
     should 'extract a single pair' do
       assert_equal [[:a, 1]], Flappi::Utils::ArgUtils::paired_args(:a, 1)
     end
