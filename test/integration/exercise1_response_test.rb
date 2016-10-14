@@ -4,12 +4,6 @@ require 'pp'
 
 require_relative '../examples/exercise1'
 
-class JsonFormatter
-  def json
-    yield
-  end
-end
-
 module Examples
   class Exercise1Controller
     attr_accessor :params
@@ -41,6 +35,12 @@ module Integration
   class Exercise1ResponseTest < MiniTest::Test
 
     context 'Response to Exercise1' do
+      setup do
+        Flappi.configure do |conf|
+          conf.version_plan = nil
+        end
+      end
+
       should 'respond with a composed block' do
         response = Examples::Exercise1Controller.new.show
 

@@ -37,8 +37,7 @@ module Flappi
     # and return it
     def self.build_and_respond(controller)
       endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
-      version_param = controller.params[:version]
-      full_version = 'v2.' + version_param if version_param
+      full_version = controller.params[:version]
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
       raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
@@ -51,7 +50,7 @@ module Flappi
       controller.controller_params = controller.params  # Give the mixin access to params
       controller.controller_query_parameters = controller.request.query_parameters.except(:access_token)
       controller.controller_url = controller.request.url
-      # puts "controller.request.url=#{controller.request.url}"
+      Flappi::Utils::Logger.i "controller.request.url=#{controller.request.url}"
       controller.version_plan = Flappi.configuration.version_plan
 
       controller.endpoint    # init endpoint data from mixin
@@ -61,13 +60,14 @@ module Flappi
       end
 
       if Flappi.configuration.version_plan
-        raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless full_version
+        raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
 
         endpoint_supported_versions = controller.supported_versions
         Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           msg = "Version #{full_version} not supported by endpoint"
+          Flappi::Utils::Logger.w msg
           controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
           return false
         end
@@ -83,14 +83,15 @@ module Flappi
         [defined_param[:name], defined_param[:default]]
       end]
 
-      # puts "After default params=#{controller.params}"
+      Flappi::Utils::Logger.d "After default params=#{controller.params}"
 
       # validate parameters
       controller.endpoint_info[:params].each do |defined_param|
-        # puts "Check parameter #{defined_param}"
+        Flappi::Utils::Logger.d "Check parameter #{defined_param}"
         param_supplied = controller.params.key? defined_param[:name]
         unless param_supplied || defined_param[:optional]
           msg = "Parameter #{defined_param[:name]} is required"
+          Flappi::Utils::Logger.w msg
           controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
           return false
         end
@@ -99,6 +100,7 @@ module Flappi
 
         unless validate_param(controller.params[defined_param[:name]], defined_param[:type])
           msg = "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
+          Flappi::Utils::Logger.w msg
           controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
           return false
         end
@@ -108,6 +110,7 @@ module Flappi
           error_text = defined_param[:validation_block].call(controller.params[defined_param[:name]])
           if error_text
             msg = "Parameter #{defined_param[:name]} failed validation: #{error_text}"
+            Flappi::Utils::Logger.w msg
             controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
             return false
           end
@@ -140,7 +143,7 @@ module Flappi
       end
       documenter_definition.endpoint
 
-      # puts "After endpoint call documenter_definition.endpoint_info:"; pp documenter_definition.endpoint_info
+      Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
 
       if Flappi.configuration.version_plan
         raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless for_version

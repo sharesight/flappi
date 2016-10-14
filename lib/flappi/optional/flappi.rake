@@ -4,8 +4,8 @@ namespace :flappi do
     desc 'Extract API documentation from Flappi definitions into ApiDoc. Use VERBOSE=v* to increase log level. ENDPOINT=module to document one endpoint.'
     task :extract => :environment do
 
-      FlappiLogger.depth = ENV['VERBOSE']&.size || 0
-      FlappiLogger.target {|m| puts m }
+      Flappi::Utils::Logger.depth = ENV['VERBOSE']&.size || 0
+      Flappi::Utils::Logger.target {|m| puts m }
 
       unless Flappi.configuration.definition_paths
         raise "Need to define at least once path in Flappi.configuration.definition_paths"

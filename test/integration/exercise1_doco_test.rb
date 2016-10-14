@@ -8,6 +8,12 @@ module Integration
   class Exercise1ResponseTest < MiniTest::Test
 
     context 'Documentation of Exercise1' do
+      setup do
+        Flappi.configure do |conf|
+          conf.version_plan = nil
+        end
+      end
+
       should 'document our endpoint' do
 
         doc_data = ::Flappi::BuilderFactory.document(::Examples::Exercise1, nil)
