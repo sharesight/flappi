@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flappi (0.2.0)
+    flappi (0.3.0)
       activesupport (> 4.2.7)
       recursive-open-struct
 

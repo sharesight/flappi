@@ -74,11 +74,34 @@ class Flappi::VersionPlanTest < MiniTest::Test
         assert ver_list.include? Examples::V2VersionPlan.parse_version('v2.2')
       end
 
+      should 'detect included in stringy defaults' do
+        ver_list = Examples::V2VersionPlan.parse_versions('default; v2.1-flat', 'v2.1; v2.2')
+        assert ver_list.include? Examples::V2VersionPlan.parse_version('v2.2')
+      end
+
       should 'not detect not included' do
         ver_list = Examples::V2VersionPlan.parse_versions('v2.1; v2.1-flat;v2.2')
         refute ver_list.include? Examples::V2VersionPlan.parse_version('v2.3')
       end
 
+    end
+
+    context 'parse_versions' do
+      should 'parse and normalise' do
+        ver_list = Examples::V2VersionPlan.parse_versions('v2.1; v2.1-flat;v2.2', [], true)
+        assert_equal '[2.1.0, 2.1.0-flat, 2.2.0]', ver_list.to_s
+      end
+
+      should 'parse and not normalise' do
+        ver_list = Examples::V2VersionPlan.parse_versions('v2.1; v2.1-flat;v2.2', [], false)
+        assert_equal '[2.1, 2.1-flat, 2.2]', ver_list.to_s
+      end
+    end
+
+    context 'minimum_version' do
+      should 'return the lowest version definition without a flavour or with the lowest value in sort if all have flavours' do
+        assert_equal '2.0.0', Examples::V2VersionPlan.minimum_version.to_s
+      end
     end
 
     context 'parse version rules' do
@@ -93,6 +116,11 @@ class Flappi::VersionPlanTest < MiniTest::Test
         assert_equal 2, matched.size
         assert_equal '2.0.0-mobile', matched.first.to_s
         assert_equal '2.1.0-mobile', matched.last.to_s
+      end
+
+      should 'fail for unsupported rule type' do
+        exception = assert_raises(RuntimeError) { Examples::V2VersionPlan.expand_version_rule :greater_than, 'v2.*.*-mobile' }
+        assert_equal 'Rule type greater_than not supported yet, sorry...', exception.message
       end
     end
   end
