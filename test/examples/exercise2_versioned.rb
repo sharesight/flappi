@@ -10,6 +10,10 @@ module Examples
       title 'Exercise API 2'
       description 'Exercise definition DSL #2 with versioning'
       version equals: 'V2.*-mobile'
+
+      param :required, optional: false, type: Float do |v|
+        (v >= 0 && v < 10) ? nil : 'Parameter v outside range 0..10'
+      end
     end
 
     def respond

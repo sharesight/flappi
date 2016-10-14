@@ -10,6 +10,7 @@ module Examples
       title 'Exercise API 1'
       description 'Exercise definition DSL #1'
       param :extra, type: Integer, doc: 'An extra query parameter', optional: true
+      param :defaulted, type: Integer, doc: 'Parameter with default', default: 123
 
       query do |params|
         [{ n: 1, name: 'one' },
@@ -31,7 +32,8 @@ module Examples
 
     def respond
       build do
-       field :extra, (params[:extra] || 0) + 100
+        field :extra, (params[:extra] || 0) + 100
+        field :defaulted, params[:defaulted]
 
         objects name: :data do |row|
           field :n, row[:n]

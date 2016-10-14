@@ -20,7 +20,8 @@ module Integration
         doc_text = ::Flappi::ApiDocFormatter.format_to_text(doc_data)
 
         expected_doc_text = File.read('test/examples/exercise1_doc.rb')
-        assert_equal expected_doc_text, doc_text
+        # File.write 'test/examples/NEW_exercise1_doc.rb', doc_text
+        assert_equal expected_doc_text.to_s, doc_text.to_s
       end
     end
 

@@ -44,7 +44,7 @@ module Integration
       should 'respond with a composed block' do
         response = Examples::Exercise1Controller.new.show
 
-        assert_equal( {json: {"extra"=>150, "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
+        assert_equal( {json: {"extra"=>150, "defaulted"=>123, "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
             :status=>:ok},
             response)
       end
@@ -54,7 +54,17 @@ module Integration
         controller.params = {}
         response = controller.show
 
-        assert_equal( {json: {"extra"=>100, "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
+        assert_equal( {json: {"extra"=>100,"defaulted"=>123,  "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
+                       :status=>:ok},
+                      response)
+      end
+
+      should 'override a default param from query' do
+        controller = Examples::Exercise1Controller.new
+        controller.params = { defaulted: 888 }
+        response = controller.show
+
+        assert_equal( {json: {"extra"=>100,"defaulted"=>888,  "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
                        :status=>:ok},
                       response)
       end
@@ -65,7 +75,7 @@ module Integration
         response = controller.show
         refute response
 
-        assert_equal( {:json=>"{\"errors\":\"Parameter extra must be of type Integer\"}",
+        assert_equal( {:json=>"{\"error\":\"Parameter extra must be of type Integer\"}",
                        :text=>"Parameter extra must be of type Integer",
                        :status=>:not_acceptable}, controller.last_render_params )
       end

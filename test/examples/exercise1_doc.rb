@@ -14,12 +14,18 @@
 @apiParam {Integer} [extra]
   An extra query parameter
 
+@apiParam {Integer} [defaulted=123]
+  Parameter with default
+
 
 @apiParamExample Request Example
     {GET} "/api/examples/exercise?extra=100"
 
 
 @apiSuccess (200 Success) {String} extra
+
+
+@apiSuccess (200 Success) {String} defaulted
 
 
 @apiSuccess (200 Success) {String[]} data

@@ -101,7 +101,7 @@ module Flappi
         unless validate_param(controller.params[defined_param[:name]], defined_param[:type])
           msg = "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
           Flappi::Utils::Logger.w msg
-          controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
+          controller.render json: { error: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
           return false
         end
         controller.params[defined_param[:name]] = cast_param(controller.params[defined_param[:name]], defined_param[:type])
@@ -111,7 +111,7 @@ module Flappi
           if error_text
             msg = "Parameter #{defined_param[:name]} failed validation: #{error_text}"
             Flappi::Utils::Logger.w msg
-            controller.render json: { errors: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
+            controller.render json: { error: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
             return false
           end
         end
