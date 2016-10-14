@@ -10,13 +10,13 @@ module Flappi
           when nil
             true
           when 'BOOLEAN'
-            src.is_a?(Boolean) || (src.size >= 1 && ['1','0','Y','N','T','F'].include?(src[0].upcase))
+            src.is_a?(TrueClass) || src.is_a?(FalseClass) || (src.size >= 1 && ['1','0','Y','N','T','F'].include?(src[0].to_s.upcase))
           when 'BigDecimal', 'Float'
             src.is_f?
           when 'Integer'
             src.is_i?
           when 'Date'
-            return true if src.is_a?(Date)
+            return true if src.is_a?(::Date)
             Date.parse(src) rescue return false
             true
           else
@@ -32,7 +32,7 @@ module Flappi
           when nil
             nil
           when 'BOOLEAN'
-            src.is_a?(Boolean) ? src : (src.size >= 1 && ['1','Y','T'].include?(src[0].upcase))
+            (src.is_a?(TrueClass) || src.is_a?(FalseClass)) ? src : (src.size >= 1 && ['1','Y','T'].include?(src[0].to_s.upcase))
           when 'BigDecimal', 'Float'
             src.to_f
           when 'Integer'
