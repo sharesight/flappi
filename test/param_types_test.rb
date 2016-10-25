@@ -9,6 +9,11 @@ class Flappi::VersionsTest < MiniTest::Test
     end
 
     context 'validate_param' do
+      should 'accept empty param' do
+        assert @param_types_test.validate_param(nil, 'Wibble')
+        assert @param_types_test.validate_param('', 'Wibble')
+      end
+
       should 'accept anything for nil type' do
         assert @param_types_test.validate_param('anything', nil)
       end
