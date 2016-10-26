@@ -3,7 +3,7 @@ module Flappi
     module ParamTypes
 
       def validate_param(src, type)
-        return true if src.blank?
+        return false if src.nil? || src == ""
 
         case type&.to_s
           when nil

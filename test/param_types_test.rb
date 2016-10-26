@@ -9,10 +9,6 @@ class Flappi::VersionsTest < MiniTest::Test
     end
 
     context 'validate_param' do
-      should 'accept empty param' do
-        assert @param_types_test.validate_param(nil, 'Wibble')
-        assert @param_types_test.validate_param('', 'Wibble')
-      end
 
       should 'accept anything for nil type' do
         assert @param_types_test.validate_param('anything', nil)
@@ -26,6 +22,11 @@ class Flappi::VersionsTest < MiniTest::Test
         assert @param_types_test.validate_param('N', 'BOOLEAN')
         assert @param_types_test.validate_param(1, 'BOOLEAN')
         assert @param_types_test.validate_param(0, 'BOOLEAN')
+      end
+
+      should 'reject empty param' do
+        refute @param_types_test.validate_param(nil, 'Wibble')
+        refute @param_types_test.validate_param('', 'Wibble')
       end
 
       should 'reject invalid values for boolean type' do
