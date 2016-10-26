@@ -76,12 +76,14 @@ module Flappi
       end
 
       # Merge in default values where one is defined and we don't have an actual parameter
-      controller.params.merge! Hash[controller.endpoint_info[:params].select do |defined_param|
-        !controller.params.key?(defined_param[:name]) && defined_param[:default]
-      end.
-      map do |defined_param|
-        [defined_param[:name], defined_param[:default]]
-      end]
+      controller.params.merge! Hash[
+        controller.endpoint_info[:params].select do |defined_param|
+          param = controller.params.dig(defined_param[:name])
+          (param.nil? || param == "") && defined_param[:default]
+        end.map do |defined_param|
+          [defined_param[:name], defined_param[:default]]
+        end
+      ]
 
       Flappi::Utils::Logger.d "After default params=#{controller.params}"
 
