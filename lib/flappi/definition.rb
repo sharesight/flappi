@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+# rubocop:disable Metrics/LineLength
 module Flappi
   # DSL for API construction.
   #
@@ -18,7 +20,6 @@ module Flappi
   #   end
   #
   module Definition
-
     # @private
     include Common
 
@@ -62,9 +63,11 @@ module Flappi
 
     # @private
     def supported_versions
-      @version_rule.nil? ?
-          version_plan.available_version_definitions :
-          version_plan.expand_version_rule(@version_rule)
+      if @version_rule.nil?
+        version_plan.available_version_definitions
+      else
+        version_plan.expand_version_rule(@version_rule)
+      end
     end
 
     # @private
@@ -75,9 +78,9 @@ module Flappi
       return documenting_version_text || version_plan.minimum_version if supported_versions.blank?
 
       doc_version_matcher = version_plan.parse_version(documenting_version_text).normalise
-      use_versions = supported_versions.select {|v| v == doc_version_matcher }  # with wildcards
+      use_versions = supported_versions.select { |v| v == doc_version_matcher } # with wildcards
 
-      raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions.to_s} - not allowed by documenter as yet in #{endpoint_simple_name}" if use_versions.size > 1
+      raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions} - not allowed by documenter as yet in #{endpoint_simple_name}" if use_versions.size > 1
       raise "#{endpoint_info[:title]}: Version could not be determined, trying to document unsupported endpoint #{documenting_version_text}" if use_versions.empty?
       use_versions.first
     end
@@ -114,7 +117,7 @@ module Flappi
     #
     # @yield A block that will be called to generate the response using {#field}, {#object} and {#objects} elements.
     # @yieldparam  [Object] base_object the base object we generate the response from. If you don't use explicit value expressions in {#field} etc, you don't need this.
-    def build(options={}, &block)
+    def build(options = {}, &block)
       @delegate.build options, &block
     end
 
@@ -332,12 +335,12 @@ module Flappi
 
     # @private
     def set_example(example_type, v)
-      raise "#{example_type}_example needs at least a text" if v.size==0
-      options, text = if v.size==1
-                         [{}, v[0]]
-                       else
-                         v
-                       end
+      raise "#{example_type}_example needs at least a text" if v.size.zero?
+      options, text = if v.size == 1
+                        [{}, v[0]]
+                      else
+                        v
+                      end
       return unless version_wanted(options)
 
       endpoint_info["#{example_type}_example".to_sym] = text
@@ -376,15 +379,14 @@ module Flappi
       require_arg def_args, :name
 
       endpoint_info[:params] <<
-          { name: def_args[:name],
-            type: name_for_type(def_args[:type]),
-            default: def_args[:default],
-            default_doc: def_args[:default_doc],
-            description: def_args[:doc],
-            optional: def_args.key?(:optional) ? def_args[:optional] : true,
-            validation_block: block,
-            fail_code: def_args[:fail_code]
-          }
+        { name: def_args[:name],
+          type: name_for_type(def_args[:type]),
+          default: def_args[:default],
+          default_doc: def_args[:default_doc],
+          description: def_args[:doc],
+          optional: def_args.key?(:optional) ? def_args[:optional] : true,
+          validation_block: block,
+          fail_code: def_args[:fail_code] }
     end
 
     # Define a query to be used to retrieve the source object for the response.
@@ -395,6 +397,5 @@ module Flappi
     def query(&block)
       @delegate.query(block)
     end
-
   end
 end

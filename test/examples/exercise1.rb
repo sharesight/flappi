@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module Examples
   module Exercise1
-
     include Flappi::Definition
 
     def endpoint
@@ -12,13 +12,13 @@ module Examples
       param :extra, type: Integer, doc: 'An extra query parameter', optional: true
       param :defaulted, type: Integer, doc: 'Parameter with default', default: 123
 
-      query do |params|
+      query do |_params|
         [{ n: 1, name: 'one' },
          { n: 2, name: 'two' }]
       end
 
       request_example('/api/examples/exercise?extra=100')
-      response_example( <<~END_EXAMPLE
+      response_example(<<~END_EXAMPLE
       {
         extra_plus_1: 101,
         rows: [
@@ -27,7 +27,7 @@ module Examples
         ]
       }
       END_EXAMPLE
-      )
+                      )
     end
 
     def respond
@@ -40,7 +40,6 @@ module Examples
           field :name, row[:name]
         end
       end
-
     end
   end
 end

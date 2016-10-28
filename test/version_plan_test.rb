@@ -1,11 +1,10 @@
+# frozen_string_literal: true
 require_relative 'test_helper'
 
 require_relative 'examples/v2_version_plan'
 
 class Flappi::VersionPlanTest < MiniTest::Test
-
   context 'using v2_version_plan' do
-
     should 'return available_version_definitions' do
       expect_versions = Examples::V2VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-ember;v2.1-flat;v2.1-mobile')
       assert_equal expect_versions,
@@ -69,7 +68,7 @@ class Flappi::VersionPlanTest < MiniTest::Test
       end
 
       should 'detect included in defaults' do
-        default_list =  Examples::V2VersionPlan.parse_versions('v2.1; v2.2')
+        default_list = Examples::V2VersionPlan.parse_versions('v2.1; v2.2')
         ver_list = Examples::V2VersionPlan.parse_versions('default; v2.1-flat', default_list)
         assert ver_list.include? Examples::V2VersionPlan.parse_version('v2.2')
       end
@@ -83,7 +82,6 @@ class Flappi::VersionPlanTest < MiniTest::Test
         ver_list = Examples::V2VersionPlan.parse_versions('v2.1; v2.1-flat;v2.2')
         refute ver_list.include? Examples::V2VersionPlan.parse_version('v2.3')
       end
-
     end
 
     context 'parse_versions' do
@@ -108,7 +106,7 @@ class Flappi::VersionPlanTest < MiniTest::Test
       should 'work without wildcard' do
         matched = Examples::V2VersionPlan.expand_version_rule :equals, 'v2.1-mobile'
         assert_equal 1, matched.size
-        assert_equal "2.1.0-mobile", matched.first.to_s
+        assert_equal '2.1.0-mobile', matched.first.to_s
       end
 
       should 'work with wildcard' do
@@ -124,6 +122,4 @@ class Flappi::VersionPlanTest < MiniTest::Test
       end
     end
   end
-
-
 end

@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module Flappi
   module Utils
     module ArgUtils
-
       # @example Given some args of a form such as:
       #   a: 1 (hash options)
       #   :a, 1 (splat)
@@ -23,7 +23,6 @@ module Flappi
           end
         end.flatten.each_slice(2).to_a
       end
-
     end
   end
 end

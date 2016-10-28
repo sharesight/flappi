@@ -1,8 +1,7 @@
 
+# frozen_string_literal: true
 module Flappi
-
   module VersionPlan
-
     #====== Flappi::Version plan DSL follows ======
 
     # Define an acceptable version
@@ -10,7 +9,7 @@ module Flappi
     def version(version_text)
       @version_flavours = []
       yield if block_given?
-      (@available_versions ||=  []) << make_version_def(version_text, @version_flavours)
+      (@available_versions ||= []) << make_version_def(version_text, @version_flavours)
 
       @version_flavours = nil
     end
@@ -21,7 +20,7 @@ module Flappi
       flavour = name
 
       if @version_flavours.nil?
-        (@available_versions ||  []).each do |v|
+        (@available_versions || []).each do |v|
           v[:allowed_flavours] << flavour unless flavour.blank?
         end
       else
@@ -34,24 +33,24 @@ module Flappi
     # Return the lowest version definition without a flavour
     # or with the lowest value in sort if all have flavours
     def minimum_version
-      lowest_no_flavour = available_version_definitions.versions_array.
-          select {|v| v.flavour.nil? }.
-          sort { |a, b| a.to_s <=> b.to_s }.
-          first
+      lowest_no_flavour = available_version_definitions.versions_array
+                                                       .select { |v| v.flavour.nil? }
+                                                       .sort_by(&:to_s)
+                                                       .first
       return lowest_no_flavour unless lowest_no_flavour.nil?
 
-      available_version_definitions.versions_array.
-          sort { |a, b| a.to_s <=> b.to_s }.
-          first
+      available_version_definitions.versions_array
+                                   .sort_by(&:to_s)
+                                   .first
     end
 
     # Return all the available version definitions
     def available_version_definitions
-      Flappi::Versions.new(@available_versions.
-          map { |av| av[:allowed_flavours].map { |fl| Flappi::Version.new(av[:version], fl, self) } }.
-          flatten.
-          sort {|a,b| a.to_s <=> b.to_s}.
-          uniq {|a| a.to_s })
+      Flappi::Versions.new(@available_versions
+          .map { |av| av[:allowed_flavours].map { |fl| Flappi::Version.new(av[:version], fl, self) } }
+          .flatten
+          .sort_by(&:to_s)
+          .uniq(&:to_s))
     end
 
     # Given a version text, parse and return an Flappi::Version
@@ -60,13 +59,13 @@ module Flappi
 
       version_text_stripped = version_text.sub(/^[A-Za-z]*/, '')
       tagged_version_components = version_text_stripped.split(/(?=[.\-])/) || [] # positive lookahead regular expression retains separators on start
-      version_components = tagged_version_components.map {|v| v.sub(/^[.\-]/, '')}
+      version_components = tagged_version_components.map { |v| v.sub(/^[.\-]/, '') }
 
-      version_array, flavour = if tagged_version_components.last.index('-')==0
-        [version_components[0...-1], version_components.last]
-      else
-        [version_components, '']
-      end
+      version_array, flavour = if tagged_version_components.last.index('-')&.zero?
+                                 [version_components[0...-1], version_components.last]
+                               else
+                                 [version_components, '']
+                               end
 
       Flappi::Version.new(version_array, flavour, self)
     end
@@ -75,14 +74,14 @@ module Flappi
     # parse and return an Flappi::Versions
     # The text 'default' in the list is substituted by the default_versions
     # Used to parse a list of allowed versions defined against an OAuth application
-    def parse_versions(versions_text, default_versions=[], normalise_each=false)
+    def parse_versions(versions_text, default_versions = [], normalise_each = false)
       if default_versions.is_a? Flappi::Versions
         default_versions = default_versions.versions_array
       elsif default_versions.is_a? String
         default_versions = parse_versions(default_versions).versions_array
       end
 
-      versions_array = (versions_text || '').split(';').map {|v| v.strip}
+      versions_array = (versions_text || '').split(';').map(&:strip)
       complete_versions_array = versions_array.map do |version_text|
         if version_text == 'default'
           default_versions
@@ -92,7 +91,7 @@ module Flappi
       end.flatten
 
       if normalise_each
-        complete_versions_array = complete_versions_array.map {|v| v.normalise }
+        complete_versions_array = complete_versions_array.map(&:normalise)
       end
 
       Flappi::Versions.new(complete_versions_array)
@@ -111,18 +110,18 @@ module Flappi
       supported_versions = []
       version_rules.each do |version_rule|
         case version_rule[0].to_sym
-          when :equals
-            supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
-          else
-            raise "Rule type #{version_rule[0]} not supported yet, sorry..."
+        when :equals
+          supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
+        else
+          raise "Rule type #{version_rule[0]} not supported yet, sorry..."
         end
       end
 
-      Flappi::Versions.new(supported_versions.uniq {|a| a.to_s })
+      Flappi::Versions.new(supported_versions.uniq(&:to_s))
     end
 
     def version_sig_size
-      @version_sig_size ||= @available_versions.map {|v| v[:version].size }.max
+      @version_sig_size ||= @available_versions.map { |v| v[:version].size }.max
     end
 
     private
@@ -135,10 +134,9 @@ module Flappi
       flavour_names << parsed_version.flavour if parsed_version.flavour
 
       {
-          version: m,
-          allowed_flavours: flavour_names.sort.uniq
+        version: m,
+        allowed_flavours: flavour_names.sort.uniq
       }
     end
-
   end
 end

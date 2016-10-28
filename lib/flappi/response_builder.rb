@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Build an API response from a definition
 require 'uri'
 require 'active_support/core_ext/hash/conversions'
@@ -5,7 +6,6 @@ require 'active_support/core_ext/hash/indifferent_access'
 
 module Flappi
   class ResponseBuilder
-
     include Common
 
     attr_accessor :controller_params
@@ -52,12 +52,12 @@ module Flappi
       @current_source = nil
 
       links = Hash[(@link_defs || []).map do |link_def|
-          expanded_link = if link_def[:key]==:self
-            expand_link_path(source_definition.endpoint_info[:path], controller_query_parameters, true)
-          else
-            expand_link_path(link_def[:path], controller_query_parameters, false)
-          end
-          [link_def[:key], expanded_link]
+        expanded_link = if link_def[:key] == :self
+                          expand_link_path(source_definition.endpoint_info[:path], controller_query_parameters, true)
+                        else
+                          expand_link_path(link_def[:path], controller_query_parameters, false)
+                        end
+        [link_def[:key], expanded_link]
       end]
 
       @references.each do |k, r|
@@ -78,13 +78,13 @@ module Flappi
       @current_source = def_args[:value] || @current_source
 
       if def_args.key?(:name) || def_args.key?(:dynamic_key)
-          @put_stack.push(@put_stack.last[ def_args[:dynamic_key] || def_args[:name] ] = new_h)
+        @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
         block.call @current_source
         @put_stack.pop
       elsif def_args[:inline_always]
         block.call @current_source
       else
-        raise "object requires either a name or inline_always: true"
+        raise 'object requires either a name or inline_always: true'
       end
 
       @current_source = nil
@@ -190,7 +190,7 @@ module Flappi
 
       if def_args.key?(:for) && def_args.key?(:type)
         ref_type = def_args[:type]
-        return unless ref_type.to_s == def_args[:for].to_s.camelize  # Skip where the polymorph isn't us
+        return unless ref_type.to_s == def_args[:for].to_s.camelize # Skip where the polymorph isn't us
       end
 
       # This reference is to be generated
@@ -224,13 +224,13 @@ module Flappi
     def link(*link_params)
       raise "link takes 1/2 params, not: #{link_params}" unless (1..2).cover? link_params.size
 
-      link_def = if link_params.size==1 && link_params.first.is_a?(Hash)
-        link_params.first
-      else
-       Hash[link_params.each_with_index.map {|p, idx| [[:key, :path][idx], p]}]
-      end
+      link_def = if link_params.size == 1 && link_params.first.is_a?(Hash)
+                   link_params.first
+                 else
+                   Hash[link_params.each_with_index.map { |p, idx| [[:key, :path][idx], p] }]
+                 end
 
-      raise "link to an endpoint apart from :self needs a path" unless link_def[:key]==:self || link_def[:path]
+      raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
       (@link_defs ||= []) << link_def
     end
 
@@ -251,12 +251,12 @@ module Flappi
 
     def field_value(def_args, block)
       src_value = if block.present?
-        block.call @current_source
-      elsif def_args.key?(:value)
-        def_args[:value]
-      else
-        access_member_somehow(@current_source, def_args[:name])
-      end
+                    block.call @current_source
+                  elsif def_args.key?(:value)
+                    def_args[:value]
+                  else
+                    access_member_somehow(@current_source, def_args[:name])
+                  end
 
       cast_value(src_value, def_args[:type], def_args[:precision])
     end
@@ -264,24 +264,24 @@ module Flappi
     def cast_value(src, type, precision)
       # puts "cast_value #{src}, type #{type.to_s}"
       case type&.to_s
-        when nil
-          src
-        when 'boolean_type'
-          if src.nil?
-            nil
-          else
-            src ? true : false
-          end
-        when 'BigDecimal', 'Float'
-          if precision
-            src&.to_f&.round(precision)
-          else
-            src&.to_f  # we want Bigdecimal as a numeric
-          end
-        when 'Integer'
-          src&.to_i
+      when nil
+        src
+      when 'boolean_type'
+        if src.nil?
+          nil
         else
-          src
+          src ? true : false
+        end
+      when 'BigDecimal', 'Float'
+        if precision
+          src&.to_f&.round(precision)
+        else
+          src&.to_f # we want Bigdecimal as a numeric
+        end
+      when 'Integer'
+        src&.to_i
+      else
+        src
       end
     end
 
@@ -292,7 +292,7 @@ module Flappi
         return nil
       end
 
-      return object.send(name.to_sym)
+      object.send(name.to_sym)
     end
 
     def controller_base_url
@@ -308,13 +308,13 @@ module Flappi
 
     def expand_link_path(path, passed_query_params, subst_all_query_params)
       # puts "expand_link_path path=#{path}, passed_query_params=#{passed_query_params}, subst_all_query_params=#{subst_all_query_params}"
-      subst_path = path
+      subst_path = path.dup
       used_params = []
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
         # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
         if subst_path =~ subex
-          subst_path.gsub!( subex, "#{pvalue}\\1" )
+          subst_path.gsub!(subex, "#{pvalue}\\1")
           used_params << pname
         end
       end
@@ -324,26 +324,25 @@ module Flappi
       raise "Link path contains unsubstituted params #{path}" if subst_uri.path =~ /:\w+/
 
       query_params = passed_query_params.clone
-      query_params.delete_if {|k,_v| used_params.include? k }
+      query_params.delete_if { |k, _v| used_params.include? k }
 
-      src_query_hash = CGI::parse(subst_uri.query || '').with_indifferent_access
+      src_query_hash = CGI.parse(subst_uri.query || '').with_indifferent_access
       # puts "src_query_hash=#{src_query_hash}, subst_all_query_params=#{subst_all_query_params}, query_params=#{query_params}"
-      if subst_all_query_params
-        subst_query = src_query_hash.merge(query_params)
-      else
-        subst_query = Hash[src_query_hash.map do |k,v|
-          query_params.key?(k.to_sym) ? [k,v.first] : nil
-        end.compact]
-      end
+      subst_query = if subst_all_query_params
+                      src_query_hash.merge(query_params)
+                    else
+                      Hash[src_query_hash.map do |k, v|
+                        query_params.key?(k.to_sym) ? [k, v.first] : nil
+                      end.compact]
+                    end
 
       expanded = controller_base_url
-      expanded += '/' unless expanded[-1]=='/' || subst_uri.path[0]=='/'
+      expanded += '/' unless expanded[-1] == '/' || subst_uri.path[0] == '/'
       expanded += subst_uri.path
       expanded += "?#{subst_query.to_query}" unless subst_query.empty?
 
       # puts "expanded=#{expanded}, subst_query=#{subst_query}, subst_uri=#{subst_uri}"
       expanded
     end
-
   end
 end

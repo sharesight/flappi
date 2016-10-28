@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative '../test_helper'
 
 require 'pp'
@@ -8,7 +9,6 @@ require_relative '../examples/exercise2_versioned'
 
 module Integration
   class Exercise2ResponseTest < MiniTest::Test
-
     context 'Documentation of Exercise2' do
       setup do
         Flappi.configure do |conf|
@@ -17,7 +17,6 @@ module Integration
       end
 
       should 'document our endpoint' do
-
         doc_data = ::Flappi::BuilderFactory.document(::Examples::Exercise2Versioned, 'v2.0-mobile')
         doc_text = ::Flappi::ApiDocFormatter.format_to_text(doc_data)
 
@@ -26,6 +25,5 @@ module Integration
         assert_equal expected_doc_text.to_s, doc_text.to_s
       end
     end
-
   end
 end

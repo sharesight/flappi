@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module Examples
   module Exercise2Versioned
-
     include Flappi::Definition
 
     def endpoint
@@ -12,7 +12,7 @@ module Examples
       version equals: 'V2.*-mobile'
 
       param :required, optional: false, type: Float do |v|
-        (v >= 0 && v < 10) ? nil : 'Parameter v outside range 0..10'
+        v >= 0 && v < 10 ? nil : 'Parameter v outside range 0..10'
       end
     end
 
@@ -26,4 +26,3 @@ module Examples
     end
   end
 end
-

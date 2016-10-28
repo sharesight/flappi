@@ -1,4 +1,5 @@
 
+# frozen_string_literal: true
 module Flappi
   class Version
     attr_reader :version_array
@@ -11,12 +12,12 @@ module Flappi
     end
 
     def normalise
-      unless @version_plan.version_sig_size==version_array.size
-       Flappi::Version.new(@version_array.fill(0, version_array.size, @version_plan.version_sig_size - version_array.size),
-                @flavour,
-                @version_plan)
-      else
+      if @version_plan.version_sig_size == version_array.size
         self
+      else
+        Flappi::Version.new(@version_array.fill(0, version_array.size, @version_plan.version_sig_size - version_array.size),
+                            @flavour,
+                            @version_plan)
       end
     end
 
@@ -46,15 +47,15 @@ module Flappi
     private
 
     def compare_numeric(a, b)
-      return true if a=='*' || b=='*' # wildcard match
+      return true if a == '*' || b == '*' # wildcard match
 
       (a&.to_i || 0) == (b&.to_i || 0)
     end
 
-    def compare_string(a,b)
+    def compare_string(a, b)
       return true if a == :* || b == :* # wildcard match
 
-      a==b # no default, nil only matches nil
+      a == b # no default, nil only matches nil
     end
   end
 end

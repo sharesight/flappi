@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module Flappi
   module Utils
     module Logger
-
       def self.log(for_depth, msg)
         Flappi.configuration.logger_target.call(msg, for_depth) if Flappi.configuration.logger_target && for_depth <= (Flappi.configuration.logger_level || 1)
       end
@@ -27,5 +27,4 @@ module Flappi
       end
     end
   end
-
 end

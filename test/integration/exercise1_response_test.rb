@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative '../test_helper'
 
 require 'pp'
@@ -10,7 +11,7 @@ module Examples
     attr_accessor :last_render_params
 
     def initialize
-      self.params = {extra: 50}
+      self.params = { extra: 50 }
     end
 
     def show
@@ -18,7 +19,7 @@ module Examples
     end
 
     def request
-      return OpenStruct.new(query_parameters: params)
+      OpenStruct.new(query_parameters: params)
     end
 
     def respond_to
@@ -33,7 +34,6 @@ end
 
 module Integration
   class Exercise1ResponseTest < MiniTest::Test
-
     context 'Response to Exercise1' do
       setup do
         Flappi.configure do |conf|
@@ -44,9 +44,9 @@ module Integration
       should 'respond with a composed block' do
         response = Examples::Exercise1Controller.new.show
 
-        assert_equal( {json: {"extra"=>150, "defaulted"=>123, "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
-            :status=>:ok},
-            response)
+        assert_equal({ json: { 'extra' => 150, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
+                       status: :ok },
+                     response)
       end
 
       should 'respond with a composed block when no param' do
@@ -54,9 +54,9 @@ module Integration
         controller.params = {}
         response = controller.show
 
-        assert_equal( {json: {"extra"=>100,"defaulted"=>123,  "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
-                       :status=>:ok},
-                      response)
+        assert_equal({ json: { 'extra' => 100, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
+                       status: :ok },
+                     response)
       end
 
       should 'override a default param from query' do
@@ -64,20 +64,20 @@ module Integration
         controller.params = { defaulted: 888 }
         response = controller.show
 
-        assert_equal( {json: {"extra"=>100,"defaulted"=>888,  "data"=>[{"n"=>1, "name"=>"one"}, {"n"=>2, "name"=>"two"}]},
-                       :status=>:ok},
-                      response)
+        assert_equal({ json: { 'extra' => 100, 'defaulted' => 888, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
+                       status: :ok },
+                     response)
       end
 
       should 'detect validation failures' do
         controller = Examples::Exercise1Controller.new
-        controller.params = {extra: 'Hello!'}
+        controller.params = { extra: 'Hello!' }
         response = controller.show
         refute response
 
-        assert_equal( {:json=>"{\"error\":\"Parameter extra must be of type Integer\"}",
-                       :text=>"Parameter extra must be of type Integer",
-                       :status=>:not_acceptable}, controller.last_render_params )
+        assert_equal({ json: '{"error":"Parameter extra must be of type Integer"}',
+                       text: 'Parameter extra must be of type Integer',
+                       status: :not_acceptable }, controller.last_render_params)
       end
     end
   end

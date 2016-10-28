@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module Examples
   class V2VersionPlan
-
     extend Flappi::VersionPlan
 
     # Version numbers are of the form [text][N][,]+[-flavour]
@@ -8,8 +8,8 @@ module Examples
     version 'V2.0.0'
 
     version 'V2.1.0' do
-          flavour :ember
-          flavour :flat
+      flavour :ember
+      flavour :flat
     end
 
     flavour ''

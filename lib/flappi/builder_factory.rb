@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
@@ -5,33 +6,34 @@ require 'active_support/json'
 
 module Flappi
   module BuilderFactory
-
     extend Flappi::Utils::ParamTypes
 
     # When we run code during a documentation pass, stub everything
 
     class DocumentingStub
       def to_ary
-        return [DocumentingStub.new]
+        [DocumentingStub.new]
       end
 
+      # rubocop:disable Style/MethodMissing
       def method_missing(_meth_id, *_args, &_block)
         # puts "Note: #{_meth_id.id2name} missing, called from stub"
-        return DocumentingStub.new
+        DocumentingStub.new
       end
 
       def self.method_missing(_meth_id, *_args, &_block)
         # puts "Note: class.#{_meth_id.id2name} missing, called from stub"
-        return DocumentingStub.new
+        DocumentingStub.new
       end
     end
 
     class DefDocumenter
       def method_missing(_meth_id, *_args, &_block)
         # puts "Note: #{_meth_id.id2name} missing"
-        return DocumentingStub.new
+        DocumentingStub.new
       end
     end
+    # rubocop:enable Style/MethodMissing
 
     # Call me from a controller to build the appropriate API response
     # and return it
@@ -62,7 +64,7 @@ module Flappi
 
       if (validate_error = validate_parameters(actual_params, defined_params))
         Flappi::Utils::Logger.w validate_error
-        controller.render json: {error: validate_error}.to_json, text: validate_error, status: :not_acceptable
+        controller.render json: { error: validate_error }.to_json, text: validate_error, status: :not_acceptable
         return false
       end
 
@@ -74,9 +76,29 @@ module Flappi
       end
     end
 
-
     # Called to document an API call into a structure that can be templated into e.g. ApiDoc
     def self.document(definition, for_version)
+      documenter_definition, normalised_version = init_documenter_definition(definition, for_version)
+
+      if Flappi.configuration.version_plan
+        raise 'BuilderFactory::build_and_respond has a version plan so needs a version from the router' unless for_version
+
+        endpoint_supported_versions = documenter_definition.supported_versions
+        return nil unless endpoint_supported_versions.include? normalised_version
+      end
+
+      path = documenter_definition.endpoint_info[:path]
+      param_docs = make_param_docs(documenter_definition, path)
+
+      hashed_res = make_documentation_result(definition, documenter_definition, for_version, param_docs, path)
+      # puts "Documenting hashed_res:"; pp hashed_res
+
+      recursive_open_struct_klass = RecursiveOpenStruct
+      recursive_open_struct_klass.include DocFormatHelpers
+      recursive_open_struct_klass.new(hashed_res, recurse_over_arrays: true)
+    end
+
+    def self.init_documenter_definition(definition, for_version)
       documenter_definition = DefDocumenter.new
       documenter_definition.singleton_class.send(:include, definition)
       documenter_definition.defining_class = definition
@@ -93,19 +115,17 @@ module Flappi
       documenter_definition.endpoint
 
       Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
+      [documenter_definition, normalised_version]
+    end
 
-      if Flappi.configuration.version_plan
-        raise "BuilderFactory::build_and_respond has a version plan so needs a version from the router" unless for_version
-
-        endpoint_supported_versions = documenter_definition.supported_versions
-        return nil unless endpoint_supported_versions.include? normalised_version
-      end
-
-      path = documenter_definition.endpoint_info[:path]
+    def self.make_param_docs(documenter_definition, path)
       param_docs = documenter_definition.endpoint_info[:params]
-      param_docs.select {|p| path.match ":#{p[:name]}(/|$)" }.each {|p| p[:optional] = false }
+      param_docs.select { |p| path.match ":#{p[:name]}(/|$)" }.each { |p| p[:optional] = false }
+      param_docs
+    end
 
-      hashed_res = {
+    def self.make_documentation_result(definition, documenter_definition, for_version, param_docs, path)
+      {
         endpoint: {
           title: documenter_definition.endpoint_info[:title] || documenter_definition.endpoint_info[:description],
           description: documenter_definition.endpoint_info[:description] || documenter_definition.endpoint_info[:title],
@@ -122,12 +142,6 @@ module Flappi
         # Query parameters, etc
         response: documenter_definition.respond
       }
-
-      # puts "Documenting hashed_res:"; pp hashed_res
-
-      recursive_open_struct_klass = RecursiveOpenStruct
-      recursive_open_struct_klass.include DocFormatHelpers
-      recursive_open_struct_klass.new(hashed_res, recurse_over_arrays: true)
     end
 
     # validate actual parameters against definitions, return an error message if fails
@@ -149,7 +163,6 @@ module Flappi
           error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
           return "Parameter #{defined_param[:name]} failed validation: #{error_text}" if error_text
         end
-
       end
 
       nil
@@ -164,7 +177,7 @@ module Flappi
       actual_params.merge! Hash[
                                defined_params.select do |defined_param|
                                  param = actual_params.dig(defined_param[:name])
-                                 (param.nil? || param == "") && defined_param[:default]
+                                 (param.nil? || param == '') && defined_param[:default]
                                end.map do |defined_param|
                                  [defined_param[:name], defined_param[:default]]
                                end
@@ -179,7 +192,7 @@ module Flappi
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
       raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
-      return definition_klass, endpoint_name, full_version
+      [definition_klass, endpoint_name, full_version]
     end
 
     def self.load_controller(controller, definition_klass, endpoint_name)
@@ -200,6 +213,5 @@ module Flappi
         raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
     end
-
   end
 end

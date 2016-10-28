@@ -1,8 +1,8 @@
+# frozen_string_literal: true
 module Examples
   class ExerciseModel
-
-    def self.where(params)
-      ExerciseModel::new
+    def self.where(_params)
+      ExerciseModel.new
     end
 
     def all
@@ -16,6 +16,5 @@ module Examples
     def v2_1_only
       2.1
     end
-
   end
 end
