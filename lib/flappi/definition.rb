@@ -351,6 +351,8 @@ module Flappi
     #   @param name (String) the name of the parameter
     #   @option options [String] :name the name of the parameter
     #   @option options [Symbol] :type the parameter type, defaults to String
+    #   @option options [Object] :default a default value when the parameter is not supplied or is empty
+    #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
     #   @yield A block that will be called to validate the parameter
@@ -361,8 +363,8 @@ module Flappi
     #   Define a parameter
     #   @option options [String] :name the name of the parameter
     #   @option options [Symbol] :type the parameter type, defaults to String
-    #   @option options [Object] :default a default value when the parameter is not supplied
-    #   @option options [String] :default_doc text to documment the defualt with instead of a computed default
+    #   @option options [Object] :default a default value when the parameter is not supplied or is empty
+    #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
     #   @option options [Boolean] :optional true for an optional parameter
     #   @option options [Integer] :fail code Code to return when fail is true

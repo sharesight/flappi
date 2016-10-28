@@ -36,28 +36,9 @@ module Flappi
     # Call me from a controller to build the appropriate API response
     # and return it
     def self.build_and_respond(controller)
-      endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
-      full_version = controller.params[:version]
+      definition_klass, endpoint_name, full_version = locate_definition(controller)
 
-      definition_klass = DefinitionLocator.locate_class(endpoint_name)
-      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
-
-      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
-
-      controller.singleton_class.send(:include, definition_klass)
-      controller.defining_class = definition_klass
-      controller.mode = :response
-      controller.controller_params = controller.params  # Give the mixin access to params
-      controller.controller_query_parameters = controller.request.query_parameters.except(:access_token)
-      controller.controller_url = controller.request.url
-      Flappi::Utils::Logger.i "controller.request.url=#{controller.request.url}"
-      controller.version_plan = Flappi.configuration.version_plan
-
-      controller.endpoint    # init endpoint data from mixin
-
-      unless endpoint_name == controller.endpoint_simple_name
-        raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
-      end
+      load_controller(controller, definition_klass, endpoint_name)
 
       if Flappi.configuration.version_plan
         raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
@@ -66,58 +47,23 @@ module Flappi
         Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
-          msg = "Version #{full_version} not supported by endpoint"
-          Flappi::Utils::Logger.w msg
-          controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
+          validate_error = "Version #{full_version} not supported by endpoint"
+          Flappi::Utils::Logger.w validate_error
+          controller.render json: { error: validate_error }.to_json, text: validate_error, status: :not_acceptable
           return false
         end
 
         controller.requested_version = normalised_version
       end
 
-      # Merge in default values where one is defined and we don't have an actual parameter
-      controller.params.merge! Hash[
-        controller.endpoint_info[:params].select do |defined_param|
-          param = controller.params.dig(defined_param[:name])
-          (param.nil? || param == "") && defined_param[:default]
-        end.map do |defined_param|
-          [defined_param[:name], defined_param[:default]]
-        end
-      ]
+      actual_params = controller.params
+      defined_params = controller.endpoint_info[:params]
+      apply_default_parameters actual_params, defined_params
 
-      Flappi::Utils::Logger.d "After default params=#{controller.params}"
-
-      # validate parameters
-      controller.endpoint_info[:params].each do |defined_param|
-        Flappi::Utils::Logger.d "Check parameter #{defined_param}"
-        param_supplied = controller.params.key? defined_param[:name]
-        unless param_supplied || defined_param[:optional]
-          msg = "Parameter #{defined_param[:name]} is required"
-          Flappi::Utils::Logger.w msg
-          controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
-          return false
-        end
-
-        next unless param_supplied
-
-        unless validate_param(controller.params[defined_param[:name]], defined_param[:type])
-          msg = "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
-          Flappi::Utils::Logger.w msg
-          controller.render json: { error: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
-          return false
-        end
-        controller.params[defined_param[:name]] = cast_param(controller.params[defined_param[:name]], defined_param[:type])
-
-        if defined_param[:validation_block]
-          error_text = defined_param[:validation_block].call(controller.params[defined_param[:name]])
-          if error_text
-            msg = "Parameter #{defined_param[:name]} failed validation: #{error_text}"
-            Flappi::Utils::Logger.w msg
-            controller.render json: { error: msg }.to_json, text: msg, status: (defined_param[:fail_code] || :not_acceptable)
-            return false
-          end
-        end
-
+      if (validate_error = validate_parameters(actual_params, defined_params))
+        Flappi::Utils::Logger.w validate_error
+        controller.render json: {error: validate_error}.to_json, text: validate_error, status: :not_acceptable
+        return false
       end
 
       controller.respond_to do |format|
@@ -127,6 +73,7 @@ module Flappi
         end
       end
     end
+
 
     # Called to document an API call into a structure that can be templated into e.g. ApiDoc
     def self.document(definition, for_version)
@@ -183,6 +130,76 @@ module Flappi
       recursive_open_struct_klass.new(hashed_res, recurse_over_arrays: true)
     end
 
+    # validate actual parameters against definitions, return an error message if fails
+    def self.validate_parameters(actual_params, defined_params)
+      defined_params.each do |defined_param|
+        Flappi::Utils::Logger.d "Check parameter #{defined_param}"
+        param_supplied = actual_params.key? defined_param[:name]
+        return "Parameter #{defined_param[:name]} is required" unless param_supplied || defined_param[:optional]
+
+        next unless param_supplied
+
+        unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
+          return "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
+        end
+
+        actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
+
+        if defined_param[:validation_block]
+          error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
+          return "Parameter #{defined_param[:name]} failed validation: #{error_text}" if error_text
+        end
+
+      end
+
+      nil
+    end
+
+    # Merge in default values where one is defined and we don't have an actual parameter
+    #
+    # If a parameter is blank and no defualt is defined, the parameter stays blank
+    # If we have no parameter and no default is defined, no parameter is passed on
+    # If a parameter is either missing or blank and a default is defined, it is used
+    def self.apply_default_parameters(actual_params, defined_params)
+      actual_params.merge! Hash[
+                               defined_params.select do |defined_param|
+                                 param = actual_params.dig(defined_param[:name])
+                                 (param.nil? || param == "") && defined_param[:default]
+                               end.map do |defined_param|
+                                 [defined_param[:name], defined_param[:default]]
+                               end
+                           ]
+
+      Flappi::Utils::Logger.d "After apply_default_parameters actual_params=#{actual_params}"
+    end
+
+    def self.locate_definition(controller)
+      endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
+      full_version = controller.params[:version]
+
+      definition_klass = DefinitionLocator.locate_class(endpoint_name)
+      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
+      return definition_klass, endpoint_name, full_version
+    end
+
+    def self.load_controller(controller, definition_klass, endpoint_name)
+      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
+
+      controller.singleton_class.send(:include, definition_klass)
+      controller.defining_class = definition_klass
+      controller.mode = :response
+      controller.controller_params = controller.params # Give the mixin access to params
+      controller.controller_query_parameters = controller.request.query_parameters.except(:access_token)
+      controller.controller_url = controller.request.url
+      Flappi::Utils::Logger.i "controller.request.url=#{controller.request.url}"
+      controller.version_plan = Flappi.configuration.version_plan
+
+      controller.endpoint # init endpoint data from mixin
+
+      unless endpoint_name == controller.endpoint_simple_name
+        raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
+      end
+    end
 
   end
 end

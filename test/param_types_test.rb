@@ -56,8 +56,8 @@ class Flappi::VersionsTest < MiniTest::Test
     end
 
     context 'cast_param' do
-      should 'return nil for nil type' do
-        assert_nil @param_types_test.cast_param('anything', nil)
+      should 'return source value for nil type' do
+        assert_equal 'anything', @param_types_test.cast_param('anything', nil)
       end
 
       should 'convert boolean type to boolean' do
