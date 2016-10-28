@@ -1,0 +1,56 @@
+inherit_from: .rubocop_todo.yml
+
+# Common configuration.
+AllCops:
+  TargetRubyVersion: 2.3
+
+Metrics/ClassLength:
+  Max: 500
+
+Metrics/ModuleLength:
+  Max: 500
+
+Metrics/LineLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Metrics/PerceivedComplexity:
+  Max: 15
+
+Style/Documentation:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/PredicateName:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/BlockComments:
+  Exclude:
+    - 'test/examples/*_doc.rb'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'test/examples/*_doc.rb'
+
+Style/TrailingWhitespace:
+  Exclude:
+    - 'test/examples/*_doc.rb'
