@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 module Flappi
   class Config
+
     attr_reader :definition_paths
     attr_accessor :version_plan
     attr_accessor :doc_target_path
@@ -19,7 +20,9 @@ module Flappi
     # rubocop:enable Style/AccessorMethodName
 
     def set_logger_rails
-      set_logger_target { |m, l| Rails.logger.log [Logger::ERROR, Logger::WARN, Logger::INFO, Logger::DEBUG, Logger::DEBUG][l], m }
+      set_logger_target {|m, l| Rails.logger.send [:error, :warn, :info, :debug, :debug][l], m }
     end
+
+
   end
 end
