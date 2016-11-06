@@ -6,7 +6,7 @@ class ::Flappi::BuilderFactoryTest < MiniTest::Test
   context 'validate_parameters' do
     setup do
       @defined_parameters = [
-        { name: 'a' },
+        { name: 'a' , fail_code: 422},
         { name: 'b', type: Float },
         { name: 'c', validation_block: ->(p) { (p.to_i / 10) == 3 ? nil : "c(#{p}) must be 3 * 10ⁿ" } },
         { name: 'd', type: Date, optional: true }
@@ -20,18 +20,18 @@ class ::Flappi::BuilderFactoryTest < MiniTest::Test
     end
 
     should 'detect undefined required parameter' do
-      assert_equal 'Parameter a is required',
+      assert_equal ['Parameter a is required', 422],
                    Flappi::BuilderFactory.validate_parameters({ 'b' => '3.142', 'c' => '30' }, @defined_parameters)
     end
 
     should 'detect incorrect type' do
-      assert_equal 'Parameter d must be of type Date',
+      assert_equal ['Parameter d must be of type Date', nil],
                    Flappi::BuilderFactory.validate_parameters({ 'a' => 'hello', 'b' => '1.23', 'c' => '30', 'd' => '2017-13-01' },
                                                               @defined_parameters)
     end
 
     should 'detect error from validation block' do
-      assert_equal 'Parameter c failed validation: c(29) must be 3 * 10ⁿ',
+      assert_equal ['Parameter c failed validation: c(29) must be 3 * 10ⁿ', nil],
                    Flappi::BuilderFactory.validate_parameters({ 'a' => 'hello', 'b' => '1.23', 'c' => '29', 'd' => '2017-13-01' },
                                                               @defined_parameters)
     end

@@ -62,9 +62,10 @@ module Flappi
       defined_params = controller.endpoint_info[:params]
       apply_default_parameters actual_params, defined_params
 
-      if (validate_error = validate_parameters(actual_params, defined_params))
+      validate_error, fail_code = validate_parameters(actual_params, defined_params)
+      if validate_error
         Flappi::Utils::Logger.w validate_error
-        controller.render json: { error: validate_error }.to_json, text: validate_error, status: :not_acceptable
+        controller.render json: { error: validate_error }.to_json, text: validate_error, status: fail_code || :not_acceptable
         return false
       end
 
@@ -149,19 +150,19 @@ module Flappi
       defined_params.each do |defined_param|
         Flappi::Utils::Logger.d "Check parameter #{defined_param}"
         param_supplied = actual_params.key? defined_param[:name]
-        return "Parameter #{defined_param[:name]} is required" unless param_supplied || defined_param[:optional]
+        return ["Parameter #{defined_param[:name]} is required", defined_param[:fail_code]] unless param_supplied || defined_param[:optional]
 
         next unless param_supplied
 
         unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
-          return "Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}"
+          return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]]
         end
 
         actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
 
         if defined_param[:validation_block]
           error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
-          return "Parameter #{defined_param[:name]} failed validation: #{error_text}" if error_text
+          return ["Parameter #{defined_param[:name]} failed validation: #{error_text}", defined_param[:fail_code]] if error_text
         end
       end
 
