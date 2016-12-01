@@ -53,14 +53,12 @@ class Flappi::VersionsTest < MiniTest::Test
         assert @param_types_test.validate_param('anything', 'Wibble')
       end
 
-      context "Hash" do
-        should 'reject anything but hash' do
-          assert @param_types_test.validate_param({}, 'Hash')
-          refute @param_types_test.validate_param("{}", 'Hash')
-          refute @param_types_test.validate_param([1,2], 'Hash')
-          refute @param_types_test.validate_param("i'm a string", 'Hash')
-          refute @param_types_test.validate_param(1, 'Hash')
-        end
+      should 'reject anything but Hash' do
+        assert @param_types_test.validate_param({}, 'Hash')
+        refute @param_types_test.validate_param("{}", 'Hash')
+        refute @param_types_test.validate_param([1,2], 'Hash')
+        refute @param_types_test.validate_param("i'm a string", 'Hash')
+        refute @param_types_test.validate_param(1, 'Hash')
       end
     end
 
