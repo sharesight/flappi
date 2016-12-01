@@ -22,6 +22,8 @@ module Flappi
             return false
           end
           true
+        when 'Hash'
+          src.is_a?(Hash)
         else
           true # No idea how to parse
         end

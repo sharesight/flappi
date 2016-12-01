@@ -52,6 +52,16 @@ class Flappi::VersionsTest < MiniTest::Test
       should 'accept anything for incomprehensible type' do
         assert @param_types_test.validate_param('anything', 'Wibble')
       end
+
+      context "Hash" do
+        should 'reject anything but hash' do
+          assert @param_types_test.validate_param({}, 'Hash')
+          refute @param_types_test.validate_param("{}", 'Hash')
+          refute @param_types_test.validate_param([1,2], 'Hash')
+          refute @param_types_test.validate_param("i'm a string", 'Hash')
+          refute @param_types_test.validate_param(1, 'Hash')
+        end
+      end
     end
 
     context 'cast_param' do
