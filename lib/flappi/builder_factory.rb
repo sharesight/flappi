@@ -61,6 +61,18 @@ module Flappi
 
       actual_params = controller.params
       defined_params = controller.endpoint_info[:params]
+
+      post_params = defined_params.select {|dp| dp[:is_post_param] }
+      if post_params.size > 1
+        msg = "More than one post_param is defined"
+        Flappi::Utils::Logger.w msg
+        controller.render json: { error: msg }.to_json, text: msg, status: :not_acceptable
+        return false
+      end
+      if post_params.size==1
+        actual_params[post_params.first[:name]] = controller.request.raw_post
+      end
+
       apply_default_parameters actual_params, defined_params
 
       validate_error, fail_code = validate_parameters(actual_params, defined_params)

@@ -9,7 +9,7 @@ module Examples
       path '/examples/exercise3/my_method'
       title 'Exercise API 3'
       description 'Exercise definition DSL #3'
-      # post_param :post_data, doc: 'data to be posted'
+      post_param :post_data, doc: 'data to be posted'
       param :inline, type: Integer, doc: 'Inline param'
 
       query do |params|
