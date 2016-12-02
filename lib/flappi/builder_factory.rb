@@ -3,6 +3,7 @@
 
 require 'recursive-open-struct'
 require 'active_support/json'
+require 'active_support/inflector'
 
 module Flappi
   module BuilderFactory
@@ -37,8 +38,8 @@ module Flappi
 
     # Call me from a controller to build the appropriate API response
     # and return it
-    def self.build_and_respond(controller)
-      definition_klass, endpoint_name, full_version = locate_definition(controller)
+    def self.build_and_respond(controller, method=nil)
+      definition_klass, endpoint_name, full_version = locate_definition(controller, method)
 
       load_controller(controller, definition_klass, endpoint_name)
 
@@ -187,8 +188,10 @@ module Flappi
       Flappi::Utils::Logger.d "After apply_default_parameters actual_params=#{actual_params}"
     end
 
-    def self.locate_definition(controller)
+    def self.locate_definition(controller, method)
       endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
+      endpoint_name << method.to_s.camelize if method
+
       full_version = controller.params[:version]
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
