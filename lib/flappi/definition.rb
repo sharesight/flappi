@@ -378,15 +378,18 @@ module Flappi
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
-      endpoint_info[:params] <<
-        { name: def_args[:name],
-          type: name_for_type(def_args[:type]),
-          default: def_args[:default],
-          default_doc: def_args[:default_doc],
-          description: def_args[:doc],
-          optional: def_args.key?(:optional) ? def_args[:optional] : true,
-          validation_block: block,
-          fail_code: def_args[:fail_code] }
+      param_def = { name: def_args[:name],
+                    type: name_for_type(def_args[:type]),
+                    default_doc: def_args[:default_doc],
+                    description: def_args[:doc],
+                    optional: def_args.key?(:optional) ? def_args[:optional] : true,
+                    validation_block: block,
+                    fail_code: def_args[:fail_code] }
+
+      # options that take nil
+      param_def[:default] = def_args[:default] if def_args.key?(:default)
+
+      endpoint_info[:params] << param_def
     end
 
     # Define a query to be used to retrieve the source object for the response.

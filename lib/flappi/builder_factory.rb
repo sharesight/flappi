@@ -58,11 +58,10 @@ module Flappi
         controller.requested_version = normalised_version
       end
 
-      actual_params = controller.params
       defined_params = controller.endpoint_info[:params]
-      apply_default_parameters actual_params, defined_params
+      apply_default_parameters controller.params, defined_params
 
-      validate_error, fail_code = validate_parameters(actual_params, defined_params)
+      validate_error, fail_code = validate_parameters(controller.params, defined_params)
       if validate_error
         Flappi::Utils::Logger.w validate_error
         controller.render json: { error: validate_error }.to_json, text: validate_error, status: fail_code || :not_acceptable
@@ -178,7 +177,7 @@ module Flappi
       actual_params.merge! Hash[
                                defined_params.select do |defined_param|
                                  param = actual_params.dig(defined_param[:name])
-                                 (param.nil? || param == '') && defined_param[:default]
+                                 (param.nil? || param == '') && defined_param.key?(:default)
                                end.map do |defined_param|
                                  [defined_param[:name], defined_param[:default]]
                                end

@@ -6,7 +6,7 @@ class ::Flappi::BuilderFactoryTest < MiniTest::Test
   context 'validate_parameters' do
     setup do
       @defined_parameters = [
-        { name: 'a' , fail_code: 422},
+        { name: 'a', fail_code: 422 },
         { name: 'b', type: Float },
         { name: 'c', validation_block: ->(p) { (p.to_i / 10) == 3 ? nil : "c(#{p}) must be 3 * 10ⁿ" } },
         { name: 'd', type: Date, optional: true }
@@ -41,20 +41,21 @@ class ::Flappi::BuilderFactoryTest < MiniTest::Test
     setup do
       @defined_parameters = [
         { name: 'a' },
-        { name: 'b', type: Float, default: 888.88 }
+        { name: 'b', type: Float, default: 888.88 },
+        { name: 'c', type: :boolean_type, default: false }
       ]
     end
 
     should 'put defaults into actuals' do
       actual_params = { 'a' => 'hello' }
       Flappi::BuilderFactory.apply_default_parameters(actual_params, @defined_parameters)
-      assert_equal({ 'a' => 'hello', 'b' => 888.88 }, actual_params)
+      assert_equal({ 'a' => 'hello', 'b' => 888.88, 'c' => false }, actual_params)
     end
 
     should 'apply default when parameter empty' do
-      actual_params = { 'a' => 'hello', 'b' => '' }
+      actual_params = { 'a' => 'hello', 'b' => '', 'c' => true }
       Flappi::BuilderFactory.apply_default_parameters(actual_params, @defined_parameters)
-      assert_equal({ 'a' => 'hello', 'b' => 888.88 }, actual_params)
+      assert_equal({ 'a' => 'hello', 'b' => 888.88, 'c' => true }, actual_params)
     end
   end
 end

@@ -8,7 +8,9 @@ module Flappi
   class ResponseBuilder
     include Common
 
+    # The params array from a (Rails) controller
     attr_accessor :controller_params
+    # The request.query_parameters (as in GET params from the controller, minus access_token. Raw rather than cooked)
     attr_accessor :controller_query_parameters
     attr_accessor :controller_url
     attr_reader :query_block
@@ -53,9 +55,9 @@ module Flappi
 
       links = Hash[(@link_defs || []).map do |link_def|
         expanded_link = if link_def[:key] == :self
-                          expand_link_path(source_definition.endpoint_info[:path], controller_query_parameters, true)
+                          expand_self_path(source_definition.endpoint_info[:path])
                         else
-                          expand_link_path(link_def[:path], controller_query_parameters, false)
+                          expand_link_path(link_def[:path])
                         end
         [link_def[:key], expanded_link]
       end]
@@ -306,8 +308,38 @@ module Flappi
       controller_url[0...matches.begin(0)]
     end
 
-    def expand_link_path(path, passed_query_params, subst_all_query_params)
-      # puts "expand_link_path path=#{path}, passed_query_params=#{passed_query_params}, subst_all_query_params=#{subst_all_query_params}"
+    def expand_self_path(path)
+      # puts "expand_self_path path=#{path}, controller_query_parameters=#{controller_query_parameters}, controller_params=#{controller_params}"
+      subst_uri, used_params = substitute_link_path_params(path)
+
+      query_params = controller_query_parameters.clone
+      query_params.delete_if { |k, _v| used_params.include? k.to_sym }
+
+      src_query_hash = CGI.parse(subst_uri.query || '').with_indifferent_access
+      # puts "src_query_hash=#{src_query_hash}, query_params=#{query_params}"
+      subst_query = src_query_hash.merge(query_params)
+
+      expanded = expand_uri_with_host(subst_uri)
+      expanded += "?#{subst_query.to_query}" unless subst_query.empty?
+      expanded
+    end
+
+    def expand_link_path(path)
+      # puts "expand_link_path path=#{path}, controller_query_parameters=#{controller_query_parameters}, controller_params=#{controller_params}"
+      subst_uri, _used_params = substitute_link_path_params(path)
+
+      expanded = expand_uri_with_host(subst_uri)
+      expanded += "?#{subst_uri.query}" if subst_uri.query
+      expanded
+    end
+
+    def expand_uri_with_host(subst_uri)
+      expanded = controller_base_url
+      expanded += '/' unless expanded[-1] == '/' || subst_uri.path[0] == '/'
+      expanded + subst_uri.path
+    end
+
+    def substitute_link_path_params(path)
       subst_path = path.dup
       used_params = []
       controller_params.each do |pname, pvalue|
@@ -315,34 +347,14 @@ module Flappi
         # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
         if subst_path =~ subex
           subst_path.gsub!(subex, "#{pvalue}\\1")
-          used_params << pname
+          used_params << pname.to_sym
         end
       end
 
       # puts "Made path #{subst_path}"
+      raise "Link path contains unsubstituted params #{subst_path}" if subst_path =~ /:\w+/
       subst_uri = ::URI.parse(subst_path)
-      raise "Link path contains unsubstituted params #{path}" if subst_uri.path =~ /:\w+/
-
-      query_params = passed_query_params.clone
-      query_params.delete_if { |k, _v| used_params.include? k }
-
-      src_query_hash = CGI.parse(subst_uri.query || '').with_indifferent_access
-      # puts "src_query_hash=#{src_query_hash}, subst_all_query_params=#{subst_all_query_params}, query_params=#{query_params}"
-      subst_query = if subst_all_query_params
-                      src_query_hash.merge(query_params)
-                    else
-                      Hash[src_query_hash.map do |k, v|
-                        query_params.key?(k.to_sym) ? [k, v.first] : nil
-                      end.compact]
-                    end
-
-      expanded = controller_base_url
-      expanded += '/' unless expanded[-1] == '/' || subst_uri.path[0] == '/'
-      expanded += subst_uri.path
-      expanded += "?#{subst_query.to_query}" unless subst_query.empty?
-
-      # puts "expanded=#{expanded}, subst_query=#{subst_query}, subst_uri=#{subst_uri}"
-      expanded
+      [subst_uri, used_params]
     end
   end
 end
