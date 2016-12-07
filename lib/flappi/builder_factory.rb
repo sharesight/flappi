@@ -129,7 +129,7 @@ module Flappi
         endpoint: {
           title: documenter_definition.endpoint_info[:title] || documenter_definition.endpoint_info[:description],
           description: documenter_definition.endpoint_info[:description] || documenter_definition.endpoint_info[:title],
-          method_name: documenter_definition.endpoint_info[:method],
+          method_name: documenter_definition.endpoint_info[:http_method],
           path: path,
           params: param_docs,
           api_name: definition.name.demodulize,

@@ -281,8 +281,8 @@ module Flappi
 
     # Define the HTTP method - note however that Rails and the controller is responsible for routing
     # @param v (String) GET, POST, PUT, DELETE
-    def method(v)
-      endpoint_info[:method] = v
+    def http_method(v)
+      endpoint_info[:http_method] = v
     end
 
     # Define the title

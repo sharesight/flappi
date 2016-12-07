@@ -5,7 +5,7 @@ module Examples
 
     def endpoint
       group 'Test_Exercise'
-      method 'GET'
+      http_method 'GET'
       path '/examples/exercise2'
       title 'Exercise API 2'
       description 'Exercise definition DSL #2 with versioning'
