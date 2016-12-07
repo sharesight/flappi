@@ -40,7 +40,7 @@ module Integration
         controller.params = { required: 2.718, version: 'V2.1.0-mobile' }
         response = controller.my_method
 
-        assert_equal({ json: { 'ok' => true, 'post_data' => 'This is raw post data' },
+        assert_equal({ json: { 'ok' => true },
                        status: :ok },
                      response)
       end

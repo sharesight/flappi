@@ -73,7 +73,13 @@ module Flappi
       controller.respond_to do |format|
         format.json do
           response_object = controller.respond
-          controller.render json: response_object, status: :ok
+          if response_object.respond_to?(:status_code)
+            controller.render json: { error: response_object.status_message }.to_json, text: response_object.status_message, status: response_object.status_code
+          else
+            controller.render json: response_object, status: :ok
+          end
+
+          return response_object
         end
       end
     end

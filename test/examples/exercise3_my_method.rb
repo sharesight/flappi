@@ -9,11 +9,10 @@ module Examples
       path '/examples/exercise3/my_method'
       title 'Exercise API 3'
       description 'Exercise definition DSL #3'
-      # post_param :post_data, doc: 'data to be posted'
       param :inline, type: Integer, doc: 'Inline param'
 
       query do |params|
-        { ok: true, post_data: params[:post_data] }
+        { ok: true }
       end
 
       response_example(<<~END_EXAMPLE
@@ -27,7 +26,6 @@ module Examples
     def respond
       build do
         field :ok, type: BOOLEAN
-        field :post_data
       end
     end
   end

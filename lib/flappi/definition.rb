@@ -397,5 +397,12 @@ module Flappi
     def query(&block)
       @delegate.query(block)
     end
+
+    # From inside a query, return an error
+    # @param status_code (Integer) an HTTP status code to return
+    # @param msg (String) a message to return
+    def return_error(status_code, msg)
+      @delegate.return_error(status_code, msg) if @delegate.respond_to?(:return_error)
+    end
   end
 end
