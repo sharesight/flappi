@@ -6,8 +6,8 @@ require 'pp'
 require_relative '../examples/exercise4'
 
 module Integration
-  class Exercise3DocoTest < MiniTest::Test
-    context 'Documentation of Exercise1' do
+  class Exercise4DocoTest < MiniTest::Test
+    context 'Documentation of Exercise4' do
       setup do
         Flappi.configure do |conf|
           conf.version_plan = nil
@@ -15,7 +15,7 @@ module Integration
       end
 
       should 'document our endpoint' do
-        doc_data = ::Flappi::BuilderFactory.document(::Examples::Exercise3, nil)
+        doc_data = ::Flappi::BuilderFactory.document(::Examples::Exercise4, nil)
         doc_text = ::Flappi::ApiDocFormatter.format_to_text(doc_data)
 
         expected_doc_text = File.read('test/examples/exercise4_doc.rb')
