@@ -3,7 +3,7 @@ require_relative '../test_helper'
 
 require 'pp'
 
-require_relative '../examples/exercise3'
+require_relative '../examples/exercise4'
 
 module Examples
   class Exercise3Controller
