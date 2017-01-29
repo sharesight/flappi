@@ -79,6 +79,16 @@ module Integration
                        text: 'Parameter extra must be of type Integer',
                        status: :not_acceptable }, controller.last_render_params)
       end
+
+      should 'return an error when provoked' do
+        controller = Examples::Exercise1Controller.new
+        controller.params = { return_error: true }
+        response = controller.show
+
+        assert_equal({ json: '{"error":"Eek!"}',
+                       text: 'Eek!',
+                       status: 422 }, response)
+      end
     end
   end
 end

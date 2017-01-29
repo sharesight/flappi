@@ -12,9 +12,13 @@ module Examples
       param :extra, type: Integer, doc: 'An extra query parameter', optional: true
       param :defaulted, type: Integer, doc: 'Parameter with default', default: 123
 
-      query do |_params|
-        [{ n: 1, name: 'one' },
-         { n: 2, name: 'two' }]
+      query do |params|
+        if params[:return_error]
+          return_error 422, 'Eek!'
+        else
+          [{ n: 1, name: 'one' },
+           { n: 2, name: 'two' }]
+        end
       end
 
       request_example('/api/examples/exercise?extra=100')

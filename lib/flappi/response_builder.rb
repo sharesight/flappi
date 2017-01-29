@@ -27,6 +27,7 @@ module Flappi
       # puts "response_builder::build, class= #{self.class} self="; pp self;
 
       base_object = nil
+      @status_code = nil
       if @query_block
         # We have a query block defined, call it to get the model object
         base_object = @query_block.call(controller_params)
@@ -38,6 +39,10 @@ module Flappi
         # which we should have by virtue of being mixed into the controller
         base_object = options[:type].where(controller_params)
       end
+
+      # If return_error called, return a struct
+      return OpenStruct.new(status_code: @status_code, status_message: @status_message) if @status_code
+
 
       @response_tree = new_h
       @put_stack = [@response_tree]
@@ -238,6 +243,11 @@ module Flappi
 
     def query(block)
       @query_block = block
+    end
+
+    def return_error(status_code, msg)
+      @status_code = status_code
+      @status_message = msg
     end
 
     # private
