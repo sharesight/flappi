@@ -34,7 +34,12 @@ module Flappi
     def field(*args_or_name, _block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
+
       return unless version_wanted(def_args)
+      if def_args.key?(:when)
+        ignore = !def_args[:when] rescue false # The when clause can call undefined code at doc time
+        return if ignore
+      end
 
       # handle dynamic field names by bracketing either 'doc_name' or the word 'dynamic'
       # with an underscore
