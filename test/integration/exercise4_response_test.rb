@@ -6,7 +6,7 @@ require 'pp'
 require_relative '../examples/exercise4'
 
 module Examples
-  class Exercise3Controller
+  class Exercise4Controller
     attr_accessor :params
     attr_accessor :last_render_params
 
@@ -33,8 +33,8 @@ module Examples
 end
 
 module Integration
-  class Exercise3ResponseTest < MiniTest::Test
-    context 'Response to Exercise3' do
+  class Exercise4ResponseTest < MiniTest::Test
+    context 'Response to Exercise4' do
       setup do
         Flappi.configure do |conf|
           conf.version_plan = nil
@@ -42,10 +42,9 @@ module Integration
       end
 
       should 'respond with a composed block' do
-        response = Examples::Exercise3Controller.new.show
+        response = Examples::Exercise4Controller.new.show
 
-        assert_equal({ json: { "a_not"=>100, "b_how"=>100 },
-                       status: :ok },
+        assert_equal({ "a_not"=>100, "b_how"=>100 },
                      response)
       end
     end

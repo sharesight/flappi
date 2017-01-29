@@ -5,7 +5,7 @@ module Examples
 
     def endpoint
       group 'Test_Exercise3'
-      method 'POST'
+      http_method 'POST'
       path '/examples/exercise3/my_method'
       title 'Exercise API 3'
       description 'Exercise definition DSL #3'

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 module Examples
-  module Exercise3
+  module Exercise4
     include Flappi::Definition
 
     def endpoint
       group 'Test_Exercise'
-      method 'GET'
+      http_method 'GET'
       path '/examples/exercise1'
-      title 'Exercise API 3'
-      description 'Exercise definition DSL #3'
+      title 'Exercise API 4'
+      description 'Exercise definition DSL #4'
 
-      request_example('/api/examples/exercise3')
+      request_example('/api/examples/exercise4')
       response_example(<<~END_EXAMPLE
       {
       }

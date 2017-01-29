@@ -44,9 +44,8 @@ module Integration
       should 'respond with a composed block' do
         response = Examples::Exercise1Controller.new.show
 
-        assert_equal({ json: { 'extra' => 150, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
-                       status: :ok },
-                     response)
+        assert_equal({ 'extra' => 150, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
+                       response)
       end
 
       should 'respond with a composed block when no param' do
@@ -54,8 +53,7 @@ module Integration
         controller.params = {}
         response = controller.show
 
-        assert_equal({ json: { 'extra' => 100, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
-                       status: :ok },
+        assert_equal({ 'extra' => 100, 'defaulted' => 123, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
                      response)
       end
 
@@ -64,8 +62,7 @@ module Integration
         controller.params = { defaulted: 888 }
         response = controller.show
 
-        assert_equal({ json: { 'extra' => 100, 'defaulted' => 888, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
-                       status: :ok },
+        assert_equal({ 'extra' => 100, 'defaulted' => 888, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }] },
                      response)
       end
 
@@ -85,9 +82,8 @@ module Integration
         controller.params = { return_error: true }
         response = controller.show
 
-        assert_equal({ json: '{"error":"Eek!"}',
-                       text: 'Eek!',
-                       status: 422 }, response)
+        assert_equal('Eek!', response.status_message)
+        assert_equal(422, response.status_code)
       end
     end
   end

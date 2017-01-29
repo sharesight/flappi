@@ -1,19 +1,19 @@
 =begin
-@api {GET} /examples/exercise1.json Exercise API 3
+@api {GET} /examples/exercise1.json Exercise API 4
 
-@apiName Exercise3
+@apiName Exercise4
 @apiGroup Test_Exercise
 @apiVersion 0.0.0
 
 @apiDescription
-  Exercise definition DSL #3
+  Exercise definition DSL #4
 
 @apiUse OAuthHeaders
 
 
 
 @apiParamExample Request Example
-    {GET} "/api/examples/exercise3"
+    {GET} "/api/examples/exercise4"
 
 
 @apiSuccess (200 Success) {String} a_not

@@ -63,7 +63,7 @@ module Flappi
 
     # @private
     def supported_versions
-      if @version_rule.nil?
+      unless @version_rule
         version_plan.available_version_definitions
       else
         version_plan.expand_version_rule(@version_rule)
