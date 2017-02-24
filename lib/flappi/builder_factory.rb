@@ -177,18 +177,16 @@ module Flappi
 
     # Merge in default values where one is defined and we don't have an actual parameter
     #
-    # If a parameter is blank and no defualt is defined, the parameter stays blank
+    # If a parameter is blank and no default is defined, the parameter stays blank
     # If we have no parameter and no default is defined, no parameter is passed on
     # If a parameter is either missing or blank and a default is defined, it is used
     def self.apply_default_parameters(actual_params, defined_params)
-      actual_params.merge! Hash[
-                               defined_params.select do |defined_param|
-                                 param = actual_params.dig(defined_param[:name])
-                                 (param.nil? || param == '') && defined_param.key?(:default)
-                               end.map do |defined_param|
-                                 [defined_param[:name], defined_param[:default]]
-                               end
-                           ]
+      actual_params.merge!(defined_params.select do |defined_param|
+                             param = actual_params.dig(defined_param[:name])
+                             (param.nil? || param == '') && defined_param.key?(:default)
+                           end.map do |defined_param|
+                             [defined_param[:name], defined_param[:default]]
+                           end.to_h)
 
       Flappi::Utils::Logger.d "After apply_default_parameters actual_params=#{actual_params}"
     end
