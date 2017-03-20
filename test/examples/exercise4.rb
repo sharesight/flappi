@@ -11,11 +11,10 @@ module Examples
       description 'Exercise definition DSL #4'
 
       request_example('/api/examples/exercise4')
-      response_example(<<~END_EXAMPLE
+      response_example <<~END_EXAMPLE
       {
       }
       END_EXAMPLE
-      )
     end
 
     def respond
@@ -29,6 +28,5 @@ module Examples
       field "#{name}_not", 100, doc: 'First field (not)', when: !how
       field "#{name}_how", 100, doc: 'Second field (how)', when: how
     end
-
   end
 end

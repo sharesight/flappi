@@ -27,14 +27,12 @@ module Examples
     def render(params)
       self.last_render_params = params
     end
-
   end
 end
 
 module Integration
   class Exercise3ResponseTest < MiniTest::Test
     context 'Response to Exercise3' do
-
       should 'respond with ok to posted data' do
         controller = Examples::Exercise3Controller.new
         controller.params = { required: 2.718, version: 'V2.1.0-mobile' }
@@ -43,7 +41,6 @@ module Integration
         assert_equal({ 'ok' => true },
                      response)
       end
-
     end
   end
 end

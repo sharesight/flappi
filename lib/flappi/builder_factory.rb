@@ -16,29 +16,39 @@ module Flappi
         [DocumentingStub.new]
       end
 
-      # rubocop:disable Style/MethodMissing
-      def method_missing(_meth_id, *_args, &_block)
-        # puts "Note: #{_meth_id.id2name} missing, called from stub"
-        DocumentingStub.new
+      def method_missing(meth_name, *args)
+        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        super
       end
 
-      def self.method_missing(_meth_id, *_args, &_block)
-        # puts "Note: class.#{_meth_id.id2name} missing, called from stub"
-        DocumentingStub.new
+      def respond_to_missing?(method_name, _include_private = false)
+        ![:to_ary, :method_missing, :respond_to_missing?].include?(method_name) || super
+      end
+
+      def self.method_missing(meth_name, *_args, &_block)
+        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        super
+      end
+
+      def self.respond_to_missing?(method_name, _include_private = false)
+        ![:method_missing, :respond_to_missing?].include?(method_name) || super
       end
     end
 
     class DefDocumenter
-      def method_missing(_meth_id, *_args, &_block)
-        # puts "Note: #{_meth_id.id2name} missing"
-        DocumentingStub.new
+      def method_missing(meth_name, *args)
+        return DocumentingStub.new unless [:method_missing, :respond_to_missing?].include? meth_name
+        super
+      end
+
+      def respond_to_missing?(method_name, _include_private = false)
+        ![:method_missing, :respond_to_missing?].include?(method_name) || super
       end
     end
-    # rubocop:enable Style/MethodMissing
 
     # Call me from a controller to build the appropriate API response
     # and return it
-    def self.build_and_respond(controller, method=nil)
+    def self.build_and_respond(controller, method = nil)
       definition_klass, endpoint_name, full_version = locate_definition(controller, method)
 
       load_controller(controller, definition_klass, endpoint_name)
@@ -61,6 +71,7 @@ module Flappi
 
       defined_params = controller.endpoint_info[:params]
       apply_default_parameters controller.params, defined_params
+      process_parameters controller.params, defined_params
 
       validate_error, fail_code = validate_parameters(controller.params, defined_params)
       if validate_error
@@ -173,6 +184,15 @@ module Flappi
       end
 
       nil
+    end
+
+    # process parameters through any processors defined on the param
+    def self.process_parameters(actual_params, defined_params)
+      defined_params.each do |defined_param|
+        if defined_param[:processor_block]
+          actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]])
+        end
+      end
     end
 
     # Merge in default values where one is defined and we don't have an actual parameter

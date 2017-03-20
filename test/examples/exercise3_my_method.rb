@@ -11,16 +11,15 @@ module Examples
       description 'Exercise definition DSL #3'
       param :inline, type: Integer, doc: 'Inline param'
 
-      query do |params|
+      query do
         { ok: true }
       end
 
-      response_example(<<~END_EXAMPLE
+      response_example <<~END_EXAMPLE
       {
         ok: true
       }
       END_EXAMPLE
-      )
     end
 
     def respond

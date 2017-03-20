@@ -63,10 +63,10 @@ module Flappi
 
     # @private
     def supported_versions
-      unless @version_rule
-        version_plan.available_version_definitions
-      else
+      if @version_rule
         version_plan.expand_version_rule(@version_rule)
+      else
+        version_plan.available_version_definitions
       end
     end
 
@@ -349,6 +349,9 @@ module Flappi
     # Define an input parameter (inline or query string)
     # This is used to document and validate the parameters.
     #
+    # Chain processor &block to this to define a parameter processor
+    #  and/or validator &block for define a parameter validator
+    #
     # @overload param(name, options={})
     #   Define a named parameter
     #   @param name (String) the name of the parameter
@@ -361,6 +364,7 @@ module Flappi
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
+    #   @return [ParamProcessor] chain this with processor or validator
     #
     # @overload param(options={})
     #   Define a parameter
@@ -374,6 +378,7 @@ module Flappi
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
+    #   @return [ParamProcessor] chain this with processor or validator
     def param(*args_or_name, &block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
@@ -390,6 +395,8 @@ module Flappi
       param_def[:default] = def_args[:default] if def_args.key?(:default)
 
       endpoint_info[:params] << param_def
+
+      ParamProcessor.new(param_def)
     end
 
     # Define a query to be used to retrieve the source object for the response.
