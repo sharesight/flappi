@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 Gem::Specification.new do |s|
   s.name        = 'flappi'
-  s.version     = '0.5.0'
-  s.date        = '2017-03-27'
+  s.version     = '0.5.1'
+  s.date        = '2017-06-26'
   s.summary     = 'Flappi API Builder'
   s.description = 'A flexible DSL-based API builder'
   s.authors     = ['Richard Parratt', 'Sharesight']
