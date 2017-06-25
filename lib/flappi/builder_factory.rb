@@ -62,7 +62,7 @@ module Flappi
         unless endpoint_supported_versions.include? normalised_version
           validate_error = "Version #{full_version} not supported by endpoint"
           Flappi::Utils::Logger.w validate_error
-          controller.render json: { error: validate_error }.to_json, text: validate_error, status: :not_acceptable
+          controller.render json: { error: validate_error }.to_json, plain: validate_error, status: :not_acceptable
           return false
         end
 
@@ -76,7 +76,7 @@ module Flappi
       validate_error, fail_code = validate_parameters(controller.params, defined_params)
       if validate_error
         Flappi::Utils::Logger.w validate_error
-        controller.render json: { error: validate_error }.to_json, text: validate_error, status: fail_code || :not_acceptable
+        controller.render json: { error: validate_error }.to_json, plain: validate_error, status: fail_code || :not_acceptable
         return false
       end
 
@@ -84,7 +84,7 @@ module Flappi
         format.json do
           response_object = controller.respond
           if response_object.respond_to?(:status_code)
-            controller.render json: { error: response_object.status_message }.to_json, text: response_object.status_message, status: response_object.status_code
+            controller.render json: { error: response_object.status_message }.to_json, plain: response_object.status_message, status: response_object.status_code
           else
             controller.render json: response_object, status: :ok
           end

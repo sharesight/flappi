@@ -82,7 +82,7 @@ module Integration
         refute response
 
         assert_equal({ json: '{"error":"Parameter extra must be of type Integer"}',
-                       text: 'Parameter extra must be of type Integer',
+                       plain: 'Parameter extra must be of type Integer',
                        status: :not_acceptable }, @controller.last_render_params)
       end
 
