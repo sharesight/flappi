@@ -323,6 +323,7 @@ module Flappi
       subst_uri, used_params = substitute_link_path_params(path)
 
       query_params = controller_params.clone
+      query_params = query_params.to_unsafe_hash if query_params.respond_to?(:to_unsafe_hash)
       query_params.delete_if { |k, _v| used_params.include?(k.to_sym) || !defined_param_names.include?(k.to_sym) }
 
       src_query_hash = CGI.parse(subst_uri.query || '').with_indifferent_access
