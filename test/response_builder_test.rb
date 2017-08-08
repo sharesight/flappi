@@ -322,15 +322,15 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
         end
 
         should 'work on own path where no query params' do
-          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint')
+          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', [])
         end
 
         should 'work on own path with query params' do
           @response_builder.controller_query_parameters = { a: '1', other: 'test' }
-          @response_builder.controller_params.merge @response_builder.controller_query_parameters
+          @response_builder.controller_params.merge! @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?a=1&other=test',
-                       @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint')
+                       @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', [:a, :other])
         end
 
         should 'work on path with replaceable query params' do

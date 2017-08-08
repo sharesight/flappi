@@ -64,7 +64,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Parameter required is required"}',
-                       text: 'Parameter required is required', status: :not_acceptable },
+                       plain: 'Parameter required is required', status: :not_acceptable },
                      controller.last_render_params)
       end
 
@@ -75,7 +75,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Parameter required failed validation: Parameter v outside range 0..10"}',
-                       text: 'Parameter required failed validation: Parameter v outside range 0..10', status: :not_acceptable },
+                       plain: 'Parameter required failed validation: Parameter v outside range 0..10', status: :not_acceptable },
                      controller.last_render_params)
       end
 
@@ -86,7 +86,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Version V1.9 not supported by endpoint"}',
-                       text: 'Version V1.9 not supported by endpoint', status: :not_acceptable },
+                       plain: 'Version V1.9 not supported by endpoint', status: :not_acceptable },
                      controller.last_render_params)
       end
     end

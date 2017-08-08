@@ -43,7 +43,6 @@ module Flappi
       # If return_error called, return a struct
       return OpenStruct.new(status_code: @status_code, status_message: @status_message) if @status_code
 
-
       @response_tree = new_h
       @put_stack = [@response_tree]
       @hash_stack = []
@@ -60,7 +59,8 @@ module Flappi
 
       links = Hash[(@link_defs || []).map do |link_def|
         expanded_link = if link_def[:key] == :self
-                          expand_self_path(source_definition.endpoint_info[:path])
+                          expand_self_path(source_definition.endpoint_info[:path],
+                                           source_definition.endpoint_info[:params].map { |p| p[:name].to_sym })
                         else
                           expand_link_path(link_def[:path])
                         end
@@ -318,15 +318,15 @@ module Flappi
       controller_url[0...matches.begin(0)]
     end
 
-    def expand_self_path(path)
-      # puts "expand_self_path path=#{path}, controller_query_parameters=#{controller_query_parameters}, controller_params=#{controller_params}"
+    def expand_self_path(path, defined_param_names)
+      # puts "expand_self_path path=#{path}, defined_param_names=#{defined_param_names}, controller_params=#{controller_params}"
       subst_uri, used_params = substitute_link_path_params(path)
 
-      query_params = controller_query_parameters.clone
-      query_params.delete_if { |k, _v| used_params.include? k.to_sym }
+      query_params = controller_params.clone
+      query_params = query_params.to_unsafe_hash if query_params.respond_to?(:to_unsafe_hash)
+      query_params.delete_if { |k, _v| used_params.include?(k.to_sym) || !defined_param_names.include?(k.to_sym) }
 
       src_query_hash = CGI.parse(subst_uri.query || '').with_indifferent_access
-      # puts "src_query_hash=#{src_query_hash}, query_params=#{query_params}"
       subst_query = src_query_hash.merge(query_params)
 
       expanded = expand_uri_with_host(subst_uri)
@@ -335,7 +335,7 @@ module Flappi
     end
 
     def expand_link_path(path)
-      # puts "expand_link_path path=#{path}, controller_query_parameters=#{controller_query_parameters}, controller_params=#{controller_params}"
+      # puts "expand_link_path path=#{path}, controller_params=#{controller_params}"
       subst_uri, _used_params = substitute_link_path_params(path)
 
       expanded = expand_uri_with_host(subst_uri)
