@@ -289,7 +289,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       end
 
       should 'cast_value' do
-        assert_equal nil, @response_builder.cast_value(nil, Flappi::Definition::BOOLEAN, nil)
+        assert_nil @response_builder.cast_value(nil, Flappi::Definition::BOOLEAN, nil)
         assert_equal false, @response_builder.cast_value(false, Flappi::Definition::BOOLEAN, nil)
         assert_equal true, @response_builder.cast_value(1, Flappi::Definition::BOOLEAN, nil)
 

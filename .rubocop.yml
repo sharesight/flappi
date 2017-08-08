@@ -2,7 +2,7 @@ inherit_from: .rubocop_todo.yml
 
 # Common configuration.
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4.1
 
 Metrics/ClassLength:
   Max: 500
