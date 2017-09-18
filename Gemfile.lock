@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flappi (0.5.1)
+    flappi (0.5.2)
       activesupport (> 4.2.7)
       recursive-open-struct
 
@@ -64,4 +64,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   1.14.6
+   1.15.4

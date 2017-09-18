@@ -76,6 +76,5 @@ Now, if you access: [http://localhost:3000/adder.json?a=4](http://localhost:3000
     {
     "result": 4
     }
-    
-and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/adder.json?a=4&b=22) (etc)
 
+and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/adder.json?a=4&b=22) (etc)
