@@ -1,0 +1,24 @@
+sudo: false
+language: ruby
+
+cache:
+  - bundler
+
+rvm:
+  - 2.4.2
+
+# before_install: gem install bundler -v 1.14.4
+
+env:
+  matrix:
+    - BUILD_TYPE=default
+    - BUILD_TYPE=audit
+
+# before_script:
+#   - BUILDER='travis'; export BUILDER
+
+script:
+  - bash ./bin/travis_build.sh
+
+notifications:
+  slack: sharesight:U37WSO6VigyXdiL1DOjMCWOO
