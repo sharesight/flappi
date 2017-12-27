@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# rubocop:disable Metrics/LineLength
+
 module Flappi
   # DSL for API construction.
   #
@@ -109,7 +109,9 @@ module Flappi
     # Define how to build the API response.
     # Use this typically with a block that defines how each field of the response is to be generated.
     #
-    # @option options [Class] :type Specifies a (ruby) type, an instance of which will be retrieved by calling the classes (ActiveRecord-style) 'where' method with the controller's parameters and will become the base object the response is generated from.
+    # @option options [Class] :type Specifies a (ruby) type, an instance of which will be retrieved by
+    #   calling the classes (ActiveRecord-style) 'where' method with the controller's parameters and will
+    # become the base object the response is generated from.
     # @example fetch a user record
     #   build type: User do
     #        ...

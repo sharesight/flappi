@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 module Flappi
   module DefinitionLocator
     def self.locate_class(endpoint_name)
@@ -9,7 +9,7 @@ module Flappi
                           rescue
                             nil
                           end
-        return candidate_class if candidate_class && candidate_class.included_modules.include?(Flappi::Definition)
+        return candidate_class if candidate_class&.included_modules&.include?(Flappi::Definition)
       end
 
       nil

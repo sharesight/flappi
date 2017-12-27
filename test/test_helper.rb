@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 if ENV['COVERAGE_ME']
   require 'simplecov'
   SimpleCov.start
@@ -23,7 +24,7 @@ Flappi.configure do |conf|
   end
 
   if ENV['TEST_LOGGING']
-    conf.logger_level = %w(error warn info debug trace).index(ENV['TEST_LOGGING'])
+    conf.logger_level = %w[error warn info debug trace].index(ENV['TEST_LOGGING'])
     puts "conf.logger_level=#{conf.logger_level}"
   end
 

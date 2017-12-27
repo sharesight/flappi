@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Examples
   module Exercise1
     include Flappi::Definition

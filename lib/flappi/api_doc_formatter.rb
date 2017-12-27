@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Format API documentation into the 'ApiDoc' format
 #
 # Pass this to Flappi::Documenter.document to select this formatter (see rake task api.rake)

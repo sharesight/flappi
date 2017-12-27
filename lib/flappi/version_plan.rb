@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 module Flappi
   module VersionPlan
     #====== Flappi::Version plan DSL follows ======

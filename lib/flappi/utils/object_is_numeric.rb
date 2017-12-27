@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Object
   # Is the object an integer or convertible thereto?
   def is_i?

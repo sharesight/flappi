@@ -4,6 +4,11 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 2.4
 
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - 'test/**/*.rb'
+
 Metrics/ClassLength:
   Max: 500
 
@@ -25,6 +30,12 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 15
 
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
@@ -34,10 +45,13 @@ Style/MultilineBlockChain:
 Style/GuardClause:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Style/RegexpLiteral:
   Enabled: false
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -51,6 +65,12 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - 'test/examples/*_doc.rb'
 
-Style/TrailingWhitespace:
+Style/StringLiterals:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'

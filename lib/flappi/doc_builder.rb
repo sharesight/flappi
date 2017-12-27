@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build API documentation from a definition
 require 'active_support/inflector'
 
@@ -87,8 +88,7 @@ module Flappi
       end
     end
 
-    def query(block)
-    end
+    def query(block); end
 
     private
 

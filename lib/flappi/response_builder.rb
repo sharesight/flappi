@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build an API response from a definition
 require 'uri'
 require 'active_support/core_ext/hash/conversions'
@@ -355,14 +356,14 @@ module Flappi
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
         # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
-        if subst_path =~ subex
+        if subst_path.match?(subex)
           subst_path.gsub!(subex, "#{pvalue}\\1")
           used_params << pname.to_sym
         end
       end
 
       # puts "Made path #{subst_path}"
-      raise "Link path contains unsubstituted params #{subst_path}" if subst_path =~ /:\w+/
+      raise "Link path contains unsubstituted params #{subst_path}" if subst_path.match?(/:\w+/)
       subst_uri = ::URI.parse(subst_path)
       [subst_uri, used_params]
     end

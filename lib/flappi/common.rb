@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Common helpers for each builder, include into DocBuilder, ResponseBuilder, etc.
 
 # @private
