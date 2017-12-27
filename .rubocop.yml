@@ -51,6 +51,9 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - 'test/examples/*_doc.rb'
 
+Style/StringLiterals:
+  Enabled: false
+
 Style/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
