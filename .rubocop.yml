@@ -62,6 +62,6 @@ Style/StringLiterals:
 Style/SymbolArray:
   Enabled: false
 
-Style/TrailingWhitespace:
+Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
