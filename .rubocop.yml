@@ -4,6 +4,11 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 2.4
 
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - 'test/**/*.rb'
+
 Metrics/ClassLength:
   Max: 500
 
