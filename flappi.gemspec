@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'maxitest'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'rake' # slightly unconvinced
-  s.add_development_dependency 'rubocop', "0.51.0"
+  s.add_development_dependency 'rubocop', "0.52.1"
   s.add_development_dependency 'shoulda'
   s.add_development_dependency 'simplecov'
 end
