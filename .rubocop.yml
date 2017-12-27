@@ -48,7 +48,7 @@ Style/GuardClause:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false
 
 Style/ClassAndModuleChildren:
