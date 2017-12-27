@@ -14,11 +14,11 @@ module Flappi
       @definition_paths = v.is_a?(Array) ? v : [v]
     end
 
-    # rubocop:disable Style/AccessorMethodName
+    # rubocop:disable Naming/AccessorMethodName
     def set_logger_target(&block)
       @logger_target = block
     end
-    # rubocop:enable Style/AccessorMethodName
+    # rubocop:enable Naming/AccessorMethodName
 
     def set_logger_rails
       set_logger_target {|m, l| Rails.logger.send [:error, :warn, :info, :debug, :debug][l], m }

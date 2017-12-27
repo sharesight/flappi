@@ -30,6 +30,12 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 15
 
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Lint/RescueWithoutErrorClass:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
