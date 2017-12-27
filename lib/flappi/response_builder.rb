@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build an API response from a definition
 require 'uri'
 require 'active_support/core_ext/hash/conversions'

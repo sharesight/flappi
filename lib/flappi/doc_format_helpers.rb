@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # these can be called in app/controllers/api/api_builder/api_doc_template.rb.erb
 # to help formatting api docs
 

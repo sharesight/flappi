@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build API documentation from a definition
 require 'active_support/inflector'
 

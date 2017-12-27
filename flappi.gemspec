@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name        = 'flappi'
   s.version     = '0.5.2'
@@ -7,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = 'A flexible DSL-based API builder'
   s.authors     = ['Richard Parratt', 'Sharesight']
   s.email       = 'richard.parratt@sharesight.co.nz'
-  s.files       = Dir.glob('{bin,lib}/**/*') + %w(README.md)
+  s.files       = Dir.glob('{bin,lib}/**/*') + %w[README.md]
   s.homepage    = 'https://github.com/sharesight/flappi'
   s.license = 'MIT'
 
@@ -19,5 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake' # slightly unconvinced
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'mocha'
-  s.add_development_dependency 'rubocop', "0.47.1"
+  s.add_development_dependency 'rubocop', "0.48.1"
 end

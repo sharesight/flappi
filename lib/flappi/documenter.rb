@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 module Flappi
   class Documenter
     # Call to document all definitions under top_module

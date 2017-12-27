@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :flappi do
   namespace :doc do
     desc 'Extract API documentation from Flappi definitions into ApiDoc. Use VERBOSE=v* to increase log level. ENDPOINT=module to document one endpoint.'

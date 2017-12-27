@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Examples
   class ExerciseModel
     def self.where(_params)

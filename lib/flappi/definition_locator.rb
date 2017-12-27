@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 module Flappi
   module DefinitionLocator
     def self.locate_class(endpoint_name)

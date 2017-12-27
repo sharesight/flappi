@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Flappi
   class ParamProcessor
     def initialize(param_def)

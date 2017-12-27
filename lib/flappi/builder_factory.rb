@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
