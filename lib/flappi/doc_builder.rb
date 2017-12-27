@@ -87,8 +87,7 @@ module Flappi
       end
     end
 
-    def query(block)
-    end
+    def query(block); end
 
     private
 
