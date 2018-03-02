@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build an API response from a definition
 require 'uri'
 require 'active_support/core_ext/hash/conversions'
@@ -191,9 +192,7 @@ module Flappi
       name = def_args[:name]
       return unless version_wanted(def_args)
 
-      if def_args.key?(:for) ^ def_args.key?(:type)
-        raise "polymorphic reference #{name} must specify :type and :for"
-      end
+      raise "polymorphic reference #{name} must specify :type and :for" if def_args.key?(:for) ^ def_args.key?(:type)
 
       if def_args.key?(:for) && def_args.key?(:type)
         ref_type = def_args[:type]
@@ -234,7 +233,7 @@ module Flappi
       link_def = if link_params.size == 1 && link_params.first.is_a?(Hash)
                    link_params.first
                  else
-                   Hash[link_params.each_with_index.map { |p, idx| [[:key, :path][idx], p] }]
+                   Hash[link_params.each_with_index.map { |p, idx| [%i[key path][idx], p] }]
                  end
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
@@ -355,14 +354,14 @@ module Flappi
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
         # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
-        if subst_path =~ subex
+        if subst_path.match?(subex)
           subst_path.gsub!(subex, "#{pvalue}\\1")
           used_params << pname.to_sym
         end
       end
 
       # puts "Made path #{subst_path}"
-      raise "Link path contains unsubstituted params #{subst_path}" if subst_path =~ /:\w+/
+      raise "Link path contains unsubstituted params #{subst_path}" if subst_path.match?(/:\w+/)
       subst_uri = ::URI.parse(subst_path)
       [subst_uri, used_params]
     end

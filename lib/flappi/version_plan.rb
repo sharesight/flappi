@@ -1,5 +1,6 @@
 
 # frozen_string_literal: true
+
 module Flappi
   module VersionPlan
     #====== Flappi::Version plan DSL follows ======
@@ -90,9 +91,7 @@ module Flappi
         end
       end.flatten
 
-      if normalise_each
-        complete_versions_array = complete_versions_array.map(&:normalise)
-      end
+      complete_versions_array = complete_versions_array.map(&:normalise) if normalise_each
 
       Flappi::Versions.new(complete_versions_array)
     end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Examples
   module Exercise4
     include Flappi::Definition
@@ -12,8 +13,8 @@ module Examples
 
       request_example('/api/examples/exercise4')
       response_example <<~END_EXAMPLE
-      {
-      }
+        {
+        }
       END_EXAMPLE
     end
 
