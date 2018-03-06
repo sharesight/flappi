@@ -31,9 +31,9 @@ GEM
     rainbow (3.0.0)
     rake (11.2.2)
     recursive-open-struct (1.0.5)
-    rubocop (0.52.1)
+    rubocop (0.53.0)
       parallel (~> 1.10)
-      parser (>= 2.4.0.2, < 3.0)
+      parser (>= 2.5)
       powerpack (~> 0.1)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
@@ -63,7 +63,7 @@ DEPENDENCIES
   maxitest
   mocha
   rake
-  rubocop (~> 0.52)
+  rubocop (= 0.53)
   shoulda
   simplecov
 

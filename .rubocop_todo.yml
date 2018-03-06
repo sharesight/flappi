@@ -40,3 +40,6 @@ Metrics/BlockLength:
 
 Naming/HeredocDelimiterNaming:
   Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+    Enabled: false
