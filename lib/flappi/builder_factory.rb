@@ -228,7 +228,6 @@ module Flappi
       full_version = controller.params[:version]
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
-      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
       [definition_klass, endpoint_name, full_version]
     end
 
