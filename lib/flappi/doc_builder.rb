@@ -37,7 +37,11 @@ module Flappi
 
       return unless version_wanted(def_args)
       if def_args.key?(:when)
-        ignore = !def_args[:when] rescue false # The when clause can call undefined code at doc time
+        ignore = begin
+                   !def_args[:when]
+                 rescue
+                   false
+                 end # The when clause can call undefined code at doc time
         return if ignore
       end
 

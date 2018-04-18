@@ -15,15 +15,14 @@ module Flappi
           issues << "Could not load #{candidate_class_name} because #{ex} was raised"
         end
 
-        if candidate_class
-          if candidate_class.included_modules.include?(Flappi::Definition)
-            return candidate_class
-          end
-          issues << "#{candidate_class_name} does not include Flappi::Definition"
+        next unless candidate_class
+        if candidate_class.included_modules.include?(Flappi::Definition)
+          return candidate_class
         end
+        issues << "#{candidate_class_name} does not include Flappi::Definition"
       end
 
-      issues = [ "No matching classes found" ] if issues.empty?
+      issues = ['No matching classes found'] if issues.empty?
       raise "Endpoint #{endpoint_name} is not defined to Flappi: #{issues.join('; ')}"
     end
   end

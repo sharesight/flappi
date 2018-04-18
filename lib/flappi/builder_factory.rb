@@ -82,22 +82,7 @@ module Flappi
 
       controller.respond_to do |format|
         format.json do
-          response_object = controller.respond
-          if response_object.respond_to?(:status_code)
-            error_info = response_object.status_error_info
-            if error_info.is_a?(String)
-              response_hash = { error: error_info }
-            else
-              error_info = error_info.inspect
-              response_hash = { errors: error_info }
-            end
-
-            controller.render json: response_hash.to_json, plain: error_info, status: response_object.status_code
-          else
-            controller.render json: response_object, status: :ok
-          end
-
-          return response_object
+          return render_response_json(controller)
         end
       end
     end
@@ -248,6 +233,25 @@ module Flappi
       unless endpoint_name == controller.endpoint_simple_name
         raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
+    end
+
+    def self.render_response_json(controller)
+      response_object = controller.respond
+      if response_object.respond_to?(:status_code)
+        error_info = response_object.status_error_info
+        if error_info.is_a?(String)
+          response_hash = { error: error_info }
+        else
+          error_info = error_info.inspect
+          response_hash = { errors: error_info }
+        end
+
+        controller.render json: response_hash.to_json, plain: error_info, status: response_object.status_code
+      else
+        controller.render json: response_object, status: :ok
+      end
+
+      response_object
     end
   end
 end
