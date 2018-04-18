@@ -410,9 +410,9 @@ module Flappi
 
     # From inside a query, return an error
     # @param status_code (Integer) an HTTP status code to return
-    # @param msg (String) a message to return
-    def return_error(status_code, msg)
-      @delegate.return_error(status_code, msg) if @delegate.respond_to?(:return_error)
+    # @param error_info (Object) a message String or an error hash to return
+    def return_error(status_code, error_info)
+      @delegate.return_error(status_code, error_info) if @delegate.respond_to?(:return_error)
     end
   end
 end

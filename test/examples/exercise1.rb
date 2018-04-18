@@ -18,6 +18,8 @@ module Examples
       query do |params|
         if params[:return_error]
           return_error 422, 'Eek!'
+        elsif params[:return_error_hash]
+          return_error( 422, e: 'Fail', reason: 'wanted')
         else
           [{ n: 1, name: 'one' },
            { n: 2, name: 'two' }]
