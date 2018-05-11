@@ -1,5 +1,6 @@
 
 # frozen_string_literal: true
+
 module Flappi
   class Documenter
     # Call to document all definitions under top_module
@@ -28,7 +29,7 @@ module Flappi
       Dir.glob("#{from}/**/*.rb") do |file|
         expected_klass = begin
                            Module.const_get(top_module.to_s + '::' + File.basename(file, '.*').camelize)
-                         rescue
+                         rescue StandardError
                            nil
                          end
         # The autoloader may load our module anyway here

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
@@ -17,32 +18,32 @@ module Flappi
       end
 
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        ![:to_ary, :method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[to_ary method_missing respond_to_missing?].include?(method_name) || super
       end
 
       def self.method_missing(meth_name, *_args, &_block)
-        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def self.respond_to_missing?(method_name, _include_private = false)
-        ![:method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
     class DefDocumenter
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless [:method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        ![:method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
@@ -127,9 +128,7 @@ module Flappi
 
       documenter_definition.version_plan = Flappi.configuration.version_plan
 
-      unless documenter_definition.respond_to? :endpoint
-        raise 'API definition must include <endpoint> method'
-      end
+      raise 'API definition must include <endpoint> method' unless documenter_definition.respond_to? :endpoint
       documenter_definition.endpoint
 
       Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
@@ -171,9 +170,7 @@ module Flappi
 
         next unless param_supplied
 
-        unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
-          return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]]
-        end
+        return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
 
         actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
 
@@ -189,9 +186,7 @@ module Flappi
     # process parameters through any processors defined on the param
     def self.process_parameters(actual_params, defined_params)
       defined_params.each do |defined_param|
-        if defined_param[:processor_block]
-          actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]])
-        end
+        actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]]) if defined_param[:processor_block]
       end
     end
 

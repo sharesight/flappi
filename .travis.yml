@@ -5,17 +5,15 @@ cache:
   - bundler
 
 rvm:
-  - 2.4.2
-
-# before_install: gem install bundler -v 1.14.4
+  - 2.5.1
 
 env:
   matrix:
     - BUILD_TYPE=default
     - BUILD_TYPE=audit
 
-# before_script:
-#   - BUILDER='travis'; export BUILDER
+before_install:
+  - gem install bundler
 
 script:
   - bash ./bin/travis_build.sh

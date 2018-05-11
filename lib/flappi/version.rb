@@ -1,5 +1,6 @@
 
 # frozen_string_literal: true
+
 module Flappi
   class Version
     attr_reader :version_array

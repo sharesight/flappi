@@ -2,7 +2,7 @@ inherit_from: .rubocop_todo.yml
 
 # Common configuration.
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 Metrics/ClassLength:
   Max: 500
@@ -37,7 +37,7 @@ Style/GuardClause:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -54,6 +54,6 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   Enabled: false
 
-Style/TrailingWhitespace:
+Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'

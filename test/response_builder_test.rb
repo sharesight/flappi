@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'test_helper'
 require 'pp'
 
@@ -330,7 +331,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_params.merge! @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?a=1&other=test',
-                       @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', [:a, :other])
+                       @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', %i[a other])
         end
 
         should 'work on path with replaceable query params' do
