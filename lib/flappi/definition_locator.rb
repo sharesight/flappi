@@ -17,9 +17,9 @@ module Flappi
         end
 
         next unless candidate_class
-        if candidate_class.included_modules.include?(Flappi::Definition)
-          return candidate_class
-        end
+
+        return candidate_class if candidate_class.included_modules.include?(Flappi::Definition)
+
         issues << "#{candidate_class_name} does not include Flappi::Definition"
       end
 

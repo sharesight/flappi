@@ -232,14 +232,7 @@ module Flappi
       response_object = controller.respond
       if response_object.respond_to?(:status_code)
         error_info = response_object.status_error_info
-        if error_info.is_a?(String)
-          error_string = error_info
-          response_hash = { error: error_info }
-        else
-          response_hash = { errors: error_info }
-          error_string = error_info.inspect
-        end
-
+        response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }
         controller.render json: response_hash.to_json, plain: error_info, status: response_object.status_code
       else
         controller.render json: response_object, status: :ok

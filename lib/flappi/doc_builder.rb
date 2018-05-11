@@ -38,11 +38,8 @@ module Flappi
 
       return unless version_wanted(def_args)
       if def_args.key?(:when)
-        ignore = begin
-                   !def_args[:when]
-                 rescue
-                   false
-                 end # The when clause can call undefined code at doc time
+        # The when clause can call undefined code at doc time
+        ignore = !def_args[:when] rescue false # rubocop:disable Style/RescueModifier
         return if ignore
       end
 
