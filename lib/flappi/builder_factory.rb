@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
@@ -17,32 +18,32 @@ module Flappi
       end
 
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        ![:to_ary, :method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[to_ary method_missing respond_to_missing?].include?(method_name) || super
       end
 
       def self.method_missing(meth_name, *_args, &_block)
-        return DocumentingStub.new unless [:to_ary, :method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def self.respond_to_missing?(method_name, _include_private = false)
-        ![:method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
     class DefDocumenter
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless [:method_missing, :respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[method_missing respond_to_missing?].include? meth_name
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        ![:method_missing, :respond_to_missing?].include?(method_name) || super
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
@@ -57,7 +58,7 @@ module Flappi
         raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
 
         endpoint_supported_versions = controller.supported_versions
-        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
+        Flappi::Utils::Logger.d "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           validate_error = "Version #{full_version} not supported by endpoint"
@@ -120,9 +121,7 @@ module Flappi
 
       documenter_definition.version_plan = Flappi.configuration.version_plan
 
-      unless documenter_definition.respond_to? :endpoint
-        raise 'API definition must include <endpoint> method'
-      end
+      raise 'API definition must include <endpoint> method' unless documenter_definition.respond_to? :endpoint
       documenter_definition.endpoint
 
       Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
@@ -164,9 +163,7 @@ module Flappi
 
         next unless param_supplied
 
-        unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
-          return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]]
-        end
+        return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
 
         actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
 
@@ -182,26 +179,22 @@ module Flappi
     # process parameters through any processors defined on the param
     def self.process_parameters(actual_params, defined_params)
       defined_params.each do |defined_param|
-        if defined_param[:processor_block]
-          actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]])
-        end
+        actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]]) if defined_param[:processor_block]
       end
     end
 
     # Merge in default values where one is defined and we don't have an actual parameter
     #
-    # If a parameter is blank and no defualt is defined, the parameter stays blank
+    # If a parameter is blank and no default is defined, the parameter stays blank
     # If we have no parameter and no default is defined, no parameter is passed on
     # If a parameter is either missing or blank and a default is defined, it is used
     def self.apply_default_parameters(actual_params, defined_params)
-      actual_params.merge! Hash[
-                               defined_params.select do |defined_param|
-                                 param = actual_params.dig(defined_param[:name])
-                                 (param.nil? || param == '') && defined_param.key?(:default)
-                               end.map do |defined_param|
-                                 [defined_param[:name], defined_param[:default]]
-                               end
-                           ]
+      actual_params.merge!(defined_params.select do |defined_param|
+                             param = actual_params.dig(defined_param[:name])
+                             (param.nil? || param == '') && defined_param.key?(:default)
+                           end.map do |defined_param|
+                             [defined_param[:name], defined_param[:default]]
+                           end.to_h)
 
       Flappi::Utils::Logger.d "After apply_default_parameters actual_params=#{actual_params}"
     end
@@ -217,7 +210,7 @@ module Flappi
     end
 
     def self.load_controller(controller, definition_klass, endpoint_name)
-      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
+      Flappi::Utils::Logger.d "  definition_klass = #{definition_klass}" if defined?(Rails)
 
       controller.singleton_class.send(:include, definition_klass)
       controller.defining_class = definition_klass

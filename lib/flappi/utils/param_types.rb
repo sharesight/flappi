@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Flappi
   module Utils
     module ParamTypes
@@ -9,7 +10,7 @@ module Flappi
         when nil
           true
         when 'BOOLEAN'
-          src.is_a?(TrueClass) || src.is_a?(FalseClass) || (src.size >= 1 && %w(1 0 Y N T F).include?(src[0].to_s.upcase))
+          src.is_a?(TrueClass) || src.is_a?(FalseClass) || (src.size >= 1 && %w[1 0 Y N T F].include?(src[0].to_s.upcase))
         when 'BigDecimal', 'Float'
           src.is_f?
         when 'Integer'
@@ -18,7 +19,7 @@ module Flappi
           return true if src.is_a?(::Date)
           begin
             Date.parse(src)
-          rescue
+          rescue StandardError
             return false
           end
           true
@@ -33,7 +34,7 @@ module Flappi
 
         case type&.to_s
         when 'BOOLEAN'
-          src.is_a?(TrueClass) || src.is_a?(FalseClass) ? src : (src.size >= 1 && %w(1 Y T).include?(src[0].to_s.upcase))
+          src.is_a?(TrueClass) || src.is_a?(FalseClass) ? src : (src.size >= 1 && %w[1 Y T].include?(src[0].to_s.upcase))
         when 'BigDecimal', 'Float'
           src.to_f
         when 'Integer'

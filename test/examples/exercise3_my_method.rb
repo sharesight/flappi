@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Examples
   module Exercise3MyMethod
     include Flappi::Definition
@@ -16,9 +17,9 @@ module Examples
       end
 
       response_example <<~END_EXAMPLE
-      {
-        ok: true
-      }
+        {
+          ok: true
+        }
       END_EXAMPLE
     end
 

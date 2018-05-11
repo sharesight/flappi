@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Build API documentation from a definition
 require 'active_support/inflector'
 
@@ -48,9 +49,7 @@ module Flappi
       # handle dynamic field names by bracketing either 'doc_name' or the word 'dynamic'
       # with an underscore
       use_name = def_args[:name]
-      if def_args[:name].is_a?(Flappi::BuilderFactory::DocumentingStub)
-        use_name = '_' + (def_args[:doc_name] || 'dynamic') + '_'
-      end
+      use_name = '_' + (def_args[:doc_name] || 'dynamic') + '_' if def_args[:name].is_a?(Flappi::BuilderFactory::DocumentingStub)
 
       # puts "field @object_path=#{get_object_path} def_args=#{def_args}"
       @doc_targets.last << { name: peek_object_path.clone + [use_name],
@@ -89,8 +88,7 @@ module Flappi
       end
     end
 
-    def query(block)
-    end
+    def query(block); end
 
     private
 
@@ -113,7 +111,7 @@ module Flappi
 
     def object_one_or_many(*args_or_name, is_many, block)
       def_args = extract_definition_args(args_or_name)
-      raise 'Must specify name, inline_always or dynamic_key' unless [:name, :inline_always, :dynamic_key] & def_args.keys
+      raise 'Must specify name, inline_always or dynamic_key' unless %i[name inline_always dynamic_key] & def_args.keys
       return unless version_wanted(def_args)
 
       # puts "object_one_or_many @object_path=#{get_object_path} def_args=#{def_args}"
