@@ -87,11 +87,19 @@ module Integration
                        status: :not_acceptable }, @controller.last_render_params)
       end
 
-      should 'return an error when provoked' do
+      should 'return a string error when provoked' do
         @controller.params = { return_error: true }
         response = @controller.show
 
-        assert_equal('Eek!', response.status_message)
+        assert_equal('Eek!', response.status_error_info)
+        assert_equal(422, response.status_code)
+      end
+
+      should 'return an error hash when provoked' do
+        @controller.params = { return_error_hash: true }
+        response = @controller.show
+
+        assert_equal({ e: 'Fail', reason: 'wanted' }, response.status_error_info)
         assert_equal(422, response.status_code)
       end
     end

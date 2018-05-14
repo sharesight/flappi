@@ -58,7 +58,7 @@ module Flappi
         raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
 
         endpoint_supported_versions = controller.supported_versions
-        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
+        Flappi::Utils::Logger.d "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           validate_error = "Version #{full_version} not supported by endpoint"
@@ -83,14 +83,7 @@ module Flappi
 
       controller.respond_to do |format|
         format.json do
-          response_object = controller.respond
-          if response_object.respond_to?(:status_code)
-            controller.render json: { error: response_object.status_message }.to_json, plain: response_object.status_message, status: response_object.status_code
-          else
-            controller.render json: response_object, status: :ok
-          end
-
-          return response_object
+          return render_response_json(controller)
         end
       end
     end
@@ -213,12 +206,11 @@ module Flappi
       full_version = controller.params[:version]
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
-      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
       [definition_klass, endpoint_name, full_version]
     end
 
     def self.load_controller(controller, definition_klass, endpoint_name)
-      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
+      Flappi::Utils::Logger.d "  definition_klass = #{definition_klass}" if defined?(Rails)
 
       controller.singleton_class.send(:include, definition_klass)
       controller.defining_class = definition_klass
@@ -234,6 +226,19 @@ module Flappi
       unless endpoint_name == controller.endpoint_simple_name
         raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
+    end
+
+    def self.render_response_json(controller)
+      response_object = controller.respond
+      if response_object.respond_to?(:status_code)
+        error_info = response_object.status_error_info
+        response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }
+        controller.render json: response_hash.to_json, plain: error_info, status: response_object.status_code
+      else
+        controller.render json: response_object, status: :ok
+      end
+
+      response_object
     end
   end
 end
