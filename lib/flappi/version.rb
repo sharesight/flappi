@@ -1,5 +1,6 @@
-
 # frozen_string_literal: true
+
+require 'pry-byebug'
 
 module Flappi
   class Version
@@ -46,6 +47,7 @@ module Flappi
     end
 
     def >(other)
+      # puts "version #{self} > #{other} ?"
       return false if other.nil?
       return false unless other.is_a? Flappi::Version
 
@@ -74,6 +76,10 @@ module Flappi
 
     def <=(other)
       !(self > other)
+    end
+
+    def !=(other)
+      !(self == other)
     end
     # rubocop:enable Style/InverseMethods
 

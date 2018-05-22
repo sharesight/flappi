@@ -80,6 +80,14 @@ class Flappi::VersionTest < MiniTest::Test
     end
   end
 
+  context 'not equal with !=' do
+    should 'return falsewhen exactly same' do
+      va = Flappi::Version.new([1, 0], nil, nil)
+      vb = Flappi::Version.new([1, 0], nil, nil)
+      refute va != vb
+    end
+  end
+
   context 'comparators' do
     setup do
       @v2_0 = Flappi::Version.new([2, 0], nil, nil)

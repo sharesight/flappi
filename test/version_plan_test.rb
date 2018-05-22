@@ -117,6 +117,36 @@ class Flappi::VersionPlanTest < MiniTest::Test
         assert_equal '2.1.0-mobile', matched.last.to_s
       end
 
+      should 'work with ne' do
+        matched = Examples::V2VersionPlan.expand_version_rule :ne, 'v2.1-mobile'
+        assert_equal 5, matched.size
+        assert_equal '2.0.0', matched[0].to_s
+        assert_equal '2.0.0-mobile', matched[1].to_s
+        assert_equal '2.1.0', matched[2].to_s
+        assert_equal '2.1.0-ember', matched[3].to_s
+        assert_equal '2.1.0-flat', matched[4].to_s
+      end
+
+      should 'work with after' do
+        matched = Examples::V2VersionPlan.expand_version_rule :after, 'v2.0-'
+        assert_equal 1, matched.size
+        assert_equal '2.1.0', matched.last.to_s
+      end
+
+      should 'work with ge' do
+        matched = Examples::V2VersionPlan.expand_version_rule :ge, 'v2.0-'
+        assert_equal 2, matched.size
+        assert_equal '2.0.0', matched[0].to_s
+        assert_equal '2.1.0', matched[1].to_s
+      end
+
+      should 'work with before' do
+        matched = Examples::V2VersionPlan.expand_version_rule :before, 'v2.1-*'
+        assert_equal 2, matched.size
+        assert_equal '2.0.0', matched.first.to_s
+        assert_equal '2.0.0-mobile', matched.last.to_s
+      end
+
       should 'fail for unsupported rule type' do
         exception = assert_raises(RuntimeError) { Examples::V2VersionPlan.expand_version_rule :greater_than, 'v2.*.*-mobile' }
         assert_equal 'Rule type greater_than not supported yet, sorry...', exception.message

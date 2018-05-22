@@ -6,7 +6,7 @@ module Flappi
     attr_reader :versions_array
 
     delegate :to_json, to: :string_versions
-    delegate :size, :first, :last, :select, to: :versions_array
+    delegate :size, :first, :last, :select, :[], :to_a, to: :versions_array
 
     def initialize(versions_array)
       #        puts "Versions: #{versions_array}"
