@@ -16,7 +16,7 @@
 
 
 @apiParamExample Request Example
-    {GET} "/examples/exercise2"
+{GET} "/examples/exercise2"
 
 
 @apiSuccess (200 Success) {String} all

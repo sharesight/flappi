@@ -11,7 +11,7 @@ module Examples
       title 'Exercise API 4'
       description 'Exercise definition DSL #4'
 
-      request_example('/api/examples/exercise4')
+      request_example('"/api/examples/exercise4"')
       response_example <<~END_EXAMPLE
         {
         }

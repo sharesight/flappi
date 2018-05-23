@@ -30,7 +30,7 @@ module Examples
       link :other, 'other/:defaulted/other_api?extra=:extra'
       link :self
 
-      request_example('/api/examples/exercise?extra=100')
+      request_example('"/api/examples/exercise?extra=100"')
       response_example <<~END_EXAMPLE
         {
           extra_plus_1: 101,

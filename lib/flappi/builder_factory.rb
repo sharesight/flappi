@@ -146,7 +146,7 @@ module Flappi
           api_group: documenter_definition.endpoint_info[:group],
           api_version: documenter_definition.document_as_version(for_version),
           response_example: documenter_definition.endpoint_info[:response_example],
-          request_example: documenter_definition.endpoint_info[:request_example] || path
+          request_example: documenter_definition.endpoint_info[:request_example] || "\"#{path}\""
         },
 
         # Query parameters, etc
