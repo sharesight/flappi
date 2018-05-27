@@ -19,7 +19,7 @@
 
 
 @apiParamExample Request Example
-    {GET} "/api/examples/exercise?extra=100"
+{GET} "/api/examples/exercise?extra=100"
 
 
 @apiSuccess (200 Success) {String} extra

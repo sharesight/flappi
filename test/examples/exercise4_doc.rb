@@ -13,7 +13,7 @@
 
 
 @apiParamExample Request Example
-    {GET} "/api/examples/exercise4"
+{GET} "/api/examples/exercise4"
 
 
 @apiSuccess (200 Success) {String} a_not
