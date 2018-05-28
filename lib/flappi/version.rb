@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry-byebug'
-
 module Flappi
   class Version
     attr_reader :version_array

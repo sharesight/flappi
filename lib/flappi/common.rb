@@ -101,7 +101,7 @@ module Flappi
       version_rule = def_args[:version]
 
       supported_versions = version_plan.expand_version_rule(*version_rule)
-      # puts "version check #{supported_versions} includes #{requested_version}"
+      # puts "version check #{version_rule.inspect} => #{supported_versions} includes #{requested_version}"
       supported_versions.include?(requested_version)
     end
   end
