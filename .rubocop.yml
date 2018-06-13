@@ -57,3 +57,6 @@ Style/StringLiterals:
 Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
+
+Layout/AlignParameters:
+  Enabled: false
