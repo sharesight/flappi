@@ -11,14 +11,14 @@ namespace :flappi do
       target_paths = Flappi.configuration.doc_target_paths || Flappi.configuration.doc_target_path
       target_paths = { '*' => target_paths } unless target_paths.is_a?(Hash)
 
-      Flappi.configuration.definition_paths.each do |path|
-        target_paths.each do |document_version, to_path|
-          Flappi::Documenter.document 'app/controllers',
-                                      path.camelize.constantize,
-                                      to_path,
-                                      document_version,
-                                      Flappi::ApiDocFormatter
-        end
+      target_paths.each do |document_version, to_path|
+        paths = Flappi.configuration.definition_paths[document_version]
+        paths = paths.kind_of?(Array) ? paths : [paths]
+        Flappi::Documenter.document 'app/controllers',
+          paths.first.camelize.constantize,
+          to_path,
+          document_version,
+          Flappi::ApiDocFormatter
       end
     end
   end
