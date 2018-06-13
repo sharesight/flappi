@@ -13,7 +13,7 @@ namespace :flappi do
 
       target_paths.each do |document_version, to_path|
         paths = Flappi.configuration.definition_paths[document_version]
-        paths = paths.kind_of?(Array) ? paths : [paths]
+        paths = paths.is_a?(Array) ? paths : [paths]
         Flappi::Documenter.document 'app/controllers',
           paths.first.camelize.constantize,
           to_path,

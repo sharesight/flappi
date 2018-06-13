@@ -7,7 +7,7 @@ module Flappi
       issues = []
       # TODO: error handling for version not having definition_path
       paths = Flappi.configuration.definition_paths[version]
-      paths = paths.kind_of?(Array) ? paths : [paths]
+      paths = paths.is_a?(Array) ? paths : [paths]
       paths.each do |path|
         candidate_class = nil
 
