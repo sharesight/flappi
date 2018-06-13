@@ -3,10 +3,12 @@
 
 module Flappi
   module DefinitionLocator
-    def self.locate_class(endpoint_name)
+    def self.locate_class(endpoint_name, version)
       issues = []
-
-      Flappi.configuration.definition_paths.each do |path|
+      # TODO: error handling for version not having definition_path
+      paths = Flappi.configuration.definition_paths[version]
+      paths = paths.kind_of?(Array) ? paths : [paths]
+      paths.each do |path|
         candidate_class = nil
 
         begin

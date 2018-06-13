@@ -205,7 +205,7 @@ module Flappi
 
       full_version = controller.params[:version]
 
-      definition_klass = DefinitionLocator.locate_class(endpoint_name)
+      definition_klass = DefinitionLocator.locate_class(endpoint_name, full_version)
       [definition_klass, endpoint_name, full_version]
     end
 
