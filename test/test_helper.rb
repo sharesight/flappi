@@ -7,7 +7,7 @@ end
 
 require 'maxitest/autorun'
 require 'shoulda'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 
 require 'flappi'
 
