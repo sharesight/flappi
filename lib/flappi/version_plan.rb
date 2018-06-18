@@ -99,17 +99,19 @@ module Flappi
     # Given a version rule (defined against an endpoint), parse this into an array of supported versions
     # (for an endpoint or field)
     # rules are of the form:
-    # equals: version_number (can omit trailing minors or flavours which will be wildcarded)
-    # not: version_number (as above) - not supported yet
-    # before: version_number - not supported yet
-    # after: version_nunber - not supported yet
+    # equals, eq: version_number (can omit trailing minors or flavours which will be wildcarded)
+    # ne: version_number (as above)
+    # after, gt: version_nunber
+    # before, lt: version_number
+    # gte: version_nunber
+    # lte: version_nunber
     def expand_version_rule(*version_rule_args)
       version_rules = Flappi::Utils::ArgUtils.paired_args(*version_rule_args)
 
       supported_versions = []
       version_rules.each do |version_rule|
         case version_rule[0].to_sym
-        when :equals
+        when :equals, :eq
           supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
         when :ne
           supported_versions += available_version_definitions.versions_array.reject { |av| av == parse_version(version_rule[1]) }
@@ -117,9 +119,9 @@ module Flappi
           supported_versions += available_version_definitions.versions_array.select { |av| av > parse_version(version_rule[1]) }
         when :before, :lt
           supported_versions += available_version_definitions.versions_array.select { |av| av < parse_version(version_rule[1]) }
-        when :ge
+        when :gte
           supported_versions += available_version_definitions.versions_array.select { |av| av >= parse_version(version_rule[1]) }
-        when :le
+        when :lte
           supported_versions += available_version_definitions.versions_array.select { |av| av <= parse_version(version_rule[1]) }
         else
           raise "Rule type #{version_rule[0]} not supported yet, sorry..."
