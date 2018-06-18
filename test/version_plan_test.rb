@@ -8,8 +8,10 @@ class Flappi::VersionPlanTest < MiniTest::Test
   context 'using v2_version_plan' do
     should 'return available_version_definitions' do
       expect_versions = Examples::V2VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-ember;v2.1-flat;v2.1-mobile')
-      assert_equal expect_versions,
-                   Examples::V2VersionPlan.available_version_definitions
+
+      expect_versions.to_a.each do |version|
+        assert_includes Examples::V2VersionPlan.available_version_definitions, version
+      end
     end
 
     should 'parse and stringise a version' do

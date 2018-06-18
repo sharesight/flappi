@@ -22,6 +22,10 @@ module Flappi
       "[#{string_versions.join(', ')}]"
     end
 
+    def to_a
+      @versions_array
+    end
+
     def ==(other)
       versions_array == other.versions_array
     end
