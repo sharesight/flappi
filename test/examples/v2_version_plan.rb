@@ -6,9 +6,9 @@ module Examples
 
     # Version numbers are of the form [text][N][,]+[-flavour]
 
-    version 'V2.0.0'
+    version 'v2.0.0'
 
-    version 'V2.1.0' do
+    version 'v2.1.0' do
       flavour :ember
       flavour :flat
     end

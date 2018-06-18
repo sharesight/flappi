@@ -36,7 +36,7 @@ module Integration
     context 'Response to Exercise3' do
       should 'respond with ok to posted data' do
         controller = Examples::Exercise3Controller.new
-        controller.params = { required: 2.718, version: 'V2.1.0-mobile' }
+        controller.params = { required: 2.718, version: 'v2.1.0-mobile' }
         response = controller.my_method
 
         assert_equal({ 'ok' => true },

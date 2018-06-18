@@ -42,7 +42,7 @@ module Integration
 
       should 'respond with version 2.1 result' do
         controller = Examples::Exercise2VersionedController.new
-        controller.params = { required: 2.718, version: 'V2.1.0-mobile' }
+        controller.params = { required: 2.718, version: 'v2.1.0-mobile' }
         response = controller.show
 
         assert_equal({ 'all' => 'all_versions', 'v2_1_only' => 2.1 },
@@ -51,7 +51,7 @@ module Integration
 
       should 'respond with version 2.0 result' do
         controller = Examples::Exercise2VersionedController.new
-        controller.params = { required: 3.142, version: 'V2.0-mobile' }
+        controller.params = { required: 3.142, version: 'v2.0-mobile' }
         response = controller.show
 
         assert_equal({ 'all' => 'all_versions', 'v2_0_only' => 2.0 },
@@ -60,7 +60,7 @@ module Integration
 
       should 'fail for missing required parameter' do
         controller = Examples::Exercise2VersionedController.new
-        controller.params = { version: 'V2.0-mobile' }
+        controller.params = { version: 'v2.0-mobile' }
         response = controller.show
 
         refute response
@@ -71,7 +71,7 @@ module Integration
 
       should 'fail when parameter fails validation' do
         controller = Examples::Exercise2VersionedController.new
-        controller.params = { required: 123.4, version: 'V2.0-mobile' }
+        controller.params = { required: 123.4, version: 'v2.0-mobile' }
         response = controller.show
 
         refute response
@@ -82,7 +82,7 @@ module Integration
 
       should 'fail for unsupported version' do
         controller = Examples::Exercise2VersionedController.new
-        controller.params = { required: 1.414, version: 'V1.9' }
+        controller.params = { required: 1.414, version: 'v1.9' }
         response = controller.show
 
         refute response

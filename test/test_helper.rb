@@ -13,10 +13,10 @@ require 'flappi'
 
 Flappi.configure do |conf|
   conf.definition_paths = {
-    'V2.0' => 'examples',
-    'V2.0-mobile' => 'examples',
-    'V2.1.0-mobile' => 'examples',
-    'V1.9' => 'examples',
+    'v2.0' => 'examples',
+    'v2.0-mobile' => 'examples',
+    'v2.1.0-mobile' => 'examples',
+    'v1.9' => 'examples',
   }
   conf.version_plan = nil
 
