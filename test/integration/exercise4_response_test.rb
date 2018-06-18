@@ -45,8 +45,7 @@ module Integration
       should 'respond with a composed block' do
         response = Examples::Exercise4Controller.new.show
 
-        assert_equal({ 'a_not' => 100, 'b_how' => 100 },
-                     response)
+        assert_equal({ 'a_not' => 100, 'b_how' => 100 }, response)
       end
     end
   end
