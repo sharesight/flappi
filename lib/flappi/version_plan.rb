@@ -103,8 +103,8 @@ module Flappi
     # ne: version_number (as above)
     # after, gt: version_nunber
     # before, lt: version_number
-    # gte: version_nunber
-    # lte: version_nunber
+    # gte, ge: version_nunber
+    # lte, le: version_nunber
     def expand_version_rule(*version_rule_args)
       version_rules = Flappi::Utils::ArgUtils.paired_args(*version_rule_args)
 
@@ -119,9 +119,9 @@ module Flappi
           supported_versions += available_version_definitions.versions_array.select { |av| av > parse_version(version_rule[1]) }
         when :before, :lt
           supported_versions += available_version_definitions.versions_array.select { |av| av < parse_version(version_rule[1]) }
-        when :gte
+        when :gte, :ge
           supported_versions += available_version_definitions.versions_array.select { |av| av >= parse_version(version_rule[1]) }
-        when :lte
+        when :lte, :le
           supported_versions += available_version_definitions.versions_array.select { |av| av <= parse_version(version_rule[1]) }
         else
           raise "Rule type #{version_rule[0]} not supported yet, sorry..."
