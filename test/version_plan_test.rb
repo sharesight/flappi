@@ -107,56 +107,49 @@ class Flappi::VersionPlanTest < MiniTest::Test
 
     context 'parse version rules' do
       should 'work without wildcard' do
-        matched = Examples::VersionPlan.expand_version_rule :equals, 'v2.1-mobile'
+        matched = Examples::VersionPlan.expand_version_rule equals: 'v2.1-mobile'
         assert_equal 1, matched.size
         assert_equal '2.1.0-mobile', matched.first.to_s
       end
 
       should 'work with wildcard' do
-        matched = Examples::VersionPlan.expand_version_rule :equals, 'v2.*.*-mobile'
+        matched = Examples::VersionPlan.expand_version_rule equals: 'v2.*.*-mobile'
         assert_equal 2, matched.size
         assert_equal '2.0.0-mobile', matched.first.to_s
         assert_equal '2.1.0-mobile', matched.last.to_s
       end
 
       should 'work with ne' do
-        matched = Examples::VersionPlan.expand_version_rule :ne, 'v2.1-mobile'
-        assert_equal 5, matched.size
-        assert_equal '2.0.0', matched[0].to_s
-        assert_equal '2.0.0-mobile', matched[1].to_s
-        assert_equal '2.1.0', matched[2].to_s
-        assert_equal '2.1.0-ember', matched[3].to_s
-        assert_equal '2.1.0-flat', matched[4].to_s
+        matched = Examples::VersionPlan.expand_version_rule ne: 'v2.1-mobile'
+        assert_equal 6, matched.size
+        assert_equal matched.map(&:to_s), ['2.0.0', '2.0.0-mobile', '2.1.0', '2.1.0-ember', '2.1.0-flat', '3.0.0']
       end
 
       should 'work with multiple rules ored together' do
-        matched = Examples::VersionPlan.expand_version_rule :equals, 'v2.0-', :ge, 'v2.1-*'
-        assert_equal 5, matched.size
-        assert_equal '2.0.0', matched[0].to_s
-        assert_equal '2.1.0', matched[1].to_s
-        assert_equal '2.1.0-ember', matched[2].to_s
-        assert_equal '2.1.0-flat', matched[3].to_s
-        assert_equal '2.1.0-mobile', matched[4].to_s
+        matched = Examples::VersionPlan.expand_version_rule equals: 'v2.0-', ge: 'v2.1-*'
+        assert_equal 6, matched.size
+        assert_equal matched.map(&:to_s), ['2.0.0', '2.1.0', '2.1.0-ember', '2.1.0-flat', '2.1.0-mobile', '3.0.0']
       end
 
       should 'work with after' do
-        matched = Examples::VersionPlan.expand_version_rule :after, 'v2.0-'
-        assert_equal 1, matched.size
-        assert_equal '2.1.0', matched.last.to_s
+        matched = Examples::VersionPlan.expand_version_rule after: 'v2.0-'
+
+        assert_equal 2, matched.size
+        assert_equal matched.map(&:to_s), ['2.1.0', '3.0.0']
       end
 
       should 'work with ge' do
-        matched = Examples::VersionPlan.expand_version_rule :ge, 'v2.0-'
-        assert_equal 2, matched.size
-        assert_equal '2.0.0', matched[0].to_s
-        assert_equal '2.1.0', matched[1].to_s
+        matched = Examples::VersionPlan.expand_version_rule ge: 'v2.0-'
+
+        assert_equal 3, matched.size
+        assert_equal matched.map(&:to_s), ['2.0.0', '2.1.0', '3.0.0']
       end
 
       should 'work with before' do
-        matched = Examples::VersionPlan.expand_version_rule :before, 'v2.1-*'
+        matched = Examples::VersionPlan.expand_version_rule before: 'v2.1-*'
+
         assert_equal 2, matched.size
-        assert_equal '2.0.0', matched.first.to_s
-        assert_equal '2.0.0-mobile', matched.last.to_s
+        assert_equal matched.map(&:to_s), ['2.0.0', '2.0.0-mobile']
       end
 
       should 'fail for unsupported rule type' do
