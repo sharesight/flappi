@@ -5,7 +5,7 @@ require_relative '../test_helper'
 require 'pp'
 
 require_relative '../examples/exercise3_my_method'
-require_relative '../examples/v2_version_plan'
+require_relative '../examples/version_plan'
 require_relative '../examples/exercise_model'
 
 module Examples

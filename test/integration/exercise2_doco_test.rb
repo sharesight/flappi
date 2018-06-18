@@ -4,7 +4,7 @@ require_relative '../test_helper'
 
 require 'pp'
 
-require_relative '../examples/v2_version_plan'
+require_relative '../examples/version_plan'
 require_relative '../examples/exercise_model'
 require_relative '../examples/exercise2_versioned'
 
@@ -13,7 +13,7 @@ module Integration
     context 'Documentation of Exercise2' do
       setup do
         Flappi.configure do |conf|
-          conf.version_plan = Examples::V2VersionPlan
+          conf.version_plan = Examples::VersionPlan
         end
       end
 

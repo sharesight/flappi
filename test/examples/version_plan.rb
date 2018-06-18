@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Examples
-  class V2VersionPlan
+  class VersionPlan
     extend Flappi::VersionPlan
 
     # Version numbers are of the form [text][N][,]+[-flavour]

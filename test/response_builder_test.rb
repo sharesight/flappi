@@ -3,7 +3,7 @@
 require_relative 'test_helper'
 require 'pp'
 
-require_relative 'examples/v2_version_plan'
+require_relative 'examples/version_plan'
 
 class TestDef
   include ::Flappi::Definition
@@ -22,8 +22,8 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       @response_builder.source_definition = TestDef.new
       @response_builder.controller_params = { portfolio_id: '123', extra: '456', auth_token: 'xyzzy', controller: 'test', action: 'test' }
       @response_builder.controller_query_parameters = {}
-      @response_builder.version_plan = Examples::V2VersionPlan
-      @response_builder.requested_version = Examples::V2VersionPlan.parse_version('v2.1')
+      @response_builder.version_plan = Examples::VersionPlan
+      @response_builder.requested_version = Examples::VersionPlan.parse_version('v2.1')
 
       @test_proc = ->(_cp) { { a: 1, b: 200 } }
     end
