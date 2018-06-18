@@ -128,7 +128,7 @@ class Flappi::VersionPlanTest < MiniTest::Test
       end
 
       should 'work with multiple rules ored together' do
-        matched = Examples::V2VersionPlan.expand_version_rule :equals, 'v2.0-', :ge, 'v2.1-*'
+        matched = Examples::V2VersionPlan.expand_version_rule equals: 'v2.0-', gte: 'v2.1-*'
         assert_equal 5, matched.size
         assert_equal '2.0.0', matched[0].to_s
         assert_equal '2.1.0', matched[1].to_s
@@ -144,7 +144,8 @@ class Flappi::VersionPlanTest < MiniTest::Test
       end
 
       should 'work with ge' do
-        matched = Examples::V2VersionPlan.expand_version_rule :ge, 'v2.0-'
+        matched = Examples::V2VersionPlan.expand_version_rule gte: 'v2.0-'
+
         assert_equal 2, matched.size
         assert_equal '2.0.0', matched[0].to_s
         assert_equal '2.1.0', matched[1].to_s
