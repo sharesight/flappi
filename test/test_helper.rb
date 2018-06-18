@@ -16,7 +16,7 @@ Flappi.configure do |conf|
     'v2.0' => 'examples',
     'v2.0-mobile' => 'examples',
     'v2.1.0-mobile' => 'examples',
-    'v3.0' => ['examples', 'examples'],
+    'v3.0' => ['examples', 'examples2'],
     'v1.9' => 'examples',
     'default' => 'examples' # empty, because half the tests don't have versions...?
   }
