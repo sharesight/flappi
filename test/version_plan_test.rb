@@ -135,7 +135,7 @@ class Flappi::VersionPlanTest < MiniTest::Test
         assert_equal matched.map(&:to_s), ['2.1.0']
       end
 
-      should 'work with ge' do
+      should 'work with gte' do
         matched = Examples::V2VersionPlan.expand_version_rule gte: 'v2.0-'
 
         assert_equal 2, matched.size
