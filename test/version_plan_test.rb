@@ -9,7 +9,7 @@ class Flappi::VersionPlanTest < MiniTest::Test
     should 'return available_version_definitions' do
       expect_versions = Examples::VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-ember;v2.1-flat;v2.1-mobile')
 
-      expect_versions.to_a.each do |version|
+      expect_versions.each do |version|
         assert_includes Examples::VersionPlan.available_version_definitions, version
       end
     end

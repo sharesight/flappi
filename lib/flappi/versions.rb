@@ -6,7 +6,8 @@ module Flappi
     attr_reader :versions_array
 
     delegate :to_json, to: :string_versions
-    delegate :size, :first, :last, :select, to: :versions_array
+    delegate :size, :first, :last, :select, :each, :[], :to_a, to: :versions_array
+
 
     def initialize(versions_array)
       #        puts "Versions: #{versions_array}"
@@ -20,10 +21,6 @@ module Flappi
 
     def to_s
       "[#{string_versions.join(', ')}]"
-    end
-
-    def to_a
-      @versions_array
     end
 
     def ==(other)
