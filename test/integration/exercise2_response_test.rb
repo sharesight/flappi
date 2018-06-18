@@ -86,8 +86,8 @@ module Integration
         response = controller.show
 
         refute response
-        assert_equal({ json: '{"error":"Version V1.9 not supported by endpoint"}',
-                       plain: 'Version V1.9 not supported by endpoint', status: :not_acceptable },
+        assert_equal({ json: '{"error":"Version v1.9 not supported by endpoint"}',
+                       plain: 'Version v1.9 not supported by endpoint', status: :not_acceptable },
                      controller.last_render_params)
       end
     end
