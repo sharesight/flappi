@@ -54,6 +54,9 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   Enabled: false
 
+Style/WordArray:
+  Enabled: false
+
 Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
