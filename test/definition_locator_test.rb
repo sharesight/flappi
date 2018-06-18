@@ -14,6 +14,23 @@ class ::Flappi::DefinitionLocatorTest < MiniTest::Test
       assert_equal Examples::Exercise1, located_class
     end
 
+    should 'Raise an error with a missing version' do
+      Flappi.configure do |conf|
+        conf.definition_paths = {
+          'v2.0' => 'examples',
+          'v3.0' => 'examples'
+        }
+      end
+
+      located_class = nil
+      ex = assert_raises RuntimeError do
+        located_class = Flappi::DefinitionLocator.locate_class('Exercise1', 'v-bad-version')
+      end
+
+      assert_equal 'Unable to find a definition_path for v-bad-version.', ex.message
+      refute located_class
+    end
+
     should 'Raise an error when no valid definition' do
       Flappi.configure do |conf|
         conf.definition_paths = {
