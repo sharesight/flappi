@@ -6,6 +6,7 @@ module Flappi
     def self.locate_class(endpoint_name, version)
       issues = []
 
+      version ||= 'default'
       paths = Flappi.configuration.definition_paths[version]
       raise "Unable to find a definition_path for #{version}." unless paths
 
