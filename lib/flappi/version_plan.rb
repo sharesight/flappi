@@ -111,6 +111,16 @@ module Flappi
         case version_rule[0].to_sym
         when :equals
           supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
+        when :ne
+          supported_versions += available_version_definitions.versions_array.reject { |av| av == parse_version(version_rule[1]) }
+        when :after, :gt
+          supported_versions += available_version_definitions.versions_array.select { |av| av > parse_version(version_rule[1]) }
+        when :before, :lt
+          supported_versions += available_version_definitions.versions_array.select { |av| av < parse_version(version_rule[1]) }
+        when :ge
+          supported_versions += available_version_definitions.versions_array.select { |av| av >= parse_version(version_rule[1]) }
+        when :le
+          supported_versions += available_version_definitions.versions_array.select { |av| av <= parse_version(version_rule[1]) }
         else
           raise "Rule type #{version_rule[0]} not supported yet, sorry..."
         end
