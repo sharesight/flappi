@@ -244,6 +244,10 @@ module Flappi
       @query_block = block
     end
 
+    def return_no_content
+      @status_code = 204
+    end
+
     def return_error(status_code, error_info)
       @status_code = status_code
       @status_error_info = error_info
