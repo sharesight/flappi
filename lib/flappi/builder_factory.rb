@@ -230,6 +230,16 @@ module Flappi
 
     def self.render_response_json(controller)
       response_object = controller.respond
+
+      # return 204 no content when no content is given rather than parsing it as either `null` or `{}` with a 200 response.
+      # if you want to return an empty object (`{}`), just send an empty object.
+      # you can force a 204 with `status_code: 204` as well, which will strip all content and exit
+      if !response_object || (
+        response_object&.respond_to?(:status_code) && (response_object[:status_code] == :no_content || response_object[:status_code] == 204)
+      )
+        return controller.head :no_content
+      end
+
       if response_object.respond_to?(:status_code)
         error_info = response_object.status_error_info
         response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }
