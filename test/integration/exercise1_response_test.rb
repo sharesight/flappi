@@ -7,28 +7,13 @@ require 'pp'
 require_relative '../examples/exercise1'
 
 module Examples
-  class Exercise1Controller
-    attr_accessor :params
-    attr_accessor :last_render_params
-
+  class Exercise1Controller < ExampleController
     def initialize
       self.params = { extra: 50 }
     end
 
-    def show
-      Flappi.build_and_respond(self)
-    end
-
     def request
       OpenStruct.new(query_parameters: params, url: 'http://test.api/exercise1')
-    end
-
-    def respond_to
-      yield JsonFormatter.new
-    end
-
-    def render(params)
-      self.last_render_params = params
     end
   end
 end
