@@ -42,6 +42,7 @@ module Examples
     # this is a stub of a controller, think ActionController
     attr_accessor :params
     attr_accessor :last_render_params
+    attr_accessor :last_head_params
 
     def initialize
       self.params = {}
@@ -61,6 +62,10 @@ module Examples
 
     def render(params)
       self.last_render_params = params
+    end
+
+    def head(params)
+      self.last_head_params = params
     end
   end
 end
