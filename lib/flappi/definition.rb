@@ -409,6 +409,11 @@ module Flappi
       @delegate.query(block)
     end
 
+    # From inside a query, return 204 NO CONTENT
+    def return_no_content
+      @delegate.return_no_content if @delegate.respond_to?(:return_no_content)
+    end
+
     # From inside a query, return an error
     # @param status_code (Integer) an HTTP status code to return
     # @param error_info (Object) a message String or an error hash to return
