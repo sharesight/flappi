@@ -9,9 +9,7 @@ require_relative '../examples/v2_version_plan'
 require_relative '../examples/exercise_model'
 
 module Examples
-  class Exercise3Controller
-    attr_accessor :params
-    attr_accessor :last_render_params
+  class Exercise3Controller < ExampleController
 
     def my_method
       Flappi.build_and_respond(self, :my_method)
@@ -21,13 +19,6 @@ module Examples
       OpenStruct.new(query_parameters: params, raw_post: 'This is raw post data')
     end
 
-    def respond_to
-      yield JsonFormatter.new
-    end
-
-    def render(params)
-      self.last_render_params = params
-    end
   end
 end
 

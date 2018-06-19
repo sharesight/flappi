@@ -9,25 +9,7 @@ require_relative '../examples/v2_version_plan'
 require_relative '../examples/exercise_model'
 
 module Examples
-  class Exercise2VersionedController
-    attr_accessor :params
-    attr_accessor :last_render_params
-
-    def show
-      Flappi.build_and_respond(self)
-    end
-
-    def request
-      OpenStruct.new(query_parameters: params)
-    end
-
-    def respond_to
-      yield JsonFormatter.new
-    end
-
-    def render(params)
-      self.last_render_params = params
-    end
+  class Exercise2VersionedController < ExampleController
   end
 end
 

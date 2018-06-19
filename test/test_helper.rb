@@ -36,3 +36,31 @@ class JsonFormatter
     yield
   end
 end
+
+module Examples
+  class ExampleController
+    # this is a stub of a controller, think ActionController
+    attr_accessor :params
+    attr_accessor :last_render_params
+
+    def initialize
+      self.params = {}
+    end
+
+    def show
+      Flappi.build_and_respond(self)
+    end
+
+    def request
+      OpenStruct.new(query_parameters: params)
+    end
+
+    def respond_to
+      yield JsonFormatter.new
+    end
+
+    def render(params)
+      self.last_render_params = params
+    end
+  end
+end
