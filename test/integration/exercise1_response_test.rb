@@ -8,7 +8,6 @@ require_relative '../examples/exercise1'
 
 module Examples
   class Exercise1Controller < ExampleController
-
     def initialize
       self.params = { extra: 50 }
     end
@@ -16,7 +15,6 @@ module Examples
     def request
       OpenStruct.new(query_parameters: params, url: 'http://test.api/exercise1')
     end
-
   end
 end
 

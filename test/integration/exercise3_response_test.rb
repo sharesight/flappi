@@ -10,7 +10,6 @@ require_relative '../examples/exercise_model'
 
 module Examples
   class Exercise3Controller < ExampleController
-
     def my_method
       Flappi.build_and_respond(self, :my_method)
     end
@@ -18,7 +17,6 @@ module Examples
     def request
       OpenStruct.new(query_parameters: params, raw_post: 'This is raw post data')
     end
-
   end
 end
 

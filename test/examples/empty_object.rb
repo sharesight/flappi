@@ -4,8 +4,7 @@ module Examples
   module EmptyObject
     include Flappi::Definition
 
-    def endpoint
-    end
+    def endpoint; end
 
     def respond
       build do
