@@ -232,11 +232,8 @@ module Flappi
       response_object = controller.respond
 
       # return 204 no content when no content is given rather than parsing it as either `null` or `{}` with a 200 response.
-      # if you want to return an empty object (`{}`), just send an empty object.
-      # you can force a 204 with `status_code: 204` as well, which will strip all content and exit
-      if !response_object || (
-        response_object&.respond_to?(:status_code) && (response_object[:status_code] == :no_content || response_object[:status_code] == 204)
-      )
+      # this is only when you omit the build, eg just `def respond; end`
+      if !response_object
         return controller.head :no_content
       end
 
