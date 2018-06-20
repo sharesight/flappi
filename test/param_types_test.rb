@@ -57,7 +57,7 @@ class Flappi::VersionsTest < MiniTest::Test
       should 'reject anything but Hash' do
         assert @param_types_test.validate_param({}, 'Hash')
         refute @param_types_test.validate_param("{}", 'Hash')
-        refute @param_types_test.validate_param([1,2], 'Hash')
+        refute @param_types_test.validate_param([1, 2], 'Hash')
         refute @param_types_test.validate_param("i'm a string", 'Hash')
         refute @param_types_test.validate_param(1, 'Hash')
       end
