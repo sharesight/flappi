@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/LineLength
 module Flappi
   # DSL for API construction.
@@ -63,10 +64,10 @@ module Flappi
 
     # @private
     def supported_versions
-      if @version_rule.nil?
-        version_plan.available_version_definitions
-      else
+      if @version_rule
         version_plan.expand_version_rule(@version_rule)
+      else
+        version_plan.available_version_definitions
       end
     end
 
@@ -281,8 +282,8 @@ module Flappi
 
     # Define the HTTP method - note however that Rails and the controller is responsible for routing
     # @param v (String) GET, POST, PUT, DELETE
-    def method(v)
-      endpoint_info[:method] = v
+    def http_method(v)
+      endpoint_info[:http_method] = v
     end
 
     # Define the title
@@ -349,6 +350,9 @@ module Flappi
     # Define an input parameter (inline or query string)
     # This is used to document and validate the parameters.
     #
+    # Chain processor &block to this to define a parameter processor
+    #  and/or validator &block for define a parameter validator
+    #
     # @overload param(name, options={})
     #   Define a named parameter
     #   @param name (String) the name of the parameter
@@ -361,6 +365,7 @@ module Flappi
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
+    #   @return [ParamProcessor] chain this with processor or validator
     #
     # @overload param(options={})
     #   Define a parameter
@@ -374,19 +379,25 @@ module Flappi
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
+    #   @return [ParamProcessor] chain this with processor or validator
     def param(*args_or_name, &block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
-      endpoint_info[:params] <<
-        { name: def_args[:name],
-          type: name_for_type(def_args[:type]),
-          default: def_args[:default],
-          default_doc: def_args[:default_doc],
-          description: def_args[:doc],
-          optional: def_args.key?(:optional) ? def_args[:optional] : true,
-          validation_block: block,
-          fail_code: def_args[:fail_code] }
+      param_def = { name: def_args[:name],
+                    type: name_for_type(def_args[:type]),
+                    default_doc: def_args[:default_doc],
+                    description: def_args[:doc],
+                    optional: def_args.key?(:optional) ? def_args[:optional] : true,
+                    validation_block: block,
+                    fail_code: def_args[:fail_code] }
+
+      # options that take nil
+      param_def[:default] = def_args[:default] if def_args.key?(:default)
+
+      endpoint_info[:params] << param_def
+
+      ParamProcessor.new(param_def)
     end
 
     # Define a query to be used to retrieve the source object for the response.
@@ -397,5 +408,13 @@ module Flappi
     def query(&block)
       @delegate.query(block)
     end
+
+    # From inside a query, return an error
+    # @param status_code (Integer) an HTTP status code to return
+    # @param error_info (Object) a message String or an error hash to return
+    def return_error(status_code, error_info)
+      @delegate.return_error(status_code, error_info) if @delegate.respond_to?(:return_error)
+    end
   end
 end
+# rubocop:enable Metrics/LineLength

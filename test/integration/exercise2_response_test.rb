@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../test_helper'
 
 require 'pp'
@@ -44,8 +45,7 @@ module Integration
         controller.params = { required: 2.718, version: 'V2.1.0-mobile' }
         response = controller.show
 
-        assert_equal({ json: { 'all' => 'all_versions', 'v2_1_only' => 2.1 },
-                       status: :ok },
+        assert_equal({ 'all' => 'all_versions', 'v2_1_only' => 2.1 },
                      response)
       end
 
@@ -54,8 +54,7 @@ module Integration
         controller.params = { required: 3.142, version: 'V2.0-mobile' }
         response = controller.show
 
-        assert_equal({ json: { 'all' => 'all_versions', 'v2_0_only' => 2.0 },
-                       status: :ok },
+        assert_equal({ 'all' => 'all_versions', 'v2_0_only' => 2.0 },
                      response)
       end
 
@@ -66,7 +65,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Parameter required is required"}',
-                       text: 'Parameter required is required', status: :not_acceptable },
+                       plain: 'Parameter required is required', status: :not_acceptable },
                      controller.last_render_params)
       end
 
@@ -77,7 +76,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Parameter required failed validation: Parameter v outside range 0..10"}',
-                       text: 'Parameter required failed validation: Parameter v outside range 0..10', status: :not_acceptable },
+                       plain: 'Parameter required failed validation: Parameter v outside range 0..10', status: :not_acceptable },
                      controller.last_render_params)
       end
 
@@ -88,7 +87,7 @@ module Integration
 
         refute response
         assert_equal({ json: '{"error":"Version V1.9 not supported by endpoint"}',
-                       text: 'Version V1.9 not supported by endpoint', status: :not_acceptable },
+                       plain: 'Version V1.9 not supported by endpoint', status: :not_acceptable },
                      controller.last_render_params)
       end
     end

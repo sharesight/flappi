@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'test_helper'
 require 'pp'
 
@@ -190,7 +191,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           end
 
           assert_equal({ 'links' => { 'self' => 'http://server/test/123/endpoint',
-                                      'other' => 'http://server/test/other_endpoint' } },
+                                      'other' => 'http://server/test/other_endpoint?extra=456' } },
                        built_response)
         end
       end
@@ -289,7 +290,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
       end
 
       should 'cast_value' do
-        assert_equal nil, @response_builder.cast_value(nil, Flappi::Definition::BOOLEAN, nil)
+        assert_nil @response_builder.cast_value(nil, Flappi::Definition::BOOLEAN, nil)
         assert_equal false, @response_builder.cast_value(false, Flappi::Definition::BOOLEAN, nil)
         assert_equal true, @response_builder.cast_value(1, Flappi::Definition::BOOLEAN, nil)
 
@@ -318,18 +319,19 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
         setup do
           @response_builder.controller_url = 'http://server/test/123/endpoint'
           @response_builder.source_definition.path '/:portfolio_id/endpoint'
+          @response_builder.controller_query_parameters = {}
         end
 
         should 'work on own path where no query params' do
-          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', {}, true)
+          assert_equal 'http://server/test/123/endpoint', @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', [])
         end
 
         should 'work on own path with query params' do
           @response_builder.controller_query_parameters = { a: '1', other: 'test' }
-          @response_builder.controller_params.merge @response_builder.controller_query_parameters
+          @response_builder.controller_params.merge! @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?a=1&other=test',
-                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint', { a: '1', other: 'test' }, true)
+                       @response_builder.send(:expand_self_path, '/:portfolio_id/endpoint', %i[a other])
         end
 
         should 'work on path with replaceable query params' do
@@ -337,13 +339,28 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_params.merge @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?b=88',
-                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint?b=88',
-                                              { a: '1', other: 'test', b: 100 }, false)
+                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint?b=88')
         end
 
         should 'work on referenced path where no query params' do
           assert_equal 'http://server/test/portfolios/123/ref',
-                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref', {}, true)
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref')
+        end
+
+        should 'work with a substitutable query param as Rails 4' do
+          @response_builder.controller_params = { 'consolidated' => false, 'portfolio_id' => 123 }
+          @response_builder.controller_query_parameters = { consolidated: false }
+
+          assert_equal 'http://server/test/portfolios/123?consolidated=false',
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated')
+        end
+
+        should 'work with a substitutable query param as Rails 5 (params = symbol hash)' do
+          @response_builder.controller_params = { consolidated: false, portfolio_id: 123 }
+          @response_builder.controller_query_parameters = { consolidated: false }
+
+          assert_equal 'http://server/test/portfolios/123?consolidated=false',
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated')
         end
       end
 

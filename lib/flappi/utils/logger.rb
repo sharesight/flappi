@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Flappi
   module Utils
     module Logger

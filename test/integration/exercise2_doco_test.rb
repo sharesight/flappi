@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../test_helper'
 
 require 'pp'
@@ -8,7 +9,7 @@ require_relative '../examples/exercise_model'
 require_relative '../examples/exercise2_versioned'
 
 module Integration
-  class Exercise2ResponseTest < MiniTest::Test
+  class Exercise2DocoTest < MiniTest::Test
     context 'Documentation of Exercise2' do
       setup do
         Flappi.configure do |conf|

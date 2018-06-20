@@ -1,18 +1,30 @@
 
 # frozen_string_literal: true
+
 module Flappi
   module DefinitionLocator
     def self.locate_class(endpoint_name)
+      issues = []
+
       Flappi.configuration.definition_paths.each do |path|
-        candidate_class = begin
-                            (path.camelize + '::' + endpoint_name).constantize
-                          rescue
-                            nil
-                          end
-        return candidate_class if candidate_class && candidate_class.included_modules.include?(Flappi::Definition)
+        candidate_class = nil
+
+        begin
+          candidate_class_name = (path.camelize + '::' + endpoint_name)
+          candidate_class = candidate_class_name.constantize
+        rescue StandardError => ex
+          issues << "Could not load #{candidate_class_name} because #{ex} was raised"
+        end
+
+        next unless candidate_class
+
+        return candidate_class if candidate_class.included_modules.include?(Flappi::Definition)
+
+        issues << "#{candidate_class_name} does not include Flappi::Definition"
       end
 
-      nil
+      issues = ['No matching classes found'] if issues.empty?
+      raise "Endpoint #{endpoint_name} is not defined to Flappi: #{issues.join('; ')}"
     end
   end
 end

@@ -1,8 +1,10 @@
 # frozen_string_literal: true
+
 # API builder factory - calls API definitions to run controller, generate docs, etc
 
 require 'recursive-open-struct'
 require 'active_support/json'
+require 'active_support/inflector'
 
 module Flappi
   module BuilderFactory
@@ -15,30 +17,40 @@ module Flappi
         [DocumentingStub.new]
       end
 
-      # rubocop:disable Style/MethodMissing
-      def method_missing(_meth_id, *_args, &_block)
-        # puts "Note: #{_meth_id.id2name} missing, called from stub"
-        DocumentingStub.new
+      def method_missing(meth_name, *args)
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+        super
       end
 
-      def self.method_missing(_meth_id, *_args, &_block)
-        # puts "Note: class.#{_meth_id.id2name} missing, called from stub"
-        DocumentingStub.new
+      def respond_to_missing?(method_name, _include_private = false)
+        !%i[to_ary method_missing respond_to_missing?].include?(method_name) || super
+      end
+
+      def self.method_missing(meth_name, *_args, &_block)
+        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+        super
+      end
+
+      def self.respond_to_missing?(method_name, _include_private = false)
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
     class DefDocumenter
-      def method_missing(_meth_id, *_args, &_block)
-        # puts "Note: #{_meth_id.id2name} missing"
-        DocumentingStub.new
+      def method_missing(meth_name, *args)
+        return DocumentingStub.new unless %i[method_missing respond_to_missing?].include? meth_name
+        super
+      end
+
+      def respond_to_missing?(method_name, _include_private = false)
+        !%i[method_missing respond_to_missing?].include?(method_name) || super
       end
     end
-    # rubocop:enable Style/MethodMissing
 
     # Call me from a controller to build the appropriate API response
     # and return it
-    def self.build_and_respond(controller)
-      definition_klass, endpoint_name, full_version = locate_definition(controller)
+    def self.build_and_respond(controller, method = nil)
+      definition_klass, endpoint_name, full_version = locate_definition(controller, method)
 
       load_controller(controller, definition_klass, endpoint_name)
 
@@ -46,33 +58,32 @@ module Flappi
         raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
 
         endpoint_supported_versions = controller.supported_versions
-        Rails.logger.debug "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
+        Flappi::Utils::Logger.d "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
         normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           validate_error = "Version #{full_version} not supported by endpoint"
           Flappi::Utils::Logger.w validate_error
-          controller.render json: { error: validate_error }.to_json, text: validate_error, status: :not_acceptable
+          controller.render json: { error: validate_error }.to_json, plain: validate_error, status: :not_acceptable
           return false
         end
 
         controller.requested_version = normalised_version
       end
 
-      actual_params = controller.params
       defined_params = controller.endpoint_info[:params]
-      apply_default_parameters actual_params, defined_params
+      apply_default_parameters controller.params, defined_params
+      process_parameters controller.params, defined_params
 
-      validate_error, fail_code = validate_parameters(actual_params, defined_params)
+      validate_error, fail_code = validate_parameters(controller.params, defined_params)
       if validate_error
         Flappi::Utils::Logger.w validate_error
-        controller.render json: { error: validate_error }.to_json, text: validate_error, status: fail_code || :not_acceptable
+        controller.render json: { error: validate_error }.to_json, plain: validate_error, status: fail_code || :not_acceptable
         return false
       end
 
       controller.respond_to do |format|
         format.json do
-          response_object = controller.respond
-          controller.render json: response_object, status: :ok
+          return render_response_json(controller)
         end
       end
     end
@@ -110,9 +121,7 @@ module Flappi
 
       documenter_definition.version_plan = Flappi.configuration.version_plan
 
-      unless documenter_definition.respond_to? :endpoint
-        raise 'API definition must include <endpoint> method'
-      end
+      raise 'API definition must include <endpoint> method' unless documenter_definition.respond_to? :endpoint
       documenter_definition.endpoint
 
       Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
@@ -130,14 +139,14 @@ module Flappi
         endpoint: {
           title: documenter_definition.endpoint_info[:title] || documenter_definition.endpoint_info[:description],
           description: documenter_definition.endpoint_info[:description] || documenter_definition.endpoint_info[:title],
-          method_name: documenter_definition.endpoint_info[:method],
+          method_name: documenter_definition.endpoint_info[:http_method],
           path: path,
           params: param_docs,
           api_name: definition.name.demodulize,
           api_group: documenter_definition.endpoint_info[:group],
           api_version: documenter_definition.document_as_version(for_version),
           response_example: documenter_definition.endpoint_info[:response_example],
-          request_example: documenter_definition.endpoint_info[:request_example] || path
+          request_example: documenter_definition.endpoint_info[:request_example] || "\"#{path}\""
         },
 
         # Query parameters, etc
@@ -154,9 +163,7 @@ module Flappi
 
         next unless param_supplied
 
-        unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
-          return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]]
-        end
+        return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
 
         actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
 
@@ -169,35 +176,41 @@ module Flappi
       nil
     end
 
+    # process parameters through any processors defined on the param
+    def self.process_parameters(actual_params, defined_params)
+      defined_params.each do |defined_param|
+        actual_params[defined_param[:name]] = defined_param[:processor_block].call(actual_params[defined_param[:name]]) if defined_param[:processor_block]
+      end
+    end
+
     # Merge in default values where one is defined and we don't have an actual parameter
     #
-    # If a parameter is blank and no defualt is defined, the parameter stays blank
+    # If a parameter is blank and no default is defined, the parameter stays blank
     # If we have no parameter and no default is defined, no parameter is passed on
     # If a parameter is either missing or blank and a default is defined, it is used
     def self.apply_default_parameters(actual_params, defined_params)
-      actual_params.merge! Hash[
-                               defined_params.select do |defined_param|
-                                 param = actual_params.dig(defined_param[:name])
-                                 (param.nil? || param == '') && defined_param[:default]
-                               end.map do |defined_param|
-                                 [defined_param[:name], defined_param[:default]]
-                               end
-                           ]
+      actual_params.merge!(defined_params.select do |defined_param|
+                             param = actual_params.dig(defined_param[:name])
+                             (param.nil? || param == '') && defined_param.key?(:default)
+                           end.map do |defined_param|
+                             [defined_param[:name], defined_param[:default]]
+                           end.to_h)
 
       Flappi::Utils::Logger.d "After apply_default_parameters actual_params=#{actual_params}"
     end
 
-    def self.locate_definition(controller)
+    def self.locate_definition(controller, method)
       endpoint_name = controller.class.name.match(/(?:::)?(\w+)Controller$/).captures.first
+      endpoint_name << method.to_s.camelize if method
+
       full_version = controller.params[:version]
 
       definition_klass = DefinitionLocator.locate_class(endpoint_name)
-      raise "Endpoint #{endpoint_name} is not defined to Flappi" unless definition_klass
       [definition_klass, endpoint_name, full_version]
     end
 
     def self.load_controller(controller, definition_klass, endpoint_name)
-      Rails.logger.debug "  definition_klass = #{definition_klass}" if defined?(Rails)
+      Flappi::Utils::Logger.d "  definition_klass = #{definition_klass}" if defined?(Rails)
 
       controller.singleton_class.send(:include, definition_klass)
       controller.defining_class = definition_klass
@@ -213,6 +226,19 @@ module Flappi
       unless endpoint_name == controller.endpoint_simple_name
         raise "BuilderFactory::build_and_respond config issue: controller defines endpoint as #{endpoint_name} and response object as #{controller.endpoint_simple_name}"
       end
+    end
+
+    def self.render_response_json(controller)
+      response_object = controller.respond
+      if response_object.respond_to?(:status_code)
+        error_info = response_object.status_error_info
+        response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }
+        controller.render json: response_hash.to_json, plain: error_info, status: response_object.status_code
+      else
+        controller.render json: response_object, status: :ok
+      end
+
+      response_object
     end
   end
 end

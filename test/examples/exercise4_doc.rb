@@ -1,32 +1,31 @@
 =begin
-@api {GET} /examples/exercise2.json Exercise API 2
+@api {GET} /examples/exercise1.json Exercise API 4
 
-@apiName Exercise2Versioned
+@apiName Exercise4
 @apiGroup Test_Exercise
-@apiVersion 2.0.0-mobile
+@apiVersion 0.0.0
 
 @apiDescription
-  Exercise definition DSL #2 with versioning
+  Exercise definition DSL #4
 
 @apiUse OAuthHeaders
 
 
-@apiParam {Float} required
-  
-
 
 @apiParamExample Request Example
-{GET} "/examples/exercise2"
+{GET} "/api/examples/exercise4"
 
 
-@apiSuccess (200 Success) {String} all
+@apiSuccess (200 Success) {String} a_not
+First field (not)
 
-
-@apiSuccess (200 Success) {String} v2_0_only
-
+@apiSuccess (200 Success) {String} b_how
+Second field (how)
 
 
 @apiSuccessExample {json} Response Example
+{
+}
 
 
 @apiError (400 Bad Request) {Integer} error

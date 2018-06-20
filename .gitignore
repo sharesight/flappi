@@ -1,4 +1,5 @@
 .DS_Store
+Gemfile.lock
 log/*
 tmp
 .autotest
@@ -9,7 +10,6 @@ test/coverage
 help
 .idea
 .rvmrc
-.ruby-version
 .ruby-gemset
 .settings/org.eclipse.core.resources.prefs
 .override_db
