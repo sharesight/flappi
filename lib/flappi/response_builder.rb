@@ -344,6 +344,8 @@ module Flappi
 
     def expand_uri_with_host(subst_uri)
       expanded = controller_base_url
+      return expanded if expanded.end_with?(subst_uri.path) # so we don't get `/holdings/1234/holdings/1234` when `controller_base_url` is wrong.
+
       expanded += '/' unless expanded[-1] == '/' || subst_uri.path[0] == '/'
       expanded + subst_uri.path
     end
