@@ -4,6 +4,12 @@ module Examples
   module Exercise1
     include Flappi::Definition
 
+    # Strictly to test which folder this came from.  This would not be in a real definition folder.
+    # see test/definition_locator_test.rb
+    def self.definition_source
+      'examples'
+    end
+
     def endpoint
       group 'Test_Exercise'
       http_method 'GET'

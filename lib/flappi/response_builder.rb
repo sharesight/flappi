@@ -244,6 +244,10 @@ module Flappi
       @query_block = block
     end
 
+    def return_no_content
+      @status_code = 204
+    end
+
     def return_error(status_code, error_info)
       @status_code = status_code
       @status_error_info = error_info
@@ -308,7 +312,8 @@ module Flappi
 
     def controller_base_url
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
-      path_matcher = Regexp.new source_definition.endpoint_info[:path].gsub(/\/:\w+\//, '\/[^\/]+\/')
+      path = source_definition.endpoint_info[:path].gsub(/\/$/, '') # remove trailing slash
+      path_matcher = Regexp.new(path.gsub(/\/:\w+/, '\/[^\/]+')) # converts `/user/:user_id` into `/user/[^\/]+`
 
       # puts "Using matcher #{path_matcher} on #{controller_url}"
       matches = controller_url.match(path_matcher)

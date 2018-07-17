@@ -205,7 +205,7 @@ module Flappi
 
       full_version = controller.params[:version]
 
-      definition_klass = DefinitionLocator.locate_class(endpoint_name)
+      definition_klass = DefinitionLocator.locate_class(endpoint_name, full_version)
       [definition_klass, endpoint_name, full_version]
     end
 
@@ -230,6 +230,12 @@ module Flappi
 
     def self.render_response_json(controller)
       response_object = controller.respond
+
+      # return 204 no content when no content is given rather than parsing it as either `null` or `{}` with a 200 response.
+      # this is only when you omit the build, eg just `def respond; end`
+      return controller.head :no_content unless response_object
+      return controller.head :no_content if response_object.respond_to?(:status_code) && response_object.status_code == 204
+
       if response_object.respond_to?(:status_code)
         error_info = response_object.status_error_info
         response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }

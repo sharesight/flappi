@@ -3,10 +3,17 @@
 
 module Flappi
   module DefinitionLocator
-    def self.locate_class(endpoint_name)
+    def self.locate_class(endpoint_name, version)
       issues = []
 
-      Flappi.configuration.definition_paths.each do |path|
+      version ||= 'default'
+      paths = Flappi.configuration.definition_paths[version]
+      raise "Unable to find a definition_path for #{version}." unless paths
+
+      # Ensure an array as a definition_path may be a string or array
+      paths = paths.is_a?(Array) ? paths : [paths]
+
+      paths.each do |path|
         candidate_class = nil
 
         begin

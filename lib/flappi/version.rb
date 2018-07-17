@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Flappi
@@ -39,21 +38,62 @@ module Flappi
         lhs = @version_array[i]
         rhs = other.version_array[i]
 
-        return false unless compare_numeric(lhs, rhs)
+        return false unless equal_numeric_wildcarded(lhs, rhs)
       end
 
-      compare_string(@flavour, other.flavour)
+      equal_string_wildcarded(@flavour, other.flavour)
     end
+
+    def >(other)
+      # puts "version #{self} > #{other} ?"
+      return false if other.nil?
+      return false unless other.is_a? Flappi::Version
+
+      max_slots = [@version_array.size, other.version_array.size].max
+
+      (0...max_slots).each_with_index do |i, idx|
+        last = (idx + 1) == max_slots
+        lhs = @version_array[i]
+        rhs = other.version_array[i]
+
+        break if gt_numeric(lhs, rhs)
+        return false unless !last && equal_numeric_wildcarded(lhs, rhs)
+      end
+
+      equal_string_wildcarded(@flavour, other.flavour)
+    end
+
+    def >=(other)
+      self == other || self > other
+    end
+
+    # rubocop:disable Style/InverseMethods
+    def <(other)
+      !(self >= other)
+    end
+
+    def <=(other)
+      !(self > other)
+    end
+
+    def !=(other)
+      !(self == other)
+    end
+    # rubocop:enable Style/InverseMethods
 
     private
 
-    def compare_numeric(a, b)
+    def equal_numeric_wildcarded(a, b)
       return true if a == '*' || b == '*' # wildcard match
 
       (a&.to_i || 0) == (b&.to_i || 0)
     end
 
-    def compare_string(a, b)
+    def gt_numeric(a, b)
+      (a&.to_i || 0) > (b&.to_i || 0)
+    end
+
+    def equal_string_wildcarded(a, b)
       return true if a == :* || b == :* # wildcard match
 
       a == b # no default, nil only matches nil
