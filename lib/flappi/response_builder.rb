@@ -2,6 +2,7 @@
 
 # Build an API response from a definition
 require 'uri'
+require 'cgi'
 require 'active_support/core_ext/hash/conversions'
 require 'active_support/core_ext/hash/indifferent_access'
 
