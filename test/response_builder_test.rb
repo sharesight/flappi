@@ -208,21 +208,21 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
 
           should 'work with spaces and basic symbols' do
             @encoded_response_builder.controller_url = 'http://server/test/endpoint/foo bar!@#$%^&*()_+{}:"<>?/,.;[]-='
-            @encoded_response_builder.controller_params.merge!({ name: 'foo bar!@#$%^&*()_+{}:"<>?/,.;[]-=' })
+            @encoded_response_builder.controller_params[:name] = 'foo bar!@#$%^&*()_+{}:"<>?/,.;[]-='
             @encoded_response_builder.source_definition.path '/endpoint/:name'
 
             built_response = @encoded_response_builder.build({}) do
               @encoded_response_builder.link(:self)
             end
 
-            assert_equal({ 'links' => {
-              'self' => 'http://server/test/endpoint/foo+bar%21%40%23%24%25%5E%26%2A%28%29_%2B%7B%7D%3A%22%3C%3E%3F%2F%2C.%3B%5B%5D-%3D',
-            }}, built_response)
+            assert_equal({ 'links' => { 'self' => 'http://server/test/endpoint/foo+bar%21%40%23%24%25%5E%26%2A%28%29_%2B%7B%7D%3A%22%3C%3E%3F%2F%2C.%3B%5B%5D-%3D' } },
+                         built_response)
           end
 
           should 'properly encode a plus as %2B rather than a space via params' do
             @encoded_response_builder.controller_url = 'http://server/test/endpoint/foo+bar' # this is `foo bar` to a browser
-            @encoded_response_builder.controller_params.merge!({ name: 'foo bar', other: '1+2' })
+            @encoded_response_builder.controller_params[:name] = 'foo bar'
+            @encoded_response_builder.controller_params[:other] = '1+2'
             @encoded_response_builder.source_definition.path '/endpoint/:name'
 
             built_response = @encoded_response_builder.build({}) do
@@ -230,13 +230,11 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
               @encoded_response_builder.link(key: :other, path: '/other_endpoint?other=:other')
             end
 
-            assert_equal({ 'links' => {
-              'self' => 'http://server/test/endpoint/foo+bar',
-              'other' => 'http://server/test/other_endpoint?other=1%2B2',
-            }}, built_response)
+            assert_equal({ 'links' => { 'self' => 'http://server/test/endpoint/foo+bar',
+                                        'other' => 'http://server/test/other_endpoint?other=1%2B2' } },
+                         built_response)
           end
         end
-
       end
 
       context 'field' do
