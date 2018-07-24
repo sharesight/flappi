@@ -194,6 +194,49 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
                                       'other' => 'http://server/test/other_endpoint?extra=456' } },
                        built_response)
         end
+
+        context "encoded links" do
+          setup do
+            # Flappi requires a mess of boilerplate to test and may conflict with the parent `setup`, so we roll our own
+            @encoded_response_builder = ::Flappi::ResponseBuilder.new
+            @encoded_response_builder.source_definition = TestDef.new
+            @encoded_response_builder.controller_params = { auth_token: 'xyzzy', controller: 'test', action: 'test' }
+            @encoded_response_builder.controller_query_parameters = {}
+            @encoded_response_builder.version_plan = Examples::VersionPlan
+            @encoded_response_builder.requested_version = Examples::VersionPlan.parse_version('v2.1')
+          end
+
+          should 'work with spaces and basic symbols' do
+            @encoded_response_builder.controller_url = 'http://server/test/endpoint/foo bar!@#$%^&*()_+{}:"<>?/,.;[]-='
+            @encoded_response_builder.controller_params.merge!({ name: 'foo bar!@#$%^&*()_+{}:"<>?/,.;[]-=' })
+            @encoded_response_builder.source_definition.path '/endpoint/:name'
+
+            built_response = @encoded_response_builder.build({}) do
+              @encoded_response_builder.link(:self)
+            end
+
+            assert_equal({ 'links' => {
+              'self' => 'http://server/test/endpoint/foo+bar%21%40%23%24%25%5E%26%2A%28%29_%2B%7B%7D%3A%22%3C%3E%3F%2F%2C.%3B%5B%5D-%3D',
+            }}, built_response)
+          end
+
+          should 'properly encode a plus as %2B rather than a space via params' do
+            @encoded_response_builder.controller_url = 'http://server/test/endpoint/foo+bar' # this is `foo bar` to a browser
+            @encoded_response_builder.controller_params.merge!({ name: 'foo bar', other: '1+2' })
+            @encoded_response_builder.source_definition.path '/endpoint/:name'
+
+            built_response = @encoded_response_builder.build({}) do
+              @encoded_response_builder.link(:self)
+              @encoded_response_builder.link(key: :other, path: '/other_endpoint?other=:other')
+            end
+
+            assert_equal({ 'links' => {
+              'self' => 'http://server/test/endpoint/foo+bar',
+              'other' => 'http://server/test/other_endpoint?other=1%2B2',
+            }}, built_response)
+          end
+        end
+
       end
 
       context 'field' do
