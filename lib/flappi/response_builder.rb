@@ -2,6 +2,7 @@
 
 # Build an API response from a definition
 require 'uri'
+require 'cgi'
 require 'active_support/core_ext/hash/conversions'
 require 'active_support/core_ext/hash/indifferent_access'
 
@@ -356,13 +357,17 @@ module Flappi
     def substitute_link_path_params(path)
       subst_path = path.dup
       used_params = []
+
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
-        # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
-        if subst_path.match?(subex)
-          subst_path.gsub!(subex, "#{pvalue}\\1")
-          used_params << pname.to_sym
-        end
+        next unless subst_path.match?(subex)
+
+        # Since we're building a URL, we need to ensure it's encoded properly.
+        # Fortunately, it appears Ruby will unencode url parameters for us, so we don't need to unencode `foo%20bar` here.
+        # When this is used later, we need the encoded value.
+        escaped_value = ::CGI.escape(pvalue.to_s)
+        subst_path.gsub!(subex, "#{escaped_value}\\1")
+        used_params << pname.to_sym
       end
 
       # puts "Made path #{subst_path}"
