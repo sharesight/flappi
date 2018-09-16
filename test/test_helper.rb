@@ -7,12 +7,19 @@ end
 
 require 'maxitest/autorun'
 require 'shoulda'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 
 require 'flappi'
 
 Flappi.configure do |conf|
-  conf.definition_paths = 'examples'
+  conf.definition_paths = {
+    'v2.0' => 'examples',
+    'v2.0-mobile' => 'examples',
+    'v2.1.0-mobile' => 'examples',
+    'v3.0' => ['examples', 'examples2'],
+    'v1.9' => 'examples',
+    'default' => 'examples' # when you pass no version, it goes to default
+  }
   conf.version_plan = nil
 
   if ENV['TEST_LOGGING']
@@ -34,5 +41,38 @@ end
 class JsonFormatter
   def json
     yield
+  end
+end
+
+module Examples
+  class ExampleController
+    # this is a stub of a controller, think ActionController
+    attr_accessor :params
+    attr_accessor :last_render_params
+    attr_accessor :last_head_params
+
+    def initialize
+      self.params = {}
+    end
+
+    def show
+      Flappi.build_and_respond(self)
+    end
+
+    def request
+      OpenStruct.new(query_parameters: params)
+    end
+
+    def respond_to
+      yield JsonFormatter.new
+    end
+
+    def render(params)
+      self.last_render_params = params
+    end
+
+    def head(params)
+      self.last_head_params = params
+    end
   end
 end

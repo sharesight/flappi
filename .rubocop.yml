@@ -10,6 +10,9 @@ Metrics/ClassLength:
 Metrics/ModuleLength:
   Max: 500
 
+Metrics/BlockLength:
+  Max: 500
+
 Metrics/LineLength:
   Max: 200
 
@@ -54,6 +57,19 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   Enabled: false
 
+Style/WordArray:
+  Enabled: false
+
 Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
+
+Naming/VariableNumber:
+  Enabled: false
+
+Lint/UselessComparison:
+  Exclude:
+    - 'test/**'
+
+Layout/AlignParameters:
+  Enabled: false

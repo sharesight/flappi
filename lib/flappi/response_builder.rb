@@ -2,6 +2,7 @@
 
 # Build an API response from a definition
 require 'uri'
+require 'cgi'
 require 'active_support/core_ext/hash/conversions'
 require 'active_support/core_ext/hash/indifferent_access'
 
@@ -244,6 +245,10 @@ module Flappi
       @query_block = block
     end
 
+    def return_no_content
+      @status_code = 204
+    end
+
     def return_error(status_code, error_info)
       @status_code = status_code
       @status_error_info = error_info
@@ -309,7 +314,8 @@ module Flappi
 
     def controller_base_url
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
-      path_matcher = Regexp.new source_definition.endpoint_info[:path].gsub(/\/:\w+\//, '\/[^\/]+\/')
+      path = source_definition.endpoint_info[:path].gsub(/\/$/, '') # remove trailing slash
+      path_matcher = Regexp.new(path.gsub(/\/:\w+/, '\/[^\/]+')) # converts `/user/:user_id` into `/user/[^\/]+`
 
       # puts "Using matcher #{path_matcher} on #{controller_url}"
       matches = controller_url.match(path_matcher)
@@ -352,13 +358,17 @@ module Flappi
     def substitute_link_path_params(path)
       subst_path = path.dup
       used_params = []
+
       controller_params.each do |pname, pvalue|
         subex = /:#{pname}([^\w]|\z)/
-        # puts "Try #{pname}=#{pvalue}, subex=#{subex} on #{subst_path}"
-        if subst_path.match?(subex)
-          subst_path.gsub!(subex, "#{pvalue}\\1")
-          used_params << pname.to_sym
-        end
+        next unless subst_path.match?(subex)
+
+        # Since we're building a URL, we need to ensure it's encoded properly.
+        # Fortunately, it appears Ruby will unencode url parameters for us, so we don't need to unencode `foo%20bar` here.
+        # When this is used later, we need the encoded value.
+        escaped_value = ::CGI.escape(pvalue.to_s)
+        subst_path.gsub!(subex, "#{escaped_value}\\1")
+        used_params << pname.to_sym
       end
 
       # puts "Made path #{subst_path}"

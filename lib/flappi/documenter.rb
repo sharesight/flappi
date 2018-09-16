@@ -5,6 +5,8 @@ module Flappi
   class Documenter
     # Call to document all definitions under top_module
     def self.document(top_path, top_module, into_path, for_version, with_formatter)
+      FileUtils.mkdir_p into_path
+
       load_all_modules top_path + '/' + top_module.to_s.underscore, top_module
       defs_to_document = builder_definitions(top_module)
 
