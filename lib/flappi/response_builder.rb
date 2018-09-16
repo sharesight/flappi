@@ -266,7 +266,8 @@ module Flappi
                   elsif def_args.key?(:value)
                     def_args[:value]
                   else
-                    access_member_somehow(@current_source, def_args[:name])
+                    name = def_args[:source] || def_args[:name]
+                    access_member_somehow(@current_source, name)
                   end
 
       cast_value(src_value, def_args[:type], def_args[:precision])

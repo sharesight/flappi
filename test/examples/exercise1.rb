@@ -35,8 +35,8 @@ module Examples
         {
           extra_plus_1: 101,
           rows: [
-            { n: 1, name: 'one' },
-            { n: 2, name: 'two' }
+            { n: 1, name: 'one', alt_name: 'one' },
+            { n: 2, name: 'two', alt_name: 'one' }
           ]
         }
       END_EXAMPLE
@@ -50,6 +50,7 @@ module Examples
         objects name: :data do |row|
           field :n, row[:n]
           field :name, row[:name]
+          field :alt_name, source: :name
         end
       end
     end

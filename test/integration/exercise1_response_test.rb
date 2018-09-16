@@ -49,7 +49,10 @@ module Integration
 
         assert_equal({ 'extra' => 150,
                        'defaulted' => 123,
-                       'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }],
+                       'data' => [
+                         { 'n' => 1, 'name' => 'one', 'alt_name' => 'one' },
+                         { 'n' => 2, 'name' => 'two', 'alt_name' => 'two' }
+                       ],
                        'links' => { 'other' => 'http://test.api/exercise1/other/123/other_api?extra=50',
                                     'self' => 'http://test.api/exercise1/examples/exercise1?defaulted=123&extra=50' } },
                      response)
@@ -60,8 +63,10 @@ module Integration
         response = @controller.show
 
         assert_equal({ 'extra' => 1334, 'defaulted' => 123,
-                       'data' => [{ 'n' => 1, 'name' => 'one' },
-                                  { 'n' => 2, 'name' => 'two' }],
+                       'data' => [
+                         { 'n' => 1, 'name' => 'one', 'alt_name' => 'one' },
+                         { 'n' => 2, 'name' => 'two', 'alt_name' => 'two' }
+                       ],
                        'links' => { 'other' => 'http://test.api/exercise1/other/123/other_api?extra=1234',
                                     'self' => 'http://test.api/exercise1/examples/exercise1?defaulted=123&extra=1234' } },
                      response)
@@ -71,7 +76,11 @@ module Integration
         @controller.params = { defaulted: 888 }
         response = @controller.show
 
-        assert_equal({ 'extra' => 1234 + 100, 'defaulted' => 888, 'data' => [{ 'n' => 1, 'name' => 'one' }, { 'n' => 2, 'name' => 'two' }],
+        assert_equal({ 'extra' => 1234 + 100, 'defaulted' => 888,
+                       'data' => [
+                         { 'n' => 1, 'name' => 'one', 'alt_name' => 'one' },
+                         { 'n' => 2, 'name' => 'two', 'alt_name' => 'two' }
+                       ],
                        'links' => { 'other' => 'http://test.api/exercise1/other/888/other_api?extra=1234',
                                     'self' => 'http://test.api/exercise1/examples/exercise1?defaulted=888&extra=1234' } },
                      response)

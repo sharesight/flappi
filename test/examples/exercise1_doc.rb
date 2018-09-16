@@ -37,13 +37,16 @@
 @apiSuccess (200 Success) {String} data.name
 
 
+@apiSuccess (200 Success) {String} data.alt_name
+
+
 
 @apiSuccessExample {json} Response Example
 {
   extra_plus_1: 101,
   rows: [
-    { n: 1, name: 'one' },
-    { n: 2, name: 'two' }
+    { n: 1, name: 'one', alt_name: 'one' },
+    { n: 2, name: 'two', alt_name: 'one' }
   ]
 }
 
