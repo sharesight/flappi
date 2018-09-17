@@ -46,8 +46,17 @@ module Flappi
       return OpenStruct.new(status_code: @status_code, status_error_info: @status_error_info) if @status_code
 
       @response_tree = new_h
+
+      # The put stack defines where in the response tree we put to
       @put_stack = [@response_tree]
+
+      # The hash stack keeps track of hash keys defined for each hashed object, so we can
+      # pop back to outputting into the correct hash
       @hash_stack = []
+
+      # the source stack tracks chnages to the source in objects/object
+      @source_stack = []
+
       @references = new_h
       @current_source = base_object
 
@@ -84,7 +93,8 @@ module Flappi
       return if def_args.key?(:when) && !def_args[:when]
       return unless version_wanted(def_args)
 
-      @current_source = def_args[:value] || @current_source
+      @source_stack.push(@current_source)
+      @current_source = field_value(def_args) || @current_source
 
       if def_args.key?(:name) || def_args.key?(:dynamic_key)
         @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
@@ -96,7 +106,7 @@ module Flappi
         raise 'object requires either a name or inline_always: true'
       end
 
-      @current_source = nil
+      @current_source = @source_stack.pop
     end
 
     # call this with either:
@@ -111,7 +121,7 @@ module Flappi
       return if def_args.key?(:when) && !def_args[:when]
       return unless version_wanted(def_args)
 
-      values = def_args[:value] || def_args[:values] || @current_source
+      values = field_value(def_args) || @current_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
 
       @hash_stack.push(@hash_key ||= nil)
@@ -121,6 +131,7 @@ module Flappi
       # puts "+++objects, name=#{def_args[:name]}, @hash_key=#{@hash_key}, @put_stack = #{@put_stack}"
 
       values.each do |value|
+        @source_stack.push(@current_source)
         @current_source = value
         @put_stack.push(object_hash = new_h)
 
@@ -143,7 +154,7 @@ module Flappi
         end
 
         @put_stack.pop
-        @current_source = nil
+        @current_source = @source_stack.pop
       end
 
       @hash_key = @hash_stack.pop
@@ -265,11 +276,13 @@ module Flappi
       @put_stack.last[name] = value
     end
 
-    def field_value(def_args, block)
+    def field_value(def_args, block = nil)
       src_value = if block.present?
                     block.call @current_source
                   elsif def_args.key?(:value)
                     def_args[:value]
+                  elsif def_args.key?(:values)
+                    def_args[:values]
                   else
                     name = def_args[:source] || def_args[:name]
                     access_member_somehow(@current_source, name)
@@ -303,12 +316,15 @@ module Flappi
     end
 
     def access_member_somehow(object, name)
+      return nil if object.nil?
+
       if object.is_a?(Hash)
         return object[name.to_sym] if object.key?(name.to_sym)
         return object[name.to_s] if object.key?(name.to_s)
         return nil
       end
 
+      return nil unless object.respond_to?(name.to_sym)
       object.send(name.to_sym)
     end
 

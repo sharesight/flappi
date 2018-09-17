@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'flappi'
-  s.version     = '0.8.0'
+  s.version     = '0.9.0'
   s.date        = '2018-08-13'
   s.summary     = 'Flappi API Builder'
   s.description = 'A flexible DSL-based API builder'
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'maxitest'
   s.add_development_dependency 'mocha'
-  # s.add_development_dependency 'pry-byebug'
+  s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rake', '>= 12.3'
   s.add_development_dependency 'rubocop', '0.53'
   s.add_development_dependency 'shoulda'

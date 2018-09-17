@@ -142,6 +142,7 @@ module Flappi
     #   Define an object (which will be rendered within json as name:hash or inlined into the parent hash).
     #   @option options [String] :name the name of the object
     #   @option options [Object] :value the object to extract fields from
+    #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
     #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
@@ -180,6 +181,7 @@ module Flappi
     #   Define an object (which will be rendered within json as name:hash or inlined into the parent hash).
     #   @option options [String] :name the name of the array field
     #   @option options [Object] :value either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
+    #   @option options [Object] :source the name of a hash or method in the current source to get the data array from, instead of :name
     #   @option options [Boolean] :compact remove nil entries from the result array
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
@@ -210,6 +212,7 @@ module Flappi
     #   Define a field with named options
     #   @option options [String] :name the name of the field
     #   @option options [Object] :value if given, the value to output
+    #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
     #   @option options [Boolean] :when if false, omit this object
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.
     #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.

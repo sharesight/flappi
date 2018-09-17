@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 if ENV['COVERAGE_ME']
   require 'simplecov'
   SimpleCov.start
