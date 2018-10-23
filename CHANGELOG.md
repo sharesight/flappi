@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.8.1
+
+ * add support for Ruby `2.5.3` [#30])(https://github.com/sharesight/flappi/pull/30)
+
 ## 0.5.5
 
  * Feature: Errors and debugs [#21])(https://github.com/sharesight/flappi/pull/21)
