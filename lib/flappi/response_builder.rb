@@ -285,7 +285,11 @@ module Flappi
                     def_args[:values]
                   else
                     name = def_args[:source] || def_args[:name]
-                    access_member_somehow(@current_source, name)
+                    if name
+                      access_member_somehow(@current_source, name)
+                    else
+                      @current_source
+                    end
                   end
 
       cast_value(src_value, def_args[:type], def_args[:precision])
