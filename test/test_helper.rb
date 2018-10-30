@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pry'
+# require 'pry'
 
 if ENV['COVERAGE_ME']
   require 'simplecov'
