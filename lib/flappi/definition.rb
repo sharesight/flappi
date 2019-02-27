@@ -372,7 +372,7 @@ module Flappi
     #
     # @overload param(options={})
     #   Define a parameter
-    #   @option options [String] :name the name of the parameter
+    #   @option options [String] :name the name of the parameter, which can be in a path
     #   @option options [Symbol] :type the parameter type, defaults to String
     #   @option options [Object] :default a default value when the parameter is not supplied or is empty
     #   @option options [String] :default_doc text to document the default with instead of a computed default
