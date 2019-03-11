@@ -364,6 +364,7 @@ module Flappi
     #   @option options [Object] :default a default value when the parameter is not supplied or is empty
     #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
+    #   @option options [Boolean] :hidden if true don't document
     #   @option options [Boolean] :optional true for an optional parameter
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
@@ -377,6 +378,7 @@ module Flappi
     #   @option options [Object] :default a default value when the parameter is not supplied or is empty
     #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
+    #   @option options [Boolean] :hidden if true don't document
     #   @option options [Boolean] :optional true for an optional parameter
     #   @option options [Integer] :fail code Code to return when fail is true
     #   @yield A block that will be called to validate the parameter
@@ -391,6 +393,7 @@ module Flappi
                     type: name_for_type(def_args[:type]),
                     default_doc: def_args[:default_doc],
                     description: def_args[:doc],
+                    hidden: def_args[:hidden],
                     optional: def_args.key?(:optional) ? def_args[:optional] : true,
                     validation_block: block,
                     fail_code: def_args[:fail_code] }

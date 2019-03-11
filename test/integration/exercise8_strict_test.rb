@@ -32,6 +32,21 @@ module Integration
         assert_equal({ 'a' => 'ok' }, response)
       end
 
+      should 'accept nested parameters' do
+        @controller.params = { required: 1, nested: { nest_opt: 200 } }
+        response = @controller.show
+
+        assert_equal({ 'a' => 'ok' }, response)
+      end
+
+      should 'accept rails parameters' do
+        @controller.params = { required: 1, format: 'json', version: nil, controller: @controller, action: :show }
+        response = @controller.show
+        pp @controller.last_render_params
+
+        assert_equal({ 'a' => 'ok' }, response)
+      end
+
       should 'fail when required param missing' do
         @controller.params = {}
         response = @controller.show

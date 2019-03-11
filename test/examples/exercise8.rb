@@ -12,6 +12,7 @@ module Examples
       description 'Exercise #{definition DSL #1}8 - test strict mode'
       param(:required, type: Integer, doc: 'Required parameter', optional: false)
       param(:opt, type: Integer, doc: 'Optional parameter', optional: true)
+      param('nested/nest_opt', type: Integer, doc: 'Nested optional parameter', optional: true)
       strict true
 
       request_example('"/api/examples/exercise8?required=100"')

@@ -3,7 +3,7 @@
 require 'active_support'
 require 'active_support/core_ext/module/delegation'
 
-# require 'pry-byebug'
+require 'pry-byebug'
 
 # Require dependent files first and make sure order of required files is deterministic
 DEPENDENT_FILES = ['common.rb', 'utils/param_types.rb'].freeze

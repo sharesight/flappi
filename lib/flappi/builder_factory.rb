@@ -131,6 +131,7 @@ module Flappi
     def self.make_param_docs(documenter_definition, path)
       param_docs = documenter_definition.endpoint_info[:params]
       param_docs.select { |p| path.match ":#{p[:name]}(/|$)" }.each { |p| p[:optional] = false }
+      param_docs.reject! {|p| p[:hidden] }
       param_docs
     end
 
@@ -174,11 +175,25 @@ module Flappi
       end
 
       if strict_mode
-        wrong_params = actual_params.keys - defined_params.map {|p| p[:name]}
+        rails_params = ['format', 'version', 'controller', 'action']
+        wrong_params = pathify(nil, actual_params) - \
+          (defined_params.map {|p| p[:name].to_s } + rails_params)
+
         return ["Parameter(s) #{wrong_params.join(', ')} not recognised in strict mode", :not_acceptable] if wrong_params.present?
       end
 
       nil
+    end
+
+    def self.pathify(prefix, h)
+      h.flat_map do |k,v|
+        prefixed_k = [prefix, k].compact.join('/')
+        if v.is_a?(Hash)
+          pathify(prefixed_k, v)
+        else
+          prefixed_k
+        end
+      end
     end
 
     # process parameters through any processors defined on the param

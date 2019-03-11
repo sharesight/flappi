@@ -21,6 +21,7 @@ module Examples
       end
 
       param :defaulted, type: Integer, doc: 'Parameter with default', default: 123
+      param :hidden_param, type: Integer, hidden: true, optional: true
 
       query do |params|
         if params[:return_error]
