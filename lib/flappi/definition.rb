@@ -403,6 +403,12 @@ module Flappi
       ParamProcessor.new(param_def)
     end
 
+    # Enable/disable strict mode, unknown parameters will cause an error\
+    # Default is to disable this
+    def strict(mode=false)
+      endpoint_info[:strict_mode] = mode
+    end
+
     # Define a query to be used to retrieve the source object for the response.
     #
     # @yield A block that will be called to perform the query and return the source object

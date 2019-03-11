@@ -74,7 +74,7 @@ module Flappi
       apply_default_parameters controller.params, defined_params
       process_parameters controller.params, defined_params
 
-      validate_error, fail_code = validate_parameters(controller.params, defined_params)
+      validate_error, fail_code = validate_parameters(controller.params, defined_params, controller.endpoint_info[:strict_mode])
       if validate_error
         Flappi::Utils::Logger.w validate_error
         controller.render json: { error: validate_error }.to_json, plain: validate_error, status: fail_code || :not_acceptable
@@ -155,7 +155,7 @@ module Flappi
     end
 
     # validate actual parameters against definitions, return an error message if fails
-    def self.validate_parameters(actual_params, defined_params)
+    def self.validate_parameters(actual_params, defined_params, strict_mode=false)
       defined_params.each do |defined_param|
         Flappi::Utils::Logger.d "Check parameter #{defined_param}"
         param_supplied = actual_params.key? defined_param[:name]
@@ -171,6 +171,11 @@ module Flappi
           error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
           return ["Parameter #{defined_param[:name]} failed validation: #{error_text}", defined_param[:fail_code]] if error_text
         end
+      end
+
+      if strict_mode
+        wrong_params = actual_params.keys - defined_params.map {|p| p[:name]}
+        return ["Parameter(s) #{wrong_params.join(', ')} not recognised in strict mode", :not_acceptable] if wrong_params.present?
       end
 
       nil
