@@ -175,7 +175,7 @@ module Flappi
       end
 
       if strict_mode
-        rails_params = ['format', 'version', 'controller', 'action']
+        rails_params = ['format', 'version', 'controller', 'action', 'access_token']
         param_hash = if actual_params.respond_to?(:to_unsafe_h)
               actual_params.to_unsafe_h
             else
