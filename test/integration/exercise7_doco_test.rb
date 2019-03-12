@@ -19,9 +19,9 @@ module Integration
         doc_data = ::Flappi::BuilderFactory.document(::Examples::Exercise7Param, nil)
         doc_text = ::Flappi::ApiDocFormatter.format_to_text(doc_data)
 
-        # expected_doc_text = File.read('test/examples/exercise1_doc.rb')
-        File.write 'test/examples/NEW_exercise7_doc.rb', doc_text
-        # assert_equal expected_doc_text.to_s, doc_text.to_s
+        expected_doc_text = File.read('test/examples/exercise7_doc.rb')
+        # File.write 'test/examples/NEW_exercise7_doc.rb', doc_text
+        assert_equal expected_doc_text.to_s, doc_text.to_s
       end
     end
   end

@@ -176,7 +176,12 @@ module Flappi
 
       if strict_mode
         rails_params = ['format', 'version', 'controller', 'action']
-        wrong_params = pathify(nil, actual_params) - \
+        param_hash = if actual_params.respond_to?(:to_unsafe_h)
+              actual_params.to_unsafe_h
+            else
+              actual_params.to_h
+            end
+        wrong_params = pathify_hash(nil, param_hash) - \
           (defined_params.map {|p| p[:name].to_s } + rails_params)
 
         return ["Parameter(s) #{wrong_params.join(', ')} not recognised in strict mode", :not_acceptable] if wrong_params.present?
@@ -185,11 +190,11 @@ module Flappi
       nil
     end
 
-    def self.pathify(prefix, h)
+    def self.pathify_hash(prefix, h)
       h.flat_map do |k,v|
-        prefixed_k = [prefix, k].compact.join('/')
+        prefixed_k = [prefix, k].compact.map(&:to_s).join('/')
         if v.is_a?(Hash)
-          pathify(prefixed_k, v)
+          pathify_hash(prefixed_k, v)
         else
           prefixed_k
         end
