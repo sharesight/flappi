@@ -6,7 +6,7 @@
 @apiVersion 2.0.0-mobile
 
 @apiDescription
-  Exercise definition DSL #2 with versioning
+ Exercise definition DSL #2 with versioning
 
 @apiUse OAuthHeaders
 
@@ -24,20 +24,23 @@
 
 @apiSuccess (200 Success) {String} v2_0_only
 
+
 @apiSuccess (200 Success) {String} params
 
+
 @apiSuccess (200 Success) {String} options
+
 
 
 @apiSuccessExample {json} Response Example
 
 
 @apiError (400 Bad Request) {Integer} error
-  Internal error code
+ Internal error code
 @apiError (400 Bad Request) {Integer} transaction_id
-  Unique identifier for this API transaction.
+ Unique identifier for this API transaction.
 @apiError (400 Bad Request) {Integer} reason
-  Detailed error message what went wrong.
+ Detailed error message what went wrong.
 
 @apiUse OauthErrors
 =end
