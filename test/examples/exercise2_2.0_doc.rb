@@ -12,7 +12,7 @@
 
 
 @apiParam {Float} required
-  
+
 
 
 @apiParamExample Request Example
@@ -24,6 +24,9 @@
 
 @apiSuccess (200 Success) {String} v2_0_only
 
+@apiSuccess (200 Success) {String} params
+
+@apiSuccess (200 Success) {String} options
 
 
 @apiSuccessExample {json} Response Example

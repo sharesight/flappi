@@ -111,6 +111,8 @@ module Flappi
     # Use this typically with a block that defines how each field of the response is to be generated.
     #
     # @option options [Class] :type Specifies a (ruby) type, an instance of which will be retrieved by calling the classes (ActiveRecord-style) 'where' method with the controller's parameters and will become the base object the response is generated from.
+    # @option options [Hash] :options Optionally specify an array of options which will be passed to the 'where' method of class 'type'
+    #
     # @example fetch a user record
     #   build type: User do
     #        ...

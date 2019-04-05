@@ -39,7 +39,11 @@ module Flappi
       elsif options.key?(:type)
         # construct a model of type with the parameters
         # which we should have by virtue of being mixed into the controller
-        base_object = options[:type].where(controller_params)
+        base_object = if options.key?(:options)
+          options[:type].where(controller_params, options[:options])
+        else
+          options[:type].where(controller_params)
+        end
       end
 
       # If return_error called, return a struct

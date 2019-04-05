@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
 module Examples
+
   class ExerciseModel
-    def self.where(_params)
-      ExerciseModel.new
+    attr_accessor :params, :options
+
+    def self.where(params, options={})
+      res = ExerciseModel.new
+
+      res.params = params
+      res.options = options
+
+      res
     end
 
     def all

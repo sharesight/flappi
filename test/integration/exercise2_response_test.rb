@@ -27,7 +27,7 @@ module Integration
         controller.params = { required: 2.718, version: 'v2.1.0-mobile' }
         response = controller.show
 
-        assert_equal({ 'all' => 'all_versions', 'v2_1_only' => 2.1 },
+        assert_equal({ 'all' => 'all_versions', 'v2_1_only' => 2.1, "params"=>{"required"=>2.718, "version"=>"v2.1.0-mobile"}, "options"=>{"test"=>"hello"} },
                      response)
       end
 
@@ -36,7 +36,7 @@ module Integration
         controller.params = { required: 3.142, version: 'v2.0-mobile' }
         response = controller.show
 
-        assert_equal({ 'all' => 'all_versions', 'v2_0_only' => 2.0 },
+        assert_equal({ 'all' => 'all_versions', 'v2_0_only' => 2.0, "params"=>{"required"=>3.142, "version"=>"v2.0-mobile"}, "options"=>{"test"=>"hello"} },
                      response)
       end
 

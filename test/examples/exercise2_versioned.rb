@@ -18,11 +18,14 @@ module Examples
     end
 
     def respond
-      build type: Examples::ExerciseModel do
+      build type: Examples::ExerciseModel, options: { test: 'hello' } do
         field :all
 
         field :v2_0_only, version: { equals: 'v2.0.*-*' }
         field :v2_1_only, version: { equals: 'v2.1.*-*' }
+
+        field :params
+        field :options
       end
     end
   end
