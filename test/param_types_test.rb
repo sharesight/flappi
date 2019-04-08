@@ -2,7 +2,7 @@
 
 require_relative 'test_helper'
 
-class Flappi::VersionsTest < MiniTest::Test
+class Flappi::ParamTypesTest < MiniTest::Test
   context 'when extended' do
     setup do
       @param_types_test = Object.new
@@ -31,9 +31,9 @@ class Flappi::VersionsTest < MiniTest::Test
       end
 
       should 'reject invalid values for boolean type' do
-        refute @param_types_test.validate_param('9', 'BOOLEAN')
-        refute @param_types_test.validate_param('hello', 'BOOLEAN')
-        refute @param_types_test.validate_param('boo', 'BOOLEAN')
+        refute @param_types_test.validate_param('9', 'Boolean')
+        refute @param_types_test.validate_param('hello', 'Boolean')
+        refute @param_types_test.validate_param('boo', 'Boolean')
       end
 
       should 'accept valid dates' do
@@ -60,14 +60,14 @@ class Flappi::VersionsTest < MiniTest::Test
         assert_equal 'anything', @param_types_test.cast_param('anything', nil)
       end
 
-      should 'convert boolean type to boolean' do
-        assert @param_types_test.cast_param(true, 'BOOLEAN')
-        refute @param_types_test.cast_param(false, 'BOOLEAN')
-        assert @param_types_test.cast_param('1', 'BOOLEAN')
-        assert @param_types_test.cast_param('Y', 'BOOLEAN')
-        refute @param_types_test.cast_param('N', 'BOOLEAN')
-        assert @param_types_test.cast_param(1, 'BOOLEAN')
-        refute @param_types_test.cast_param(0, 'BOOLEAN')
+      should 'convert Boolean type to Boolean' do
+        assert @param_types_test.cast_param(true, 'Boolean')
+        refute @param_types_test.cast_param(false, 'Boolean')
+        assert @param_types_test.cast_param('1', 'Boolean')
+        assert @param_types_test.cast_param('Y', 'Boolean')
+        refute @param_types_test.cast_param('N', 'Boolean')
+        assert @param_types_test.cast_param(1, 'Boolean')
+        refute @param_types_test.cast_param(0, 'Boolean')
       end
 
       should 'convert valid dates' do

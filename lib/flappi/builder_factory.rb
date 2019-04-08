@@ -166,7 +166,7 @@ module Flappi
 
         return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
 
-        actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type])
+        actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type], defined_param[:name])
 
         if defined_param[:validation_block]
           error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
