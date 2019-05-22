@@ -42,4 +42,34 @@ Naming/HeredocDelimiterNaming:
   Enabled: false
 
 Naming/UncommunicativeMethodParamName:
-    Enabled: false
+  Enabled: false
+
+Layout/AlignArguments:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - 'lib/flappi/response_builder.rb'
+
+Layout/ElseAlignment:
+  Enabled: false
+
+Layout/EndAlignment:
+  Enabled: false
+
+Layout/IndentationWidth:
+  Exclude:
+    - 'lib/flappi/builder_factory.rb'
+    - 'lib/flappi/utils/param_types.rb'
+    - 'lib/flappi/response_builder.rb'
+
+Lint/InterpolationCheck:
+  Exclude:
+    - 'test/examples/exercise8.rb'
+
+Style/AndOr:
+  Exclude:
+    - 'lib/flappi/utils/param_types.rb'

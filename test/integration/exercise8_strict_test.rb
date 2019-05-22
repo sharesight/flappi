@@ -52,9 +52,9 @@ module Integration
         response = @controller.show
         refute response
 
-        assert_equal({:json=>"{\"error\":\"Parameter required is required\"}",
-                      :plain=>"Parameter required is required",
-                      :status=>:not_acceptable}, @controller.last_render_params)
+        assert_equal({ json: "{\"error\":\"Parameter required is required\"}",
+                       plain: "Parameter required is required",
+                       status: :not_acceptable }, @controller.last_render_params)
       end
 
       should 'fail when unrecognized parameter' do
@@ -62,9 +62,9 @@ module Integration
         response = @controller.show
         refute response
 
-        assert_equal({:json=>"{\"error\":\"Parameter(s) unwanted not recognised in strict mode\"}",
-         :plain=>"Parameter(s) unwanted not recognised in strict mode",
-         :status=>:not_acceptable}, @controller.last_render_params)
+        assert_equal({ json: "{\"error\":\"Parameter(s) unwanted not recognised in strict mode\"}",
+                       plain: "Parameter(s) unwanted not recognised in strict mode",
+                       status: :not_acceptable }, @controller.last_render_params)
       end
     end
   end

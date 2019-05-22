@@ -333,11 +333,13 @@ module Flappi
       end
 
       return nil unless object.respond_to?(name.to_sym)
+
       object.send(name.to_sym)
     end
 
     def controller_base_url
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
+
       path = source_definition.endpoint_info[:path].gsub(/\/$/, '') # remove trailing slash
       path_matcher = Regexp.new(path.gsub(/\/:\w+/, '\/[^\/]+')) # converts `/user/:user_id` into `/user/[^\/]+`
 
@@ -397,6 +399,7 @@ module Flappi
 
       # puts "Made path #{subst_path}"
       raise "Link path contains unsubstituted params #{subst_path}" if subst_path.match?(/:\w+/)
+
       subst_uri = ::URI.parse(subst_path)
       [subst_uri, used_params]
     end

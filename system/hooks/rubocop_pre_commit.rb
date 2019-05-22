@@ -3,7 +3,7 @@
 require 'english'
 require 'rubocop'
 
-ADDED_OR_MODIFIED = /A|AM|^M/
+ADDED_OR_MODIFIED = /A|AM|^M/.freeze
 
 changed_files = `git status --porcelain`.split(/\n/)
                                         .select { |file_name_with_status| file_name_with_status =~ ADDED_OR_MODIFIED }

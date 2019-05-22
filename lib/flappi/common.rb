@@ -98,6 +98,7 @@ module Flappi
 
     def version_wanted(def_args)
       return true unless def_args.key?(:version)
+
       version_rule = def_args[:version]
 
       supported_versions = version_plan.expand_version_rule(*version_rule)
