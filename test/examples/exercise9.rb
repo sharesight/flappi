@@ -38,7 +38,7 @@ module Examples
       link :self
 
       request_example('"/api/examples/exercise?extra=100"')
-      response_example({ label: 'Special Response Example' }, <<~END_EXAMPLE
+      example_text = <<~END_EXAMPLE
         {
           extra_plus_1: 101,
           rows: [
@@ -47,7 +47,7 @@ module Examples
           ]
         }
       END_EXAMPLE
-      )
+      response_example({ label: 'Special Response Example' }, example_text)
     end
 
     def respond
