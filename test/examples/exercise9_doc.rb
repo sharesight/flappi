@@ -18,7 +18,7 @@
   Parameter with default
 
 
-@apiParamExample Request Example
+@apiParamExample Special Request Example
 {GET} "/api/examples/exercise?extra=100"
 
 

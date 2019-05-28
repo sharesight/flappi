@@ -37,7 +37,8 @@ module Examples
       link :other, 'other/:defaulted/other_api?extra=:extra'
       link :self
 
-      request_example('"/api/examples/exercise?extra=100"')
+      request_example({ label: 'Special Request Example' }, '"/api/examples/exercise?extra=100"')
+
       example_text = <<~END_EXAMPLE
         {
           extra_plus_1: 101,
