@@ -81,4 +81,9 @@
   Detailed error message what went wrong.
 
 @apiUse OauthErrors
+
+@apiError (404 Not Found) {Hash} error_code
+  Internal ID to identify the root cause
+@apiError (404 Not Found) {Hash} error
+  Error details
 =end

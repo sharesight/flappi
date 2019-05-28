@@ -38,4 +38,9 @@
   Detailed error message what went wrong.
 
 @apiUse OauthErrors
+
+<% (endpoint.api_errors || []).each do |api_error| -%>
+@apiError (<%= api_error[:status_code] %>) {Hash} <%= api_error[:response_field_name] %>
+  <%= api_error[:response_field_description] %>
+<% end -%>
 =end

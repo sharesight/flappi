@@ -53,6 +53,9 @@ module Examples
       response_example(example_text)
       response_example({ label: 'Another Response Example' }, example_text)
       response_example({ label: 'Special Response Example' }, example_text)
+
+      api_error '404 Not Found', 'error_code', 'Internal ID to identify the root cause'
+      api_error '404 Not Found', 'error', 'Error details'
     end
 
     def respond

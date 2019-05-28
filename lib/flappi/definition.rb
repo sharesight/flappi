@@ -54,7 +54,7 @@ module Flappi
 
     # @private
     def endpoint_info
-      @endpoint_info ||= { params: [], request_examples: [], response_examples: [] }
+      @endpoint_info ||= { params: [], request_examples: [], response_examples: [], api_errors: [] }
     end
 
     # @private
@@ -341,6 +341,15 @@ module Flappi
     # @param v (String) The request example URL
     def request_example(*v)
       set_example('request', v)
+    end
+
+    # Define an API error
+    def api_error(status_code, field_name, field_description)
+      endpoint_info[:api_errors] << {
+        status_code: status_code,
+        response_field_name: field_name,
+        response_field_description: field_description
+      }
     end
 
     # @private
