@@ -21,7 +21,7 @@ module Flappi
       return nil if doc.nil?
 
       template_path = "#{Pathname.new(method(:format).source_location.first).dirname}/api_doc_template.rb.erb"
-      template = ERB.new File.read(template_path), nil, '%'
+      template = ERB.new File.read(template_path), nil, '-'
       template.result(doc.instance_eval { binding })
     end
   end

@@ -15,16 +15,18 @@
   <%= param_item.description %>
 <% end %>
 
-@apiParamExample Request Example
-{<%= endpoint.method_name %>} <%= endpoint.request_example %>
+@apiParamExample <%= endpoint.request_example[:label] || 'Request Example' %>
+{<%= endpoint.method_name %>} <%= endpoint.request_example[:content] %>
 
 <% for response_item in response %>
 @apiSuccess (200 Success) {<%= response_item.type %>} <%= qname_from(response_item.name) %>
 <%= response_item.description %>
 <% end %>
 
-@apiSuccessExample {json} Response Example
-<%= endpoint.response_example %>
+<% if endpoint.response_example -%>
+@apiSuccessExample {json} <%= endpoint.response_example[:label] || 'Response Example' %>
+<%= endpoint.response_example[:content] %>
+<% end -%>
 
 @apiError (400 Bad Request) {Integer} error
   Internal error code

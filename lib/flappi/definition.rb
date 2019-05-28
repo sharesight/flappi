@@ -353,7 +353,10 @@ module Flappi
                       end
       return unless version_wanted(options)
 
-      endpoint_info["#{example_type}_example".to_sym] = text
+      endpoint_info["#{example_type}_example".to_sym] = {
+        label: options[:label],
+        content: text
+      }
     end
 
     # Define an input parameter (inline or query string)

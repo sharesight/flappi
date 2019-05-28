@@ -32,8 +32,6 @@
 
 
 
-@apiSuccessExample {json} Response Example
-
 
 @apiError (400 Bad Request) {Integer} error
  Internal error code
