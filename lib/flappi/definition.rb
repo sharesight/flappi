@@ -54,7 +54,7 @@ module Flappi
 
     # @private
     def endpoint_info
-      @endpoint_info ||= { params: [] }
+      @endpoint_info ||= { params: [], request_examples: [], response_examples: [] }
     end
 
     # @private
@@ -353,7 +353,7 @@ module Flappi
                       end
       return unless version_wanted(options)
 
-      endpoint_info["#{example_type}_example".to_sym] = {
+      endpoint_info["#{example_type}_examples".to_sym] << {
         label: options[:label],
         content: text
       }

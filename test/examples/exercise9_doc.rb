@@ -18,6 +18,10 @@
   Parameter with default
 
 
+@apiParamExample Request Example
+{GET} "/api/examples/exercise?extra=100"
+@apiParamExample Another Request Example
+{GET} "/api/examples/exercise?extra=100"
 @apiParamExample Special Request Example
 {GET} "/api/examples/exercise?extra=100"
 
@@ -40,6 +44,24 @@
 @apiSuccess (200 Success) {String} data.alt_name
 
 
+
+@apiSuccessExample {json} Response Example
+{
+  extra_plus_1: 101,
+  rows: [
+    { n: 1, name: 'one', alt_name: 'one' },
+    { n: 2, name: 'two', alt_name: 'one' }
+  ]
+}
+
+@apiSuccessExample {json} Another Response Example
+{
+  extra_plus_1: 101,
+  rows: [
+    { n: 1, name: 'one', alt_name: 'one' },
+    { n: 2, name: 'two', alt_name: 'one' }
+  ]
+}
 
 @apiSuccessExample {json} Special Response Example
 {

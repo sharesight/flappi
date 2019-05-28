@@ -136,6 +136,8 @@ module Flappi
     end
 
     def self.make_documentation_result(definition, documenter_definition, for_version, param_docs, path)
+      request_examples = documenter_definition.endpoint_info[:request_examples]
+      request_examples = [{ content: "\"#{path}\"" }] if !request_examples || request_examples.empty?
       {
         endpoint: {
           title: documenter_definition.endpoint_info[:title] || documenter_definition.endpoint_info[:description],
@@ -146,8 +148,8 @@ module Flappi
           api_name: definition.name.demodulize,
           api_group: documenter_definition.endpoint_info[:group],
           api_version: documenter_definition.document_as_version(for_version),
-          response_example: documenter_definition.endpoint_info[:response_example],
-          request_example: documenter_definition.endpoint_info[:request_example] || { content: "\"#{path}\"" }
+          response_examples: documenter_definition.endpoint_info[:response_examples],
+          request_examples: request_examples
         },
 
         # Query parameters, etc

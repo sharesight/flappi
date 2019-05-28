@@ -37,6 +37,8 @@ module Examples
       link :other, 'other/:defaulted/other_api?extra=:extra'
       link :self
 
+      request_example('"/api/examples/exercise?extra=100"')
+      request_example({ label: 'Another Request Example' }, '"/api/examples/exercise?extra=100"')
       request_example({ label: 'Special Request Example' }, '"/api/examples/exercise?extra=100"')
 
       example_text = <<~END_EXAMPLE
@@ -48,6 +50,8 @@ module Examples
           ]
         }
       END_EXAMPLE
+      response_example(example_text)
+      response_example({ label: 'Another Response Example' }, example_text)
       response_example({ label: 'Special Response Example' }, example_text)
     end
 
