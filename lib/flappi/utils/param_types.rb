@@ -28,7 +28,7 @@ module Flappi
         end
       end
 
-      def cast_param(src, type, name=nil)
+      def cast_param(src, type, name = nil)
         # puts "cast_param #{src}, type #{type.to_s}"
         return nil if src.nil?
 
@@ -43,8 +43,8 @@ module Flappi
           return src if src.is_a?(Date)
           Date.parse(src)
         when 'Array'
-           return src if src.is_a?(Array)
-           array_parse(src)
+          return src if src.is_a?(Array)
+          array_parse(src)
         when 'String'
           src
         else
@@ -54,11 +54,11 @@ module Flappi
       end
 
       def array_parse(a)
-        raise "Incorrect array" unless a.start_with?('[') and a.end_with?(']')
+        raise "Incorrect array" unless a.start_with?('[') && a.end_with?(']')
         a[1..-2].split(',').map do |c|
           return c.to_f if c.to_f.to_s == c
           return c.to_i if c.to_i.to_s == c
-          c.gsub(/^"/,'').gsub(/"\s*$/, '')
+          c.gsub(/^"/, '').gsub(/"\s*$/, '')
         end
       end
     end
