@@ -417,7 +417,7 @@ module Flappi
 
     # Enable/disable strict mode, unknown parameters will cause an error\
     # Default is to disable this
-    def strict(mode=false)
+    def strict(mode = false)
       endpoint_info[:strict_mode] = mode
     end
 

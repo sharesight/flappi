@@ -37,7 +37,7 @@ module Integration
         response = @controller.update
 
         assert_equal({ 'obj' => { 'nested' => 'hello' },
-                       "links"=>{"self"=>"http://test.api/exercise7/examples/exercise7"} }, response)
+                       "links" => {"self" => "http://test.api/exercise7/examples/exercise7"} }, response)
       end
     end
   end

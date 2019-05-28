@@ -131,7 +131,7 @@ module Flappi
     def self.make_param_docs(documenter_definition, path)
       param_docs = documenter_definition.endpoint_info[:params]
       param_docs.select { |p| path.match ":#{p[:name]}(/|$)" }.each { |p| p[:optional] = false }
-      param_docs.reject! {|p| p[:hidden] }
+      param_docs.reject! { |p| p[:hidden] }
       param_docs
     end
 
@@ -156,7 +156,7 @@ module Flappi
     end
 
     # validate actual parameters against definitions, return an error message if fails
-    def self.validate_parameters(actual_params, defined_params, strict_mode=false)
+    def self.validate_parameters(actual_params, defined_params, strict_mode = false)
       defined_params.each do |defined_param|
         Flappi::Utils::Logger.d "Check parameter #{defined_param}"
         param_supplied = actual_params.key? defined_param[:name]
@@ -177,12 +177,12 @@ module Flappi
       if strict_mode
         rails_params = ['format', 'version', 'controller', 'action', 'access_token']
         param_hash = if actual_params.respond_to?(:to_unsafe_h)
-              actual_params.to_unsafe_h
-            else
-              actual_params.to_h
-            end
+                       actual_params.to_unsafe_h
+                     else
+                       actual_params.to_h
+                     end
         wrong_params = pathify_hash(nil, param_hash) - \
-          (defined_params.map {|p| p[:name].to_s } + rails_params)
+                       (defined_params.map { |p| p[:name].to_s } + rails_params)
 
         return ["Parameter(s) #{wrong_params.join(', ')} not recognised in strict mode", :not_acceptable] if wrong_params.present?
       end
@@ -191,7 +191,7 @@ module Flappi
     end
 
     def self.pathify_hash(prefix, h)
-      h.flat_map do |k,v|
+      h.flat_map do |k, v|
         prefixed_k = [prefix, k].compact.map(&:to_s).join('/')
         if v.is_a?(Hash)
           pathify_hash(prefixed_k, v)
