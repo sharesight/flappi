@@ -7,7 +7,8 @@ module Flappi
   module Common
     # @private
     NAMED_TYPES = {
-      boolean_type: 'Boolean'
+      boolean_type: 'Boolean',
+      boolean_strict: 'Boolean'
     }.freeze
 
     # @private
