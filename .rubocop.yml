@@ -79,3 +79,6 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Style/EmptyLineAfterGuardClause:
   Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
