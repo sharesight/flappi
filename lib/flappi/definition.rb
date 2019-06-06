@@ -24,8 +24,11 @@ module Flappi
     # @private
     include Common
 
-    # Use on {#field} and {#param} types when a boolean type is wanted
+    # Use on {#field} and {#param} types when a boolean type is wanted, null values will be null
     BOOLEAN = :boolean_type
+
+    # Use on {#field} and {#param} types when a boolean type is wanted and falsey values will be false, truthy true
+    BOOLEAN_STRICT = :boolean_strict
 
     # @private
     attr_reader :delegate

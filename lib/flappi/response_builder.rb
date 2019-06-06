@@ -308,8 +308,10 @@ module Flappi
         if src.nil?
           nil
         else
-          src ? true : false
+          !!src
         end
+      when 'boolean_strict'
+        !!src
       when 'BigDecimal', 'Float'
         if precision
           src&.to_f&.round(precision)
@@ -332,8 +334,12 @@ module Flappi
         return nil
       end
 
-      return nil unless object.respond_to?(name.to_sym)
-      object.send(name.to_sym)
+      return object.send(name.to_sym) if object.respond_to?(name.to_sym)
+
+      query_name = "#{name}?".to_sym
+      return object.send(query_name) if object.respond_to?(query_name)
+
+      nil
     end
 
     def controller_base_url
