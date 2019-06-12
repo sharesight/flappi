@@ -40,10 +40,10 @@ module Flappi
         # construct a model of type with the parameters
         # which we should have by virtue of being mixed into the controller
         base_object = if options.key?(:options)
-          options[:type].where(controller_params, options[:options])
-        else
-          options[:type].where(controller_params)
-        end
+                        options[:type].where(controller_params, options[:options])
+                      else
+                        options[:type].where(controller_params)
+                      end
       end
 
       # If return_error called, return a struct
@@ -308,8 +308,10 @@ module Flappi
         if src.nil?
           nil
         else
-          src ? true : false
+          !!src
         end
+      when 'boolean_strict'
+        !!src
       when 'BigDecimal', 'Float'
         if precision
           src&.to_f&.round(precision)
@@ -332,9 +334,12 @@ module Flappi
         return nil
       end
 
-      return nil unless object.respond_to?(name.to_sym)
+      return object.send(name.to_sym) if object.respond_to?(name.to_sym)
 
-      object.send(name.to_sym)
+      query_name = "#{name}?".to_sym
+      return object.send(query_name) if object.respond_to?(query_name)
+
+      nil
     end
 
     def controller_base_url

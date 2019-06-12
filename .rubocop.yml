@@ -73,3 +73,12 @@ Lint/UselessComparison:
 
 Layout/AlignParameters:
   Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false

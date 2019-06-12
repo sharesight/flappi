@@ -15,16 +15,20 @@
   <%= param_item.description %>
 <% end %>
 
-@apiParamExample Request Example
-{<%= endpoint.method_name %>} <%= endpoint.request_example %>
+<% (endpoint.request_examples || []).each do |request_example| -%>
+@apiParamExample <%= request_example[:label] || 'Request Example' %>
+{<%= endpoint.method_name %>} <%= request_example[:content] %>
+<% end -%>
 
 <% for response_item in response %>
 @apiSuccess (200 Success) {<%= response_item.type %>} <%= qname_from(response_item.name) %>
 <%= response_item.description %>
 <% end %>
 
-@apiSuccessExample {json} Response Example
-<%= endpoint.response_example %>
+<% (endpoint.response_examples || []).each do |response_example| -%>
+@apiSuccessExample {json} <%= response_example[:label] || 'Response Example' %>
+<%= response_example[:content] %>
+<% end -%>
 
 @apiError (400 Bad Request) {Integer} error
   Internal error code
@@ -34,4 +38,9 @@
   Detailed error message what went wrong.
 
 @apiUse OauthErrors
+
+<% (endpoint.api_errors || []).each do |api_error| -%>
+@apiError (<%= api_error[:status_code] %>) {Hash} <%= api_error[:response_field_name] %>
+  <%= api_error[:response_field_description] %>
+<% end -%>
 =end

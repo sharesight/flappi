@@ -24,8 +24,11 @@ module Flappi
     # @private
     include Common
 
-    # Use on {#field} and {#param} types when a boolean type is wanted
+    # Use on {#field} and {#param} types when a boolean type is wanted, null values will be null
     BOOLEAN = :boolean_type
+
+    # Use on {#field} and {#param} types when a boolean type is wanted and falsey values will be false, truthy true
+    BOOLEAN_STRICT = :boolean_strict
 
     # @private
     attr_reader :delegate
@@ -54,7 +57,7 @@ module Flappi
 
     # @private
     def endpoint_info
-      @endpoint_info ||= { params: [] }
+      @endpoint_info ||= { params: [], request_examples: [], response_examples: [], api_errors: [] }
     end
 
     # @private
@@ -345,6 +348,15 @@ module Flappi
       set_example('request', v)
     end
 
+    # Define an API error
+    def api_error(status_code, field_name, field_description)
+      endpoint_info[:api_errors] << {
+        status_code: status_code,
+        response_field_name: field_name,
+        response_field_description: field_description
+      }
+    end
+
     # @private
     def set_example(example_type, v)
       raise "#{example_type}_example needs at least a text" if v.size.zero?
@@ -356,7 +368,10 @@ module Flappi
                       end
       return unless version_wanted(options)
 
-      endpoint_info["#{example_type}_example".to_sym] = text
+      endpoint_info["#{example_type}_examples".to_sym] << {
+        label: options[:label],
+        content: text
+      }
     end
 
     # Define an input parameter (inline or query string)

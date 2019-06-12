@@ -10,7 +10,7 @@ module Flappi
         when nil
           true
         when 'Boolean'
-          src.is_a?(TrueClass) || src.is_a?(FalseClass) || (src.size >= 1 && %w[1 0 Y N T F].include?(src[0].to_s.upcase))
+          src.is_a?(TrueClass) || src.is_a?(FalseClass) || ['Y', 'N', '0', '1', 'T', 'F', 'YES', 'NO', 'TRUE', 'FALSE'].include?(src.to_s.upcase)
         when 'BigDecimal', 'Float'
           src.is_f?
         when 'Integer'
@@ -45,9 +45,9 @@ module Flappi
 
           Date.parse(src)
         when 'Array'
-           return src if src.is_a?(Array)
+          return src if src.is_a?(Array)
 
-           array_parse(src)
+          array_parse(src)
         when 'String'
           src
         else

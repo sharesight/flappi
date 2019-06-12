@@ -32,8 +32,6 @@
 
 
 
-@apiSuccessExample {json} Response Example
-
 
 @apiError (400 Bad Request) {Integer} error
  Internal error code
@@ -43,4 +41,5 @@
  Detailed error message what went wrong.
 
 @apiUse OauthErrors
+
 =end
