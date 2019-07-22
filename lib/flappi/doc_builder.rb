@@ -87,6 +87,8 @@ module Flappi
 
     def query(block); end
 
+    def hash_key(*args); end
+
     private
 
     def peek_object_path
