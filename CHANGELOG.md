@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.10.4 `(07/08/2019)`
+
+* Ruby 2.6.3 support update.
+
 ## 0.10.0 `(04/06/2019)`
 
  * add support for multiple request and response examples and API errors [#36])(https://github.com/sharesight/flappi/pull/36)

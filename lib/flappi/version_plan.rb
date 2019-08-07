@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Flappi
@@ -36,13 +35,11 @@ module Flappi
     def minimum_version
       lowest_no_flavour = available_version_definitions.versions_array
                                                        .select { |v| v.flavour.nil? }
-                                                       .sort_by(&:to_s)
-                                                       .first
+                                                       .min_by(&:to_s)
       return lowest_no_flavour unless lowest_no_flavour.nil?
 
       available_version_definitions.versions_array
-                                   .sort_by(&:to_s)
-                                   .first
+                                   .min_by(&:to_s)
     end
 
     # Return all the available version definitions

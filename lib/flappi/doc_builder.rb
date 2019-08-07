@@ -37,6 +37,7 @@ module Flappi
       require_arg def_args, :name
 
       return unless version_wanted(def_args)
+
       if def_args.key?(:when)
         # The when clause can call undefined code at doc time
         ignore = !def_args[:when] rescue false # rubocop:disable Style/RescueModifier
@@ -101,6 +102,7 @@ module Flappi
 
     def push_object_path(element_name, is_reference)
       raise 'Cannot nest reference elements' if is_reference && @object_path.find { |opi| opi[:is_reference] }
+
       @object_path.push(element: element_name, is_reference: is_reference)
     end
 

@@ -86,6 +86,7 @@ module Flappi
 
       raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions} - not allowed by documenter as yet in #{endpoint_simple_name}" if use_versions.size > 1
       raise "#{endpoint_info[:title]}: Version could not be determined, trying to document unsupported endpoint #{documenting_version_text}" if use_versions.empty?
+
       use_versions.first
     end
 
@@ -317,6 +318,7 @@ module Flappi
     # @option version_rule [String] :equals A version which must be matched for the endpoint to be supported. The version can be wildcarded with '*'.
     def version(version_rule)
       raise "No version plan is defined - cannot use 'version'" unless version_plan
+
       @version_rule = version_rule
     end
 
@@ -358,6 +360,7 @@ module Flappi
     # @private
     def set_example(example_type, v)
       raise "#{example_type}_example needs at least a text" if v.size.zero?
+
       options, text = if v.size == 1
                         [{}, v[0]]
                       else

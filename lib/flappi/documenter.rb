@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Flappi
@@ -13,6 +12,7 @@ module Flappi
       Flappi::Utils::Logger.i "Documenting definitions: #{defs_to_document} endpoint=#{ENV['endpoint']} version=#{for_version}"
       defs_to_document.map do |defi|
         next if ENV['endpoint'] && ENV['endpoint'] != defi.to_s
+
         Flappi::Utils::Logger.d "Documenting #{defi}"
 
         into_file = (into_path + defi.to_s[top_module.to_s.length..-1].underscore).sub(/\/([^\/]+)$/, '/show_\1.rb')

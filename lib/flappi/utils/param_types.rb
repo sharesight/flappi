@@ -17,6 +17,7 @@ module Flappi
           src.is_i?
         when 'Date'
           return true if src.is_a?(::Date)
+
           begin
             Date.parse(src)
           rescue StandardError
@@ -41,9 +42,11 @@ module Flappi
           src.to_i
         when 'Date'
           return src if src.is_a?(Date)
+
           Date.parse(src)
         when 'Array'
           return src if src.is_a?(Array)
+
           array_parse(src)
         when 'String'
           src
@@ -54,10 +57,12 @@ module Flappi
       end
 
       def array_parse(a)
-        raise "Incorrect array" unless a.start_with?('[') && a.end_with?(']')
+        raise "Incorrect array" unless a.start_with?('[') and a.end_with?(']')
+
         a[1..-2].split(',').map do |c|
           return c.to_f if c.to_f.to_s == c
           return c.to_i if c.to_i.to_s == c
+
           c.gsub(/^"/, '').gsub(/"\s*$/, '')
         end
       end
