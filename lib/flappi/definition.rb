@@ -276,6 +276,8 @@ module Flappi
     end
 
     # Specify a link to be provided in the response
+    # Links defined at the top level will be output at the end of the response
+    # Links defined at object level will be output at the end of the object
     #
     # @overload link(:self)
     #   @param key (String) (:self, to generate the link that produces this result)

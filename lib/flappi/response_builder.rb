@@ -72,21 +72,12 @@ module Flappi
 
       @current_source = nil
 
-      links = Hash[(@link_defs || []).map do |link_def|
-        expanded_link = if link_def[:key] == :self
-                          expand_self_path(source_definition.endpoint_info[:path],
-                                           source_definition.endpoint_info[:params].map { |p| p[:name].to_sym })
-                        else
-                          expand_link_path(link_def[:path])
-                        end
-        [link_def[:key], expanded_link]
-      end]
-
       @references.each do |k, r|
         @response_tree[k] = r.to_a
       end
 
-      @response_tree[:links] = links unless links.empty?
+      put_links
+
       @response_tree
     end
 
@@ -253,6 +244,7 @@ module Flappi
                  end
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
+
       (@link_defs ||= []) << link_def
     end
 
@@ -405,6 +397,22 @@ module Flappi
       raise "Link path contains unsubstituted params #{subst_path}" if subst_path.match?(/:\w+/)
       subst_uri = ::URI.parse(subst_path)
       [subst_uri, used_params]
+    end
+
+    private
+
+    def put_links
+      links = Hash[(@link_defs || []).map do |link_def|
+        expanded_link = if link_def[:key] == :self
+                          expand_self_path(source_definition.endpoint_info[:path],
+                                           source_definition.endpoint_info[:params].map {|p| p[:name].to_sym})
+                        else
+                          expand_link_path(link_def[:path])
+                        end
+        [link_def[:key], expanded_link]
+      end]
+
+      @put_stack.last[:links] = links unless links.empty?
     end
   end
 end

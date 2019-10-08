@@ -29,7 +29,8 @@ module Integration
         response = @controller.show
 
         assert_equal({ "single" => { "n" => 1, "name" => "one" },
-                       "multi" => [{ "n" => 1, "name" => "one" }, { "n" => 2, "name" => "two" }] },
+                       "multi" => [{ "n" => 1, "name" => "one" }, { "n" => 2, "name" => "two" }],
+                       "links" => {"object_link"=>"http://test.api/exercise6/object_access"} },
           response)
       end
     end

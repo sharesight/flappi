@@ -32,6 +32,8 @@ module Examples
         object name: :single, source: :single_block do
           field :n
           field :name
+
+          link :object_link, '/object_access'
         end
 
         objects name: :multi, source: :multi_block do
