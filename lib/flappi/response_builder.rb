@@ -34,9 +34,14 @@ module Flappi
 
       base_object = nil
       @status_code = nil
-      permitted_params = controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
-      required = params_to_require
-      permitted_params.require(*params_to_require) if required.present? && controller_params.respond_to?(:require)
+
+      if source_definition.endpoint_info[:check_params]
+        permitted_params = controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
+        required = params_to_require
+        permitted_params.require(*params_to_require) if required.present? && controller_params.respond_to?(:require)
+      else
+        permitted_params = controller_params
+      end
 
       if @query_block
         # We have a query block defined, call it to get the model object
