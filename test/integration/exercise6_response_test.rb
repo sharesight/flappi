@@ -28,9 +28,8 @@ module Integration
       should 'respond with a composed block' do
         response = @controller.show
 
-        assert_equal({ "single" => { "n" => 1, "name" => "one" },
-                       "multi" => [{ "n" => 1, "name" => "one" }, { "n" => 2, "name" => "two" }],
-                       "links" => {"object_link"=>"http://test.api/exercise6/object_access"} },
+        assert_equal({ "single" => { "n" => 1, "name" => "one", "links" => {"object_link"=>"http://test.api/exercise6/object_access"} },
+                       "multi" => [{ "n" => 1, "name" => "one" }, { "n" => 2, "name" => "two" }] },
           response)
       end
     end

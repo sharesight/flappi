@@ -21,7 +21,11 @@ module Flappi
 
     def initialize
       @query_block = nil
-      @link_defs = nil
+
+      # The link stack collects links defined at object/objects level
+      # Each entry is an array of links
+      # Init here as `link` can be outside `build`
+      @link_stack = [[]]
     end
 
     # Call this with a block that builds the API response
@@ -30,19 +34,22 @@ module Flappi
 
       base_object = nil
       @status_code = nil
+      permitted_params = controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
+      required = params_to_require
+      permitted_params.require(*params_to_require) if required.present? && controller_params.respond_to?(:require)
+
       if @query_block
         # We have a query block defined, call it to get the model object
-        base_object = @query_block.call(controller_params)
+        base_object = @query_block.call(permitted_params)
 
         # puts "ResponseBuilder::build - query_block got "; pp base_object
-
       elsif options.key?(:type)
         # construct a model of type with the parameters
         # which we should have by virtue of being mixed into the controller
         base_object = if options.key?(:options)
-                        options[:type].where(controller_params, options[:options])
+                        options[:type].where(permitted_params, options[:options])
                       else
-                        options[:type].where(controller_params)
+                        options[:type].where(permitted_params)
                       end
       end
 
@@ -93,7 +100,11 @@ module Flappi
 
       if def_args.key?(:name) || def_args.key?(:dynamic_key)
         @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
+        @link_stack.push([])
+
         block.call @current_source
+
+        put_links
         @put_stack.pop
       elsif def_args[:inline_always]
         block.call @current_source
@@ -129,6 +140,7 @@ module Flappi
         @source_stack.push(@current_source)
         @current_source = value
         @put_stack.push(object_hash = new_h)
+        @link_stack.push([])
 
         if value.nil?
           block.call
@@ -137,6 +149,8 @@ module Flappi
         else
           block.call value
         end
+
+        put_links
 
         if objects_result.is_a?(Hash)
           raise "No hash_key defined for hashed objects #{def_args[:name]}" unless @hash_key
@@ -245,7 +259,7 @@ module Flappi
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
 
-      (@link_defs ||= []) << link_def
+      @link_stack.last << link_def
     end
 
     def query(block)
@@ -254,6 +268,7 @@ module Flappi
 
     def return_no_content
       @status_code = 204
+      @status_error_info = 'No content'
     end
 
     def return_error(status_code, error_info)
@@ -402,7 +417,8 @@ module Flappi
     private
 
     def put_links
-      links = Hash[(@link_defs || []).map do |link_def|
+      link_defs = @link_stack.pop || []
+      links = link_defs.map do |link_def|
         expanded_link = if link_def[:key] == :self
                           expand_self_path(source_definition.endpoint_info[:path],
                                            source_definition.endpoint_info[:params].map {|p| p[:name].to_sym})
@@ -410,9 +426,53 @@ module Flappi
                           expand_link_path(link_def[:path])
                         end
         [link_def[:key], expanded_link]
-      end]
+      end.to_h
 
       @put_stack.last[:links] = links unless links.empty?
     end
+
+    def params_to_permit
+      make_param_arg(source_definition.endpoint_info[:params])
+    end
+
+    def params_to_require
+      required_params = source_definition.endpoint_info[:params].reject {|p| p[:optional]}
+      return param_group_names if required_params.empty?
+      make_param_arg(required_params)
+    end
+
+    def param_group_names
+      source_definition.endpoint_info[:params].map do |param_def|
+        keys = param_def[:name].to_s.split('/').map(&:to_sym)
+        next nil unless keys.size > 1
+        keys.first
+      end.compact.uniq
+    end
+
+    def make_param_arg(param_defs)
+      res = []
+
+      param_defs.each do |param_def|
+        keys = param_def[:name].to_s.split('/').map(&:to_sym)
+        if keys.size==1
+          res << keys.first
+          next
+        end
+
+        raise "Unsupported nesting of depth > 2 at #{param_def[:name]}" if keys.size > 2
+
+        group = keys.first
+        k = keys.second
+
+        raise "At #{param_def[:name]}, #{group} is used for plain and grouped parameters, which wont work" if res.include?(group)
+
+        res << {} unless res.last.is_a?(Hash)
+        res.last[group] ||= []
+        res.last[group] << k
+      end
+
+      res
+    end
+
   end
 end

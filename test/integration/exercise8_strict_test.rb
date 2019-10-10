@@ -42,7 +42,6 @@ module Integration
       should 'accept rails parameters' do
         @controller.params = { required: 1, format: 'json', version: nil, controller: @controller, action: :show }
         response = @controller.show
-        pp @controller.last_render_params
 
         assert_equal({ 'a' => 'ok' }, response)
       end
