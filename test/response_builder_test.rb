@@ -380,12 +380,12 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_params.merge @response_builder.controller_query_parameters
 
           assert_equal 'http://server/test/123/endpoint?b=88',
-                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint?b=88')
+                       @response_builder.send(:expand_link_path, '/:portfolio_id/endpoint?b=88', {})
         end
 
         should 'work on referenced path where no query params' do
           assert_equal 'http://server/test/portfolios/123/ref',
-                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref')
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id/ref', {})
         end
 
         should 'work with a substitutable query param as Rails 4' do
@@ -393,7 +393,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_query_parameters = { consolidated: false }
 
           assert_equal 'http://server/test/portfolios/123?consolidated=false',
-                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated')
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated', {})
         end
 
         should 'work with a substitutable query param as Rails 5 (params = symbol hash)' do
@@ -401,7 +401,18 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
           @response_builder.controller_query_parameters = { consolidated: false }
 
           assert_equal 'http://server/test/portfolios/123?consolidated=false',
-                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated')
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated', {})
+        end
+
+        should 'substitute from data context into links' do
+          @response_builder.controller_params = { consolidated: false }
+          @response_builder.controller_query_parameters = { consolidated: false }
+
+          assert_equal 'http://server/test/portfolios/123?consolidated=false',
+                       @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated',
+                        {
+                          portfolio_id: 123
+                        })
         end
       end
 

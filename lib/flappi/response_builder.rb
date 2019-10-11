@@ -26,6 +26,8 @@ module Flappi
       # Each entry is an array of links
       # Init here as `link` can be outside `build`
       @link_stack = [[]]
+
+      @current_source = nil
     end
 
     # Call this with a block that builds the API response
@@ -264,6 +266,7 @@ module Flappi
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
 
+      link_def[:link_source_vars] = @current_source.clone
       @link_stack.last << link_def
     end
 
@@ -368,7 +371,7 @@ module Flappi
 
     def expand_self_path(path, defined_param_names)
       # puts "expand_self_path path=#{path}, defined_param_names=#{defined_param_names}, controller_params=#{controller_params}"
-      subst_uri, used_params = substitute_link_path_params(path)
+      subst_uri, used_params = substitute_link_path_params(path, {})
 
       query_params = controller_params.clone
       query_params = query_params.to_unsafe_hash if query_params.respond_to?(:to_unsafe_hash)
@@ -382,9 +385,9 @@ module Flappi
       expanded
     end
 
-    def expand_link_path(path)
+    def expand_link_path(path, source_vars)
       # puts "expand_link_path path=#{path}, controller_params=#{controller_params}"
-      subst_uri, _used_params = substitute_link_path_params(path)
+      subst_uri, _used_params = substitute_link_path_params(path, source_vars)
 
       expanded = expand_uri_with_host(subst_uri)
       expanded += "?#{subst_uri.query}" if subst_uri.query
@@ -397,7 +400,7 @@ module Flappi
       expanded + subst_uri.path
     end
 
-    def substitute_link_path_params(path)
+    def substitute_link_path_params(path, vars)
       subst_path = path.dup
       used_params = []
 
@@ -413,8 +416,18 @@ module Flappi
         used_params << pname.to_sym
       end
 
+      loop do
+        matched_param = subst_path.match(/:(\w+)/)
+        break unless matched_param
+
+        param_name = matched_param[1]
+        subst_value = access_member_somehow(vars, param_name)
+        raise "Link path contains unsubstituted param #{param_name} in #{subst_path}" unless subst_value
+
+        subst_path.sub!(matched_param[0], subst_value.to_s)
+      end
+
       # puts "Made path #{subst_path}"
-      raise "Link path contains unsubstituted params #{subst_path}" if subst_path.match?(/:\w+/)
       subst_uri = ::URI.parse(subst_path)
       [subst_uri, used_params]
     end
@@ -428,7 +441,7 @@ module Flappi
                           expand_self_path(source_definition.endpoint_info[:path],
                                            source_definition.endpoint_info[:params].map {|p| p[:name].to_sym})
                         else
-                          expand_link_path(link_def[:path])
+                          expand_link_path(link_def[:path], link_def[:link_source_vars])
                         end
         [link_def[:key], expanded_link]
       end.to_h
