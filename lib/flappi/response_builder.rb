@@ -31,7 +31,6 @@ module Flappi
     # Call this with a block that builds the API response
     def build(options, &_block)
       # puts "response_builder::build, class= #{self.class} self="; pp self;
-
       base_object = nil
       @status_code = nil
 
@@ -51,10 +50,11 @@ module Flappi
       elsif options.key?(:type)
         # construct a model of type with the parameters
         # which we should have by virtue of being mixed into the controller
+        as_method = options[:as]&.to_sym || :where
         base_object = if options.key?(:options)
-                        options[:type].where(permitted_params, options[:options])
+                        options[:type].send(as_method, permitted_params, options[:options])
                       else
-                        options[:type].where(permitted_params)
+                        options[:type].send(as_method, permitted_params)
                       end
       end
 
