@@ -21,6 +21,8 @@ jobs:
       - image: circleci/ruby:2.5.3
 
     steps:
+      - checkout
+
       - *checkout
 
       - run: *bundle_install
