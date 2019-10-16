@@ -5,7 +5,7 @@ version: 2
 checkout_repo: &checkout
   run:
     name: Checkout
-    command: 'git config user.name "circleci" && git config user.email "richard.parratt@sharesight.co.nz" && git fetch && git checkout $CIRCLE_BRANCH && git pull && git checkout master && git pull && git merge --no-edit $CIRCLE_BRANCH && git status'
+    command: 'git config user.name "circleci" && git config user.email "richard.parratt@sharesight.co.nz" && git fetch && git checkout master && git pull && git merge --no-edit $CIRCLE_BRANCH && git status'
 
 # Install Ruby dependencies
 run: &bundle_install
