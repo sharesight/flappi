@@ -6,13 +6,11 @@ checkout_repo: &checkout
   run:
     name: Checkout
     command: 'git config user.name "circleci" && git config user.email "richard.parratt@sharesight.co.nz" && git fetch && git checkout $CIRCLE_BRANCH && git pull && git checkout master && git pull && git merge --no-edit $CIRCLE_BRANCH && git status'
-    working_directory: ~/flappi
 
 # Install Ruby dependencies
 run: &bundle_install
   name: Bundle Install
   command: 'pwd && ls && source /usr/local/rvm/scripts/rvm && bundle config --global path ~/flappi/vendor/bundle && bundle --version && bundle install'
-  working_directory: ~/flappi
 
 jobs:
   build:
@@ -30,6 +28,5 @@ jobs:
       - run:
           name: 'Test gem'
           command: rake test
-          working_directory: ~/flappi
 
 
