@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Flappi
@@ -19,8 +18,8 @@ module Flappi
         begin
           candidate_class_name = (path.camelize + '::' + endpoint_name)
           candidate_class = candidate_class_name.constantize
-        rescue StandardError => ex
-          issues << "Could not load #{candidate_class_name} because #{ex} was raised"
+        rescue StandardError => e
+          issues << "Could not load #{candidate_class_name} because #{e} was raised"
         end
 
         next unless candidate_class

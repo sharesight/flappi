@@ -19,6 +19,7 @@ module Flappi
 
       def method_missing(meth_name, *args)
         return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+
         super
       end
 
@@ -28,6 +29,7 @@ module Flappi
 
       def self.method_missing(meth_name, *_args, &_block)
         return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+
         super
       end
 
@@ -39,6 +41,7 @@ module Flappi
     class DefDocumenter
       def method_missing(meth_name, *args)
         return DocumentingStub.new unless %i[method_missing respond_to_missing?].include? meth_name
+
         super
       end
 
@@ -122,6 +125,7 @@ module Flappi
       documenter_definition.version_plan = Flappi.configuration.version_plan
 
       raise 'API definition must include <endpoint> method' unless documenter_definition.respond_to? :endpoint
+
       documenter_definition.endpoint
 
       Flappi::Utils::Logger.d "After endpoint call documenter_definition.endpoint_info: #{documenter_definition.endpoint_info.inspect}"
@@ -180,12 +184,12 @@ module Flappi
       if strict_mode
         rails_params = ['format', 'version', 'controller', 'action', 'access_token']
         param_hash = if actual_params.respond_to?(:to_unsafe_h)
-                       actual_params.to_unsafe_h
-                     else
-                       actual_params.to_h
-                     end
+          actual_params.to_unsafe_h
+        else
+          actual_params.to_h
+        end
         wrong_params = pathify_hash(nil, param_hash) - \
-                       (defined_params.map { |p| p[:name].to_s } + rails_params)
+          (defined_params.map { |p| p[:name].to_s } + rails_params)
 
         return ["Parameter(s) #{wrong_params.join(', ')} not recognised in strict mode", :not_acceptable] if wrong_params.present?
       end

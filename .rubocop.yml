@@ -77,7 +77,7 @@ Layout/AlignParameters:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
-Style/EmptyLineAfterGuardClause:
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 Style/DoubleNegation:

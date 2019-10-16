@@ -359,6 +359,7 @@ module Flappi
 
     def controller_base_url
       raise 'path not defined in endpoint' unless source_definition.endpoint_info[:path]
+
       path = source_definition.endpoint_info[:path].gsub(/\/$/, '') # remove trailing slash
       path_matcher = Regexp.new(path.gsub(/\/:\w+/, '\/[^\/]+')) # converts `/user/:user_id` into `/user/[^\/]+`
 
