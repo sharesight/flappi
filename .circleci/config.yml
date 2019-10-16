@@ -10,7 +10,7 @@ checkout_repo: &checkout
 # Install Ruby dependencies
 run: &bundle_install
   name: Bundle Install
-  command: 'pwd && ls && source /usr/local/rvm/scripts/rvm && bundle config --global path ~/flappi/vendor/bundle && bundle --version && bundle install'
+  command: 'bundle --version && bundle install'
 
 jobs:
   build:
