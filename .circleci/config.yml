@@ -1,4 +1,4 @@
-# Rake test flappi
+# Generic config to build a gem
 version: 2
 
 # Checkout with a fetch and pull
@@ -10,7 +10,7 @@ checkout_repo: &checkout
 # Install Ruby dependencies
 run: &bundle_install
   name: Bundle Install
-  command: 'bundle --version && bundle install'
+  command: 'gem install bundler && bundle --version && bundle install'
 
 jobs:
   build:
@@ -28,5 +28,3 @@ jobs:
       - run:
           name: 'Test gem'
           command: rake test
-
-
