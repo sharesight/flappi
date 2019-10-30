@@ -10,7 +10,7 @@ end
 require 'maxitest/autorun'
 require 'shoulda'
 require 'mocha/minitest'
-
+require 'pry'
 require 'flappi'
 
 Flappi.configure do |conf|

@@ -5,6 +5,7 @@
 require 'recursive-open-struct'
 require 'active_support/json'
 require 'active_support/inflector'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module Flappi
   module BuilderFactory
@@ -165,18 +166,23 @@ module Flappi
     # validate actual parameters against definitions, return an error message if fails
     def self.validate_parameters(actual_params, defined_params, strict_mode = false)
       defined_params.each do |defined_param|
-        Flappi::Utils::Logger.d "Check parameter #{defined_param}"
-        param_supplied = actual_params.key? defined_param[:name]
-        return ["Parameter #{defined_param[:name]} is required", defined_param[:fail_code]] unless param_supplied || defined_param[:optional]
+        Flappi::Utils::Logger.d "Check parameter #{defined_param} in #{actual_params}"
 
-        next unless param_supplied
+        # Find the nested param
+        param_path = defined_param[:name].to_s.split('/')
+        actual_param = Flappi::Utils::HashKeyUtils.dig_indifferent(actual_params, *param_path)
+        return ["Parameter #{defined_param[:name]} is required", defined_param[:fail_code]] unless actual_param || defined_param[:optional]
 
-        return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_params[defined_param[:name]], defined_param[:type])
+        next unless actual_param
 
-        actual_params[defined_param[:name]] = cast_param(actual_params[defined_param[:name]], defined_param[:type], defined_param[:name])
+        return ["Parameter #{defined_param[:name]} must be of type #{defined_param[:type]}", defined_param[:fail_code]] unless validate_param(actual_param, defined_param[:type])
+
+        # Bury the casted param
+        casted_param = cast_param(actual_param, defined_param[:type], defined_param[:name])
+        Flappi::Utils::HashKeyUtils.bury_indifferent(actual_params, casted_param, *param_path)
 
         if defined_param[:validation_block]
-          error_text = defined_param[:validation_block].call(actual_params[defined_param[:name]])
+          error_text = defined_param[:validation_block].call(actual_param)
           return ["Parameter #{defined_param[:name]} failed validation: #{error_text}", defined_param[:fail_code]] if error_text
         end
       end
@@ -188,6 +194,7 @@ module Flappi
         else
           actual_params.to_h
         end
+
         wrong_params = pathify_hash(nil, param_hash) - \
           (defined_params.map { |p| p[:name].to_s } + rails_params)
 
@@ -222,7 +229,7 @@ module Flappi
     # If a parameter is either missing or blank and a default is defined, it is used
     def self.apply_default_parameters(actual_params, defined_params)
       actual_params.merge!(defined_params.select do |defined_param|
-                             param = actual_params.dig(defined_param[:name])
+                             param = Flappi::Utils::HashKeyUtils.dig_indifferent(actual_params, defined_param[:name])
                              (param.nil? || param == '') && defined_param.key?(:default)
                            end.map do |defined_param|
                              [defined_param[:name], defined_param[:default]]
