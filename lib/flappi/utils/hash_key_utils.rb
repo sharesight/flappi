@@ -23,7 +23,7 @@ module Flappi
         return unless hash_string_symbol && !items.empty?
 
         parent = dig_indifferent(hash_string_symbol, *items[0...-1])
-        return unless parent.is_a?(Hash)
+        return unless parent.respond_to?(:dig)
 
         if parent[items.last.to_s]
           parent[items.last.to_s] = value
