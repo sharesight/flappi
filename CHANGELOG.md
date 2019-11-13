@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 0.10.5 `(13/11/2019)`
+
+* Ruby 2.6.5
+* When a link is defined at object level, output it in the object rather than at the end of the response
+* Validate parameters for permitted / required inside response builder
+* Substitute variables into links
+* Fix circleci config
+* Fix parameter nesting
+
 ## 0.10.4 `(07/08/2019)`
 
 * Ruby 2.6.3 support update.
