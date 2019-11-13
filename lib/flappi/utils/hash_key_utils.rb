@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Flappi
   module Utils
     module HashKeyUtils
-
       # dig, using symbol or string keys
       def self.dig_indifferent(hash_string_symbol, *items)
         # Flappi::Utils::Logger.d "dig #{hash_string_symbol}, #{items}"
@@ -10,7 +11,7 @@ module Flappi
         return nil unless hash_string_symbol.respond_to?(:dig)
 
         located = hash_string_symbol[items.first.to_s] || hash_string_symbol[items.first.to_s.to_sym]
-        return located if items.length==1
+        return located if items.length == 1
 
         return nil unless located.is_a?(Hash)
 
@@ -35,10 +36,6 @@ module Flappi
           parent[items.last] = value
         end
       end
-
-      private
-
     end
-
   end
 end

@@ -410,9 +410,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
 
           assert_equal 'http://server/test/portfolios/123?consolidated=false',
                        @response_builder.send(:expand_link_path, '/portfolios/:portfolio_id?consolidated=:consolidated',
-                        {
-                          portfolio_id: 123
-                        })
+                          portfolio_id: 123)
         end
       end
 

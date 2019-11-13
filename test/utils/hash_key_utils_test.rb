@@ -4,18 +4,16 @@ require_relative '../test_helper'
 
 class ::Flappi::HashKeyUtilsTest < MiniTest::Test
   ['symbol', 'string', 'mixed'].each do |key_type|
-
     context "#{key_type} keys" do
       setup do
         @hash = case key_type
-               when 'symbol'
-                 { a: { b: { c: 100, d: 200 }, e: 50 }, f: 6 }
-               when 'string'
-                 { 'a' => { 'b' => { 'c' => 100, 'd' => 200 }, 'e' => 50 }, 'f' => 6 }
-               when 'mixed'
-                 { 'a' => { :b => { 'c' => 100, 'd' => 200 }, :e => 50 }, 'f' => 6 }
+                when 'symbol'
+                  { a: { b: { c: 100, d: 200 }, e: 50 }, f: 6 }
+                when 'string'
+                  { 'a' => { 'b' => { 'c' => 100, 'd' => 200 }, 'e' => 50 }, 'f' => 6 }
+                when 'mixed'
+                  { 'a' => { b: { 'c' => 100, 'd' => 200 }, e: 50 }, 'f' => 6 }
                end
-
       end
 
       context 'dig_indifferent' do
@@ -116,7 +114,6 @@ class ::Flappi::HashKeyUtilsTest < MiniTest::Test
           Flappi::Utils::HashKeyUtils.bury_indifferent(@hash, 8, :z)
           assert_equal 8, @hash[:z]
         end
-
       end
     end
   end

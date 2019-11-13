@@ -36,11 +36,11 @@ module Flappi
       base_object = nil
       @status_code = nil
 
-      if source_definition.endpoint_info[:check_params]
-        permitted_params = controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
+      permitted_params = if source_definition.endpoint_info[:check_params]
+        controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
       else
-        permitted_params = controller_params
-      end
+        controller_params
+                         end
 
       if @query_block
         # We have a query block defined, call it to get the model object
@@ -438,7 +438,7 @@ module Flappi
       links = link_defs.map do |link_def|
         expanded_link = if link_def[:key] == :self
                           expand_self_path(source_definition.endpoint_info[:path],
-                                           source_definition.endpoint_info[:params].map {|p| p[:name].to_sym})
+                                           source_definition.endpoint_info[:params].map { |p| p[:name].to_sym })
                         else
                           expand_link_path(link_def[:path], link_def[:link_source_vars])
                         end
@@ -453,7 +453,7 @@ module Flappi
     end
 
     def params_to_require
-      required_params = source_definition.endpoint_info[:params].reject {|p| p[:optional]}
+      required_params = source_definition.endpoint_info[:params].reject { |p| p[:optional] }
       return param_group_names if required_params.empty?
       make_param_arg(required_params)
     end
@@ -471,7 +471,7 @@ module Flappi
 
       param_defs.each do |param_def|
         keys = param_def[:name].to_s.split('/').map(&:to_sym)
-        if keys.size==1
+        if keys.size == 1
           res << keys.first
           next
         end
@@ -490,6 +490,5 @@ module Flappi
 
       res
     end
-
   end
 end
