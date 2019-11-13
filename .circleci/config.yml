@@ -25,6 +25,8 @@ jobs:
 
       - run: *bundle_install
 
+      - run: bundle exec rubocop
+
       - run:
           name: 'Test gem'
           command: rake test
