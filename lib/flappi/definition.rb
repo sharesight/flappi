@@ -463,6 +463,11 @@ module Flappi
     def return_error(status_code, error_info)
       @delegate.return_error(status_code, error_info) if @delegate.respond_to?(:return_error)
     end
+
+    # The major version for documentation and example purposes
+    def major_version
+      @delegate.requested_version&.major
+    end
   end
 end
 # rubocop:enable Metrics/LineLength

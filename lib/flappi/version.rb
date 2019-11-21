@@ -21,6 +21,10 @@ module Flappi
       end
     end
 
+    def major
+      version_array.first
+    end
+
     def to_s
       r = version_array.join('.')
       r << '-' + @flavour.to_s unless @flavour == :_blank
