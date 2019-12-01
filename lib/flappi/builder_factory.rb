@@ -56,22 +56,24 @@ module Flappi
     def self.build_and_respond(controller, method = nil)
       definition_klass, endpoint_name, full_version = locate_definition(controller, method)
 
-      load_controller(controller, definition_klass, endpoint_name)
-
+      normalised_version = nil
       if Flappi.configuration.version_plan
         raise "BuilderFactory::build_and_respond has a version plan #{Flappi.configuration.version_plan} so needs a version from the router" unless full_version
 
+        normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
+      end
+
+      load_controller(controller, definition_klass, endpoint_name, normalised_version)
+
+      if Flappi.configuration.version_plan
         endpoint_supported_versions = controller.supported_versions
         Flappi::Utils::Logger.d "  Does endpoint support #{full_version} in #{endpoint_supported_versions}?" if defined?(Rails)
-        normalised_version = Flappi.configuration.version_plan.parse_version(full_version).normalise
         unless endpoint_supported_versions.include? normalised_version
           validate_error = "Version #{full_version} not supported by endpoint"
           Flappi::Utils::Logger.w validate_error
           controller.render json: { error: validate_error }.to_json, plain: validate_error, status: :not_acceptable
           return false
         end
-
-        controller.requested_version = normalised_version
       end
 
       defined_params = controller.endpoint_info[:params]
@@ -248,7 +250,7 @@ module Flappi
       [definition_klass, endpoint_name, full_version]
     end
 
-    def self.load_controller(controller, definition_klass, endpoint_name)
+    def self.load_controller(controller, definition_klass, endpoint_name, normalised_version)
       Flappi::Utils::Logger.d "  definition_klass = #{definition_klass}" if defined?(Rails)
 
       controller.singleton_class.send(:include, definition_klass)
@@ -259,6 +261,7 @@ module Flappi
       controller.controller_url = controller.request.url
       Flappi::Utils::Logger.i "controller.request.url=#{controller.request.url}"
       controller.version_plan = Flappi.configuration.version_plan
+      controller.requested_version = normalised_version
 
       controller.endpoint # init endpoint data from mixin
 

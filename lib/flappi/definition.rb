@@ -416,6 +416,8 @@ module Flappi
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
+      return unless version_wanted(def_args)
+
       param_def = { name: def_args[:name],
                     type: name_for_type(def_args[:type]),
                     default_doc: def_args[:default_doc],
