@@ -319,6 +319,7 @@ module Flappi
     # This assumes that a version plan (which defines semantic versioning and version flavours) is configured into Flappi.
     #
     # @option version_rule [String] :equals A version which must be matched for the endpoint to be supported. The version can be wildcarded with '*'.
+    # @option version_rule [String] :matches Synonym for equals
     def version(version_rule)
       raise "No version plan is defined - cannot use 'version'" unless version_plan
 
