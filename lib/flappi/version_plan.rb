@@ -108,7 +108,7 @@ module Flappi
       supported_versions = []
       version_rules.each do |version_rule|
         case version_rule[0].to_sym
-        when :equals, :eq
+        when :equals, :eq, :matches
           supported_versions += available_version_definitions.versions_array.select { |av| av == parse_version(version_rule[1]) }
         when :ne
           supported_versions += available_version_definitions.versions_array.reject { |av| av == parse_version(version_rule[1]) }
