@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.10.6 `(25/11/2019)`
+## 0.10.6 `(2020-01-06)`
+Support the `version` parameter on a `param`, allowing parameters to be supported and documented on a per-version basis
 
 * Provide a Definition#major_version mathod to use in generating docs for shared definitions between versions
 ## 0.10.5 `(13/11/2019)`

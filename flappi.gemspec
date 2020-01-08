@@ -3,7 +3,7 @@
 Gem::Specification.new do |s|
   s.name        = 'flappi'
   s.version     = '0.10.6'
-  s.date        = '2019-11-25'
+  s.date        = '2020-01-09'
   s.summary     = 'Flappi API Builder'
   s.description = 'A flexible DSL-based API builder'
   s.authors     = ['Richard Parratt', 'Sharesight']
