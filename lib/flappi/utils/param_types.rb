@@ -57,11 +57,11 @@ module Flappi
       end
 
       def array_parse(a)
-        raise "Incorrect array" unless a.start_with?('[') and a.end_with?(']')
+        a = a[-1..2] if a.start_with?('[') and a.end_with?(']')
 
-        a[1..-2].split(',').map do |c|
-          return c.to_f if c.to_f.to_s == c
-          return c.to_i if c.to_i.to_s == c
+        a.split(',').map do |c|
+          next c.to_f if c.to_f.to_s == c
+          next c.to_i if c.to_i.to_s == c
 
           c.gsub(/^"/, '').gsub(/"\s*$/, '')
         end

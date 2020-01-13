@@ -388,7 +388,7 @@ module Flappi
     #   Define a named parameter
     #   @param name (String) the name of the parameter
     #   @option options [String] :name the name of the parameter
-    #   @option options [Symbol] :type the parameter type, defaults to String
+    #   @option options [Symbol] :type the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax
     #   @option options [Object] :default a default value when the parameter is not supplied or is empty
     #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
@@ -402,7 +402,7 @@ module Flappi
     # @overload param(options={})
     #   Define a parameter
     #   @option options [String] :name the name of the parameter, which can be in a path
-    #   @option options [Symbol] :type the parameter type, defaults to String
+    #   @option options [Symbol] :type the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax
     #   @option options [Object] :default a default value when the parameter is not supplied or is empty
     #   @option options [String] :default_doc text to document the default with instead of a computed default
     #   @option options [String] :doc the parameter description
