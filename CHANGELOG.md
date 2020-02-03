@@ -3,7 +3,6 @@
 ## 0.10.8 `(2020-01-13)`
 Support array parameters using comma separated or [] syntax
  
-
 ## 0.10.7 `(2020-01-06)`
 Support the `version` parameter on a `param`, allowing parameters to be supported and documented on a per-version basis
 
