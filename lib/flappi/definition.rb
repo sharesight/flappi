@@ -131,6 +131,8 @@ module Flappi
 
     # Define an object (which will be rendered within json as name:hash).
     # Use this with a block that defines the fields of the object hash.
+    # For a named object, if no source data exists (is nil) then no object will be rendered.
+    # (Set value: true if the block can render with no input)
     #
     # @overload object(name)
     #   Defines a named object using the enclosing source object.

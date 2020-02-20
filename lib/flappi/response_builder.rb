@@ -56,6 +56,10 @@ module Flappi
                       else
                         options[:type].send(as_method, permitted_params)
                       end
+      else
+        # We have no query, so all methods use e.g constant values
+        # so we define it as an empty hash
+        base_object = {}
       end
 
       # If return_error called, return a struct
@@ -101,16 +105,20 @@ module Flappi
       return unless version_wanted(def_args)
 
       @source_stack.push(@current_source)
-      @current_source = field_value(def_args) || @current_source
+      @current_source = field_value(def_args)
+      @current_source ||= @current_source if def_args[:inline_always]
 
       if def_args.key?(:name) || def_args.key?(:dynamic_key)
-        @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
-        @link_stack.push([])
+        # We only create a named object if it has a source
+        if @current_source
+          @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
+          @link_stack.push([])
 
-        block.call @current_source
+          block.call(@current_source)
 
-        put_links
-        @put_stack.pop
+          put_links
+          @put_stack.pop
+        end
       elsif def_args[:inline_always]
         block.call @current_source
       else
