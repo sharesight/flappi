@@ -442,9 +442,7 @@ module Flappi
     def check_when(def_args, source)
       return true unless def_args.key?(:when)
 
-      if def_args[:when]&.is_a?(Symbol) && def_args[:when] == :source_present
-        return !!source
-      end
+      return !!source if def_args[:when]&.is_a?(Symbol) && def_args[:when] == :source_present
 
       !!def_args[:when]
     end

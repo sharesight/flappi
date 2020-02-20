@@ -23,9 +23,8 @@ module Examples
         if params[:include]
           { a: 5,
             instrument: {
-                code: 'AAA'
-            }
-          }
+              code: 'AAA'
+            }}
         else
           { a: 15 }
         end
