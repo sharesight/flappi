@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.10.9 `(2020-02-21)`
+Fix issue #43: When an objects source is not found, fields included may be rendered wrongly
+
 ## 0.10.8 `(2020-01-13)`
 Support array parameters using comma separated or [] syntax
  
