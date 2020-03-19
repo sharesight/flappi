@@ -30,7 +30,7 @@ module Integration
       should 'support array with comma separated args' do
         @controller.params = {'arr' => '2,4,6' }
         response = @controller.show
-        assert_equal( { 'arr' => [2, 4, 6] }, response)
+        assert_equal({ 'arr' => [2, 4, 6] }, response)
       end
 
       should 'pass literal commas in bracketed array' do

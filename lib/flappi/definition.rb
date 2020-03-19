@@ -30,6 +30,8 @@ module Flappi
     # Use on {#field} and {#param} types when a boolean type is wanted and falsey values will be false, truthy true
     BOOLEAN_STRICT = :boolean_strict
 
+    SOURCE_PRESENT = :source_present
+
     # @private
     attr_reader :delegate
     # @private
@@ -131,6 +133,8 @@ module Flappi
 
     # Define an object (which will be rendered within json as name:hash).
     # Use this with a block that defines the fields of the object hash.
+    # For a named object, if no source data exists (is nil) then no object will be rendered.
+    # (Set value: true if the block can render with no input)
     #
     # @overload object(name)
     #   Defines a named object using the enclosing source object.
@@ -151,7 +155,7 @@ module Flappi
     #   @option options [Object] :value the object to extract fields from
     #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
     #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
     #   @option options [String] :dynamic_key Rather than a fixed name, specify a key that is valid at request time.
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
@@ -178,7 +182,7 @@ module Flappi
     #   @param name (String) the name of the array field
     #   @param value (Object) either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
     #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements. The block will be called for each array value in sequence.
@@ -190,7 +194,7 @@ module Flappi
     #   @option options [Object] :value either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
     #   @option options [Object] :source the name of a hash or method in the current source to get the data array from, instead of :name
     #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
     #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
     #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
@@ -222,7 +226,7 @@ module Flappi
     #   @option options [String] :name the name of the field
     #   @option options [Object] :value if given, the value to output
     #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.
     #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.
     #   @option options [String] :type a type to coerce the value to: :Integer, :BigDecimal, :Float
@@ -238,12 +242,12 @@ module Flappi
     # @overload hash_key(value, options={})
     #   Define the hash key as having a specified value
     #   @param value (Object) the value for the hash key
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #
     # @overload hash_key(options={})
     #   Define the hash key with named options
     #   @option options [Object] :value if given, the value to output
-    #   @option options [Boolean] :when if false, omit this object
+    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
     #
     def hash_key(*args, &block)
       @delegate.hash_key(*args, block)

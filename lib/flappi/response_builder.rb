@@ -56,6 +56,10 @@ module Flappi
                       else
                         options[:type].send(as_method, permitted_params)
                       end
+      else
+        # We have no query, so all methods use e.g constant values
+        # so we define it as an empty hash
+        base_object = {}
       end
 
       # If return_error called, return a struct
@@ -97,17 +101,18 @@ module Flappi
     # creating its fields inside the block
     def object(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
-      return if def_args.key?(:when) && !def_args[:when]
+      new_source = field_value(def_args)
+      return unless check_when(def_args, new_source)
       return unless version_wanted(def_args)
 
       @source_stack.push(@current_source)
-      @current_source = field_value(def_args) || @current_source
+      @current_source = new_source || @current_source
 
       if def_args.key?(:name) || def_args.key?(:dynamic_key)
         @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
         @link_stack.push([])
 
-        block.call @current_source
+        block.call(@current_source)
 
         put_links
         @put_stack.pop
@@ -129,10 +134,11 @@ module Flappi
     def objects(*args_or_name, block)
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
-      return if def_args.key?(:when) && !def_args[:when]
+      new_source = field_value(def_args) || @current_source
+      return unless check_when(def_args, new_source)
       return unless version_wanted(def_args)
 
-      values = field_value(def_args) || @current_source
+      values = new_source
       # puts "args_or_name=#{args_or_name},\n def_args=#{def_args}, objects=#{values}"
 
       @hash_stack.push(@hash_key ||= nil)
@@ -184,7 +190,7 @@ module Flappi
       def_args = extract_definition_args(args_or_name)
       require_arg def_args, :name
 
-      return if def_args.key?(:when) && !def_args[:when]
+      return unless check_when(def_args, @current_source)
       return unless version_wanted(def_args)
 
       value = field_value(def_args, block)
@@ -197,7 +203,7 @@ module Flappi
       # TODO: can't be nested
       def_args = extract_definition_args_nameless(args)
 
-      return if def_args.key?(:when) && !def_args[:when]
+      return unless check_when(def_args, @current_source)
       return unless version_wanted(def_args)
 
       @hash_key = field_value(def_args, block)
@@ -432,6 +438,14 @@ module Flappi
     end
 
     private
+
+    def check_when(def_args, source)
+      return true unless def_args.key?(:when)
+
+      return !!source if def_args[:when]&.is_a?(Symbol) && def_args[:when] == :source_present
+
+      !!def_args[:when]
+    end
 
     def put_links
       link_defs = @link_stack.pop || []

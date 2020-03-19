@@ -70,7 +70,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
               @response_builder.field :a, 100, nil
             end
 
-            @response_builder.object(:my_object, object_block)
+            @response_builder.object({ name: :my_object, value: true}, object_block)
           end
 
           assert_equal({ 'my_object' => { 'a' => 100 } }, built_response)
