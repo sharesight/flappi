@@ -132,6 +132,12 @@ module Flappi
     # Define an object (which will be rendered within json as name:hash).
     # Use this with a block that defines the fields of the object hash.
     #
+    # If a named object is used, then (unless a value is explicitly supplied)
+    # the name will be used to access the entry/method in the enclosing object.
+    # If this returns nil, nil will be passed to the fields and produce a null result.
+    #
+    # If no name is specified, then the enclosing object will be the data source
+    #
     # @overload object(name)
     #   Defines a named object using the enclosing source object.
     #   @param name (String) the name of the object

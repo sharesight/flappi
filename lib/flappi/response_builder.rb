@@ -100,10 +100,12 @@ module Flappi
       return if def_args.key?(:when) && !def_args[:when]
       return unless version_wanted(def_args)
 
-      @source_stack.push(@current_source)
-      @current_source = field_value(def_args) || @current_source
+      is_named_object = def_args.key?(:name) || def_args.key?(:dynamic_key)
 
-      if def_args.key?(:name) || def_args.key?(:dynamic_key)
+      @source_stack.push(@current_source)
+      @current_source = field_value(def_args) if is_named_object
+
+      if is_named_object
         @put_stack.push(@put_stack.last[def_args[:dynamic_key] || def_args[:name]] = new_h)
         @link_stack.push([])
 
