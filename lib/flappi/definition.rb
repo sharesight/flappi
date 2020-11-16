@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength
 module Flappi
   # DSL for API construction.
   #
@@ -477,4 +476,3 @@ module Flappi
     end
   end
 end
-# rubocop:enable Metrics/LineLength

@@ -15,7 +15,7 @@ module Flappi
 
         return nil unless located.is_a?(Hash)
 
-        dig_indifferent(located, *items[1..-1])
+        dig_indifferent(located, *items[1..])
       end
 
       # bury under last entry using symbol or string keys

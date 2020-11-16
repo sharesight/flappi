@@ -41,10 +41,10 @@ Metrics/BlockLength:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   Enabled: false
 
 Layout/MultilineOperationIndentation:

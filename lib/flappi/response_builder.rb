@@ -321,8 +321,6 @@ module Flappi
     def cast_value(src, type, precision)
       # puts "cast_value #{src}, type #{type.to_s}"
       case type&.to_s
-      when nil
-        src
       when 'boolean_type'
         if src.nil?
           nil
@@ -442,7 +440,7 @@ module Flappi
     def check_when(def_args, source)
       return true unless def_args.key?(:when)
 
-      return !!source if def_args[:when]&.is_a?(Symbol) && def_args[:when] == :source_present
+      return !!source if def_args[:when].is_a?(Symbol) && def_args[:when] == :source_present
 
       !!def_args[:when]
     end
