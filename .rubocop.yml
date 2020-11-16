@@ -1,84 +1,133 @@
 inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-performance
+  - rubocop-minitest
 
 # Common configuration.
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
+  NewCops: enable
 
-Metrics/ClassLength:
-  Max: 500
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 
-Metrics/ModuleLength:
-  Max: 500
 
-Metrics/BlockLength:
-  Max: 500
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 200
 
-Metrics/MethodLength:
-  Max: 40
-
-Metrics/AbcSize:
-  Max: 50
-
-Metrics/CyclomaticComplexity:
-  Max: 15
-
-Metrics/PerceivedComplexity:
-  Max: 15
-
-Style/Documentation:
+Layout/ParameterAlignment:
   Enabled: false
 
-Style/MultilineBlockChain:
-  Enabled: false
-
-Style/GuardClause:
-  Enabled: false
-
-Style/RegexpLiteral:
-  Enabled: false
-
-Naming/PredicateName:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/BlockComments:
-  Exclude:
-    - 'test/examples/*_doc.rb'
-
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'test/examples/*_doc.rb'
-
-Style/StringLiterals:
-  Enabled: false
-
-Style/WordArray:
+Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
 Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
 
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - 'test/**/*.rb'
+
+Lint/EmptyBlock:
+  Enabled: false
+
+Lint/ErbNewArguments:
+  Enabled: false
+
+Lint/MissingSuper:
+  Exclude:
+    - 'test/**/*.rb'
+
+
+Metrics/AbcSize:
+  Max: 50
+
+Metrics/BlockLength:
+  Max: 500
+
+Metrics/ClassLength:
+  Max: 500
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/ModuleLength:
+  Max: 500
+
+Metrics/PerceivedComplexity:
+  Max: 15
+
+
+Minitest/AssertInDelta:
+  Enabled: false
+
+Minitest/AssertTruthy:
+  Enabled: false
+
+Minitest/RefuteFalse:
+  Enabled: false
+
+
+Naming/PredicateName:
+  Enabled: false
+
 Naming/VariableNumber:
   Enabled: false
 
-Lint/UselessComparison:
+
+Performance/Squeeze:
+  Enabled: false
+
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/BlockComments:
   Exclude:
-    - 'test/**'
+    - 'test/examples/*_doc.rb'
 
-Layout/AlignParameters:
+Style/ClassAndModuleChildren:
   Enabled: false
 
-Layout/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
-Layout/EmptyLineAfterGuardClause:
+Style/Documentation:
   Enabled: false
 
 Style/DoubleNegation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'test/examples/*_doc.rb'
+
+Style/GuardClause:
+  Enabled: false
+
+Style/HashLikeCase:
+  Exclude:
+    - 'test/**/*.rb'
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/WordArray:
   Enabled: false

@@ -2,8 +2,7 @@
 
 ## Flexible API builder gem for Rails
 
-Flappi allows Rails APIs to be defined using a simple DSL that avoids repeated and fragmented code and allows the API definition to reflect the request/response structure.
-Support is provided for versioning (semantic with the addition of 'flavours') and documentation (using [apiDoc](http://apidocjs.com/)).
+Flappi allows Rails APIs to be defined using a simple DSL that avoids repeated and fragmented code and allows the API definition to reflect the request/response structure. Support is provided for versioning (semantic with the addition of 'flavours') and documentation (using [apiDoc](http://apidocjs.com/)).
 
 ## Quickstart with Rails (4?)
 
@@ -15,30 +14,41 @@ Bundle install:
 
     bundle install
 
-Create your initialization file, e.g. in **'initializers/flappi.rb'**
+Create your initialization file
+
 ```ruby
+# initializers/flappi.rb
 Flappi.configure do |conf|
   conf.definition_paths = 'api_definitions'     # Normally under your controller path
 end
 ```
-Create a controller and route, e.g in **'controllers/adders_controller'**:
+
+Create a controller
+
 ```ruby
+# app/controllers/adders_controller.rb
 class AddersController < ApplicationController
   def show
     Flappi.build_and_respond(self)
   end
 end
 ```
-and in **'config/routes.rb'**:
 
-    resource :adder
+and route
 
-Flappi (currently) users the regular Rails routing and controller framework, so this is much as for an ordinary controller.
+```ruby
+# in config/routes.rb
+  resource :adder
+```
+
+Flappi (currently) uses the regular Rails routing and controller framework, so this is much as for an ordinary controller.
 
 (If you try the endpoint [http://localhost:3000/adder](http://localhost:3000/adder) now, you should get an error like: *'Endpoint Adders is not defined to API Builder'*)
 
-Now define the endpoint using the Flappi DSL. In **'controllers/api_definitions/adders.rb'**:
+Now define the endpoint using the Flappi DSL:
+
 ```ruby
+# app/controllers/api_definitions/adders.rb
 module ApiDefinitions
   module Adders
 
@@ -53,9 +63,10 @@ module ApiDefinitions
       param :a, type: Integer, optional: false
       param :b, type: Integer
 
-      # IRL, this would probably query your ActiveRecord model, reporting engine
-      # or other artefact to get a returned record - we just add two numbers together
-      # the result of this is the context for the response
+      # IRL, this would probably query your ActiveRecord model,
+      # reporting engine or other artefact to get a returned
+      # record - we just add two numbers together the result of
+      # this is the context for the response
       query do |params|
         {result: params[:a].to_i + (params[:b].try(:to_i) || 0) }
       end
@@ -71,10 +82,27 @@ module ApiDefinitions
   end
 end
 ```
+
 Now, if you access: [http://localhost:3000/adder.json?a=4](http://localhost:3000/adder.json?a=4) you should see the result:
 
-    {
-    "result": 4
-    }
+```json
+{
+  "result": 4
+}
+```
 
 and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/adder.json?a=4&b=22) (etc)
+
+
+## Contributing
+
+### Documentation
+
+Use [yard](https://rubydoc.info/gems/yard/file/README.md) to update the gem documentation. Have a
+look at the [yard tags docs](https://rubydoc.info/gems/yard/file/docs/Tags.md) for how to use tags.
+
+```sh
+yard
+```
+
+`yard` itself is configured by `.yardopts`.

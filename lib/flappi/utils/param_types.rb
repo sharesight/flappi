@@ -7,8 +7,6 @@ module Flappi
         return false if src.nil?
 
         case type&.to_s
-        when nil
-          true
         when 'Boolean'
           src.is_a?(TrueClass) || src.is_a?(FalseClass) || ['Y', 'N', '0', '1', 'T', 'F', 'YES', 'NO', 'TRUE', 'FALSE'].include?(src.to_s.upcase)
         when 'BigDecimal', 'Float'

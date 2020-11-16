@@ -73,9 +73,10 @@ module Flappi
     # The text 'default' in the list is substituted by the default_versions
     # Used to parse a list of allowed versions defined against an OAuth application
     def parse_versions(versions_text, default_versions = [], normalise_each = false)
-      if default_versions.is_a? Flappi::Versions
+      case default_versions
+      when Flappi::Versions
         default_versions = default_versions.versions_array
-      elsif default_versions.is_a? String
+      when String
         default_versions = parse_versions(default_versions).versions_array
       end
 

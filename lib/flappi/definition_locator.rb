@@ -16,7 +16,7 @@ module Flappi
         candidate_class = nil
 
         begin
-          candidate_class_name = (path.camelize + '::' + endpoint_name)
+          candidate_class_name = "#{path.camelize}::#{endpoint_name}"
           candidate_class = candidate_class_name.constantize
         rescue StandardError => e
           issues << "Could not load #{candidate_class_name} because #{e} was raised"
