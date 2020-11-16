@@ -1,4 +1,7 @@
 inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-performance
+  - rubocop-minitest
 
 # Common configuration.
 AllCops:
@@ -63,10 +66,24 @@ Metrics/PerceivedComplexity:
   Max: 15
 
 
+Minitest/AssertInDelta:
+  Enabled: false
+
+Minitest/AssertTruthy:
+  Enabled: false
+
+Minitest/RefuteFalse:
+  Enabled: false
+
+
 Naming/PredicateName:
   Enabled: false
 
 Naming/VariableNumber:
+  Enabled: false
+
+
+Performance/Squeeze:
   Enabled: false
 
 

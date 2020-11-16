@@ -265,7 +265,8 @@ module Flappi
       link_def = if link_params.size == 1 && link_params.first.is_a?(Hash)
                    link_params.first
                  else
-                   Hash[link_params.each_with_index.map { |p, idx| [%i[key path][idx], p] }]
+                   keys = %i[key path]
+                   Hash[link_params.each_with_index.map { |p, idx| [keys[idx], p] }]
                  end
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
