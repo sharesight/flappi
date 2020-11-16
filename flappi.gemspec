@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rake', '>= 12.3'
   s.add_development_dependency 'rubocop', '1.3.0'
-  s.add_development_dependency 'shoulda'
+  s.add_development_dependency 'shoulda-context'
   s.add_development_dependency 'simplecov'
 end
