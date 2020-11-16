@@ -78,3 +78,17 @@ Now, if you access: [http://localhost:3000/adder.json?a=4](http://localhost:3000
     }
 
 and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/adder.json?a=4&b=22) (etc)
+
+
+## Contributing
+
+### Documentation
+
+Use [yard](https://rubydoc.info/gems/yard/file/README.md) to update the gem documentation. Have a
+look at the [yard tags docs](https://rubydoc.info/gems/yard/file/docs/Tags.md) for how to use tags.
+
+```sh
+yard
+```
+
+`yard` itself is configured by `.yardopts`.

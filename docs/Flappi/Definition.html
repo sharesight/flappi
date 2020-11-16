@@ -95,8 +95,7 @@
     
 <p>DSL for API construction.</p>
 
-<p>This DSL defines methods which can be used to construct API responses,
-docs, etc. Include it in each API endpoint definition as shown below:</p>
+<p>This DSL defines methods which can be used to construct API responses, docs, etc. Include it in each API endpoint definition as shown below:</p>
 
 
   </div>
@@ -130,7 +129,7 @@ docs, etc. Include it in each API endpoint definition as shown below:</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Use on <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> and <span class='object_link'><a href="#param-instance_method" title="Flappi::Definition#param (method)">#param</a></span> types when a boolean type is wanted</p>
+<p>Use on <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> and <span class='object_link'><a href="#param-instance_method" title="Flappi::Definition#param (method)">#param</a></span> types when a boolean type is wanted, null values will be null</p>
 
 
   </div>
@@ -141,6 +140,27 @@ docs, etc. Include it in each API endpoint definition as shown below:</p>
 </div>
       </dt>
       <dd><pre class="code"><span class='symbol'>:boolean_type</span></pre></dd>
+    
+      <dt id="BOOLEAN_STRICT-constant" class="">BOOLEAN_STRICT =
+        <div class="docstring">
+  <div class="discussion">
+    
+<p>Use on <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> and <span class='object_link'><a href="#param-instance_method" title="Flappi::Definition#param (method)">#param</a></span> types when a boolean type is wanted and falsey values will be false, truthy true</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+      </dt>
+      <dd><pre class="code"><span class='symbol'>:boolean_strict</span></pre></dd>
+    
+      <dt id="SOURCE_PRESENT-constant" class="">SOURCE_PRESENT =
+        
+      </dt>
+      <dd><pre class="code"><span class='symbol'>:source_present</span></pre></dd>
     
   </dl>
 
@@ -157,6 +177,30 @@ docs, etc. Include it in each API endpoint definition as shown below:</p>
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#api_error-instance_method" title="#api_error (instance method)">#<strong>api_error</strong>(status_code, field_name, field_description)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define an API error.</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -178,6 +222,28 @@ docs, etc. Include it in each API endpoint definition as shown below:</p>
     <span class="summary_desc"><div class='inline'>
 <p>Define how to build the API response.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#check_params-instance_method" title="#check_params (instance method)">#<strong>check_params</strong>(mode = false)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -248,8 +314,7 @@ docs, etc. Include it in each API endpoint definition as shown below:</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Define the API group this endpoint is in - used to break documentation into
-sections.</p>
+<p>Define the API group this endpoint is in - used to break documentation into sections.</p>
 </div></span>
   
 </li>
@@ -282,6 +347,30 @@ sections.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#http_method-instance_method" title="#http_method (instance method)">#<strong>http_method</strong>(v)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define the HTTP method - note however that Rails and the controller is responsible for routing.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#link-instance_method" title="#link (instance method)">#<strong>link</strong>(*link_params)  &#x21d2; Object </a>
     
 
@@ -297,7 +386,7 @@ sections.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Specify a link to be provided in the response.</p>
+<p>Specify a link to be provided in the response Links defined at the top level will be output at the end of the response Links defined at object level will be output at the end of the object.</p>
 </div></span>
   
 </li>
@@ -306,7 +395,7 @@ sections.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#method-instance_method" title="#method (instance method)">#<strong>method</strong>(v)  &#x21d2; Object </a>
+      <a href="#major_version-instance_method" title="#major_version (instance method)">#<strong>major_version</strong>  &#x21d2; Object </a>
     
 
     
@@ -321,8 +410,7 @@ sections.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Define the HTTP method - note however that Rails and the controller is
-responsible for routing.</p>
+<p>The major version for documentation and example purposes.</p>
 </div></span>
   
 </li>
@@ -370,8 +458,7 @@ responsible for routing.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Define multiple objects which will be rendered into json as an array of
-object hashes.</p>
+<p>Define multiple objects which will be rendered into json as an array of object hashes.</p>
 </div></span>
   
 </li>
@@ -395,8 +482,7 @@ object hashes.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Define an input parameter (inline or query string) This is used to document
-and validate the parameters.</p>
+<p>Define an input parameter (inline or query string) This is used to document and validate the parameters.</p>
 </div></span>
   
 </li>
@@ -492,8 +578,7 @@ and validate the parameters.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Define an example request path (no scheme or host) that will be included in
-documentation.</p>
+<p>Define an example request path (no scheme or host) that will be included in documentation.</p>
 </div></span>
   
 </li>
@@ -518,6 +603,78 @@ documentation.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Define an example response that will be included in documentation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#return_error-instance_method" title="#return_error (instance method)">#<strong>return_error</strong>(status_code, error_info)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>From inside a query, return an error.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#return_no_content-instance_method" title="#return_no_content (instance method)">#<strong>return_no_content</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>From inside a query, return 204 NO CONTENT.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#strict-instance_method" title="#strict (instance method)">#<strong>strict</strong>(mode = false)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this.</p>
 </div></span>
   
 </li>
@@ -582,7 +739,56 @@ documentation.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="build-instance_method">
+  <h3 class="signature first" id="api_error-instance_method">
+  
+    #<strong>api_error</strong>(status_code, field_name, field_description)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define an API error</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+469
+470
+471
+472
+473
+474
+475</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 469</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_api_error'>api_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_field_name'>field_name</span><span class='comma'>,</span> <span class='id identifier rubyid_field_description'>field_description</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:api_errors</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lbrace'>{</span>
+    <span class='label'>status_code:</span> <span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span>
+    <span class='label'>response_field_name:</span> <span class='id identifier rubyid_field_name'>field_name</span><span class='comma'>,</span>
+    <span class='label'>response_field_description:</span> <span class='id identifier rubyid_field_description'>field_description</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="build-instance_method">
   
     #<strong>build</strong>(options = {}) {|base_object| ... } &#x21d2; <tt>Object</tt> 
   
@@ -593,8 +799,7 @@ documentation.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define how to build the API response. Use this typically with a block that
-defines how each field of the response is to be generated.</p>
+<p>Define how to build the API response. Use this typically with a block that defines how each field of the response is to be generated.</p>
 
 
   </div>
@@ -651,10 +856,33 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Specifies a (ruby) type, an instance of which will be retrieved by calling
-the classes (ActiveRecord-style) &#39;where&#39; method with the
-controller&#39;s parameters and will become the base object the response is
-generated from.</p>
+<p>Specifies a (ruby) type, an instance of which will be retrieved by calling the classes (ActiveRecord-style) &#39;where&#39; method with the controller&#39;s parameters and will become the base object the response is generated from.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:as</span>
+          <span class="type">(<tt>Symbol</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Specifies the class method to call in place on the `type`</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:options</span>
+          <span class="type">(<tt>Hash</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Optionally specify an array of options which will be passed to the &#39;where&#39; method of class &#39;type&#39;</p>
 </div>
           
         </li>
@@ -674,8 +902,7 @@ generated from.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response using <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>,
-<span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
+<p>A block that will be called to generate the response using <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
 </div>
       
     </li>
@@ -695,8 +922,7 @@ generated from.</p>
       
         &mdash;
         <div class='inline'>
-<p>the base object we generate the response from. If you don&#39;t use
-explicit value expressions in <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> etc, you don&#39;t need this.</p>
+<p>The base object we generate the response from. If you don&#39;t use explicit value expressions in <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> etc, you don&#39;t need this.</p>
 </div>
       
     </li>
@@ -709,15 +935,45 @@ explicit value expressions in <span class='object_link'><a href="#field-instance
       <pre class="lines">
 
 
-117
-118
-119</pre>
+149
+150
+151</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 149</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_build'>build</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_build'>build</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_build'>build</span> <span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="check_params-instance_method">
+  
+    #<strong>check_params</strong>(mode = false)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+571
+572
+573</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 571</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_check_params'>check_params</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:check_params</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -770,12 +1026,12 @@ explicit value expressions in <span class='object_link'><a href="#field-instance
       <pre class="lines">
 
 
-289
-290
-291</pre>
+422
+423
+424</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 289</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 422</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_description'>description</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -803,8 +1059,7 @@ explicit value expressions in <span class='object_link'><a href="#field-instance
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define a single (scalar) field in the result. This will produce a
-name:value pair in the json response.</p>
+<p>Define a single (scalar) field in the result. This will produce a name:value pair in the json response.</p>
 
 
   </div>
@@ -820,9 +1075,7 @@ name:value pair in the json response.</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Define a field sourcing data from the enclosing source object. If no block
-is given, the field value will be extracted from <a
-href="name">source_object</a>, otherwise it will be the block return.</p>
+<p>Define a field sourcing data from the enclosing source object. If no block is given, the field value will be extracted from <a href="name">source_object</a>, otherwise it will be the block return.</p>
 
 
   </div>
@@ -842,7 +1095,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
       
         &mdash;
         <div class='inline'>
-<p>the name of the field</p>
+<p>The name of the field</p>
 </div>
       
     </li>
@@ -885,7 +1138,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object</p>
+<p>The current source object</p>
 </div>
       
     </li>
@@ -975,7 +1228,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the name of the field</p>
+<p>The name of the field</p>
 </div>
           
         </li>
@@ -988,7 +1241,20 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if given, the value to output</p>
+<p>If given, the value to output</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:source</span>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The name of a hash or method in the current source to get the data from, instead of :name</p>
 </div>
           
         </li>
@@ -1001,7 +1267,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1014,8 +1280,33 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>specify a versioning rule as a hash (see #version for spec for the rule).
-If present, this field will only we shown if the rule is met.</p>
+<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:doc_name</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:type</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>A type to coerce the value to: :Integer, :BigDecimal, :Float</p>
 </div>
           
         </li>
@@ -1074,12 +1365,12 @@ If present, this field will only we shown if the rule is met.</p>
       <pre class="lines">
 
 
-212
-213
-214</pre>
+321
+322
+323</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 212</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 321</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_field'>field</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_field'>field</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1101,8 +1392,7 @@ If present, this field will only we shown if the rule is met.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define the API group this endpoint is in - used to break documentation into
-sections</p>
+<p>Define the API group this endpoint is in - used to break documentation into sections</p>
 
 
   </div>
@@ -1136,12 +1426,12 @@ sections</p>
       <pre class="lines">
 
 
-305
-306
-307</pre>
+444
+445
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 305</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 444</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:group</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -1203,7 +1493,7 @@ sections</p>
       
         &mdash;
         <div class='inline'>
-<p>the value for the hash key</p>
+<p>The value for the hash key</p>
 </div>
       
     </li>
@@ -1226,7 +1516,7 @@ sections</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1265,7 +1555,7 @@ sections</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if given, the value to output</p>
+<p>If given, the value to output</p>
 </div>
           
         </li>
@@ -1278,7 +1568,7 @@ sections</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1299,15 +1589,76 @@ sections</p>
       <pre class="lines">
 
 
-228
-229
-230</pre>
+343
+344
+345</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 228</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 343</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_hash_key'>hash_key</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_hash_key'>hash_key</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="http_method-instance_method">
+  
+    #<strong>http_method</strong>(v)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define the HTTP method - note however that Rails and the controller is responsible for routing</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>v</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>GET, POST, PUT, DELETE</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+410
+411
+412</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 410</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_http_method'>http_method</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:http_method</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1332,7 +1683,7 @@ sections</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Specify a link to be provided in the response</p>
+<p>Specify a link to be provided in the response Links defined at the top level will be output at the end of the response Links defined at object level will be output at the end of the object</p>
 
 
   </div>
@@ -1512,12 +1863,12 @@ sections</p>
       <pre class="lines">
 
 
-269
-270
-271</pre>
+402
+403
+404</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 269</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 402</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_link_params'>link_params</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_link_params'>link_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:link</span>
@@ -1528,9 +1879,9 @@ sections</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="method-instance_method">
+  <h3 class="signature " id="major_version-instance_method">
   
-    #<strong>method</strong>(v)  &#x21d2; <tt>Object</tt> 
+    #<strong>major_version</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1539,34 +1890,13 @@ sections</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define the HTTP method - note however that Rails and the controller is
-responsible for routing</p>
+<p>The major version for documentation and example purposes</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>v</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>GET, POST, PUT, DELETE</p>
-</div>
-      
-    </li>
-  
-</ul>
-
 
 </div><table class="source_code">
   <tr>
@@ -1574,15 +1904,15 @@ responsible for routing</p>
       <pre class="lines">
 
 
-277
-278
-279</pre>
+603
+604
+605</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 277</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 603</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_method'>method</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_major_version'>major_version</span>
+  <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_requested_version'>requested_version</span><span class='op'>&amp;.</span><span class='id identifier rubyid_major'>major</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1607,8 +1937,7 @@ responsible for routing</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define an object (which will be rendered within json as name:hash). Use
-this with a block that defines the fields of the object hash.</p>
+<p>Define an object (which will be rendered within json as name:hash). Use this with a block that defines the fields of the object hash. For a named object, if no source data exists (is nil) then no object will be rendered. (Set value: true if the block can render with no input)</p>
 
 
   </div>
@@ -1644,7 +1973,7 @@ this with a block that defines the fields of the object hash.</p>
       
         &mdash;
         <div class='inline'>
-<p>the name of the object</p>
+<p>The name of the object</p>
 </div>
       
     </li>
@@ -1663,8 +1992,7 @@ this with a block that defines the fields of the object hash.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
 </div>
       
     </li>
@@ -1720,7 +2048,7 @@ this with a block that defines the fields of the object hash.</p>
       
         &mdash;
         <div class='inline'>
-<p>the name of the object</p>
+<p>The name of the object</p>
 </div>
       
     </li>
@@ -1736,7 +2064,7 @@ this with a block that defines the fields of the object hash.</p>
       
         &mdash;
         <div class='inline'>
-<p>the object to extract fields from</p>
+<p>The object to extract fields from</p>
 </div>
       
     </li>
@@ -1755,8 +2083,7 @@ this with a block that defines the fields of the object hash.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
 </div>
       
     </li>
@@ -1792,8 +2119,7 @@ this with a block that defines the fields of the object hash.</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Define an object (which will be rendered within json as name:hash or
-inlined into the parent hash).</p>
+<p>Define an object (which will be rendered within json as name:hash or inlined into the parent hash).</p>
 
 
   </div>
@@ -1814,7 +2140,7 @@ inlined into the parent hash).</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the name of the object</p>
+<p>The name of the object</p>
 </div>
           
         </li>
@@ -1827,7 +2153,20 @@ inlined into the parent hash).</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the object to extract fields from</p>
+<p>The object to extract fields from</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:source</span>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The name of a hash or method in the current source to get the data from, instead of :name</p>
 </div>
           
         </li>
@@ -1840,8 +2179,7 @@ inlined into the parent hash).</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>rather than creating this object&#39;s hash, inline its fields into the
-parent</p>
+<p>Rather than creating this object&#39;s hash, inline its fields into the parent</p>
 </div>
           
         </li>
@@ -1854,7 +2192,7 @@ parent</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1867,8 +2205,7 @@ parent</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>specify a versioning rule as a hash (see #version for spec for the rule).
-If present, this object will only we shown if the rule is met.</p>
+<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -1901,8 +2238,7 @@ If present, this object will only we shown if the rule is met.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
 </div>
       
     </li>
@@ -1922,7 +2258,7 @@ If present, this object will only we shown if the rule is met.</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object (passed as value)</p>
+<p>The current source object (passed as value)</p>
 </div>
       
     </li>
@@ -1941,12 +2277,12 @@ If present, this object will only we shown if the rule is met.</p>
       <pre class="lines">
 
 
-147
-148
-149</pre>
+200
+201
+202</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 200</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1974,10 +2310,7 @@ If present, this object will only we shown if the rule is met.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define multiple objects which will be rendered into json as an array of
-object hashes. Use this with a block that defines the fields of each object
-hash. The array is generated by iterating over the source object (if an
-Array) or with one field (if scalar).</p>
+<p>Define multiple objects which will be rendered into json as an array of object hashes. Use this with a block that defines the fields of each object hash. The array is generated by iterating over the source object (if an Array) or with one field (if scalar).</p>
 
 
   </div>
@@ -1993,8 +2326,7 @@ Array) or with one field (if scalar).</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Defines a named array object using the enclosing source object. Will
-generate name: array in json.</p>
+<p>Defines a named array object using the enclosing source object. Will generate name: array in json.</p>
 
 
   </div>
@@ -2014,7 +2346,7 @@ generate name: array in json.</p>
       
         &mdash;
         <div class='inline'>
-<p>the name of the array field</p>
+<p>The name of the array field</p>
 </div>
       
     </li>
@@ -2037,7 +2369,7 @@ generate name: array in json.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>remove nil entries from the result array</p>
+<p>Remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2057,9 +2389,7 @@ generate name: array in json.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements. The block will be called for
-each array value in sequence.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements. The block will be called for each array value in sequence.</p>
 </div>
       
     </li>
@@ -2079,7 +2409,7 @@ each array value in sequence.</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object iterated from the enclosing context</p>
+<p>The current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2095,8 +2425,7 @@ each array value in sequence.</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Defines a named array object using a specified (array or scalar) value.
-Will generate name: array in json.</p>
+<p>Defines a named array object using a specified (array or scalar) value. Will generate name: array in json.</p>
 
 
   </div>
@@ -2116,7 +2445,7 @@ Will generate name: array in json.</p>
       
         &mdash;
         <div class='inline'>
-<p>the name of the array field</p>
+<p>The name of the array field</p>
 </div>
       
     </li>
@@ -2132,8 +2461,7 @@ Will generate name: array in json.</p>
       
         &mdash;
         <div class='inline'>
-<p>either an array, in which case each value will become a result entry, or a
-scalar which will produce a single result.</p>
+<p>Either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
 </div>
       
     </li>
@@ -2158,7 +2486,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>remove nil entries from the result array</p>
+<p>Remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2171,7 +2499,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -2184,8 +2512,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>specify a versioning rule as a hash (see #version for spec for the rule).
-If present, this object will only we shown if the rule is met.</p>
+<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -2197,10 +2524,8 @@ If present, this object will only we shown if the rule is met.</p>
             
           </span>
           
-            &mdash; <div class='inline'><ul><li>
-<p>produce a hash rather than a collection. The hash key is defined with
-<span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
-</li></ul>
+            &mdash; <div class='inline'>
+<p>Produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
 </div>
           
         </li>
@@ -2220,9 +2545,7 @@ If present, this object will only we shown if the rule is met.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements. The block will be called for
-each array value in sequence.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements. The block will be called for each array value in sequence.</p>
 </div>
       
     </li>
@@ -2242,7 +2565,7 @@ each array value in sequence.</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object iterated from the enclosing context</p>
+<p>The current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2258,8 +2581,7 @@ each array value in sequence.</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Define an object (which will be rendered within json as name:hash or
-inlined into the parent hash).</p>
+<p>Define an object (which will be rendered within json as name:hash or inlined into the parent hash).</p>
 
 
   </div>
@@ -2280,7 +2602,7 @@ inlined into the parent hash).</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the name of the array field</p>
+<p>The name of the array field</p>
 </div>
           
         </li>
@@ -2293,8 +2615,20 @@ inlined into the parent hash).</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>either an array, in which case each value will become a result entry, or a
-scalar which will produce a single result.</p>
+<p>Either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:source</span>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The name of a hash or method in the current source to get the data array from, instead of :name</p>
 </div>
           
         </li>
@@ -2307,7 +2641,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>remove nil entries from the result array</p>
+<p>Remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2320,7 +2654,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>if false, omit this object</p>
+<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -2333,8 +2667,7 @@ scalar which will produce a single result.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>specify a versioning rule as a hash (see #version for spec for the rule).
-If present, this object will only we shown if the rule is met.</p>
+<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -2346,10 +2679,8 @@ If present, this object will only we shown if the rule is met.</p>
             
           </span>
           
-            &mdash; <div class='inline'><ul><li>
-<p>produce a hash rather than a collection. The hash key is defined with
-<span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
-</li></ul>
+            &mdash; <div class='inline'>
+<p>Produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
 </div>
           
         </li>
@@ -2369,8 +2700,7 @@ If present, this object will only we shown if the rule is met.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to generate the response fields using nested
-<span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
+<p>A block that will be called to generate the response fields using nested <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span>, <span class='object_link'><a href="#object-instance_method" title="Flappi::Definition#object (method)">#object</a></span> and <span class='object_link'><a href="#objects-instance_method" title="Flappi::Definition#objects (method)">#objects</a></span> elements.</p>
 </div>
       
     </li>
@@ -2390,7 +2720,7 @@ If present, this object will only we shown if the rule is met.</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object iterated from the enclosing context</p>
+<p>The current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2409,12 +2739,12 @@ If present, this object will only we shown if the rule is met.</p>
       <pre class="lines">
 
 
-185
-186
-187</pre>
+268
+269
+270</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 185</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 268</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_objects'>objects</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2428,9 +2758,9 @@ If present, this object will only we shown if the rule is met.</p>
   <h3 class="signature " id="param-instance_method">
   
     
-      <span class="overload">#<strong>param</strong>(name, options = {}) {|param| ... } &#x21d2; <tt>Object</tt> </span>
+      <span class="overload">#<strong>param</strong>(name, options = {}) {|param| ... } &#x21d2; <tt>ParamProcessor</tt> </span>
     
-      <span class="overload">#<strong>param</strong>(options = {}) {|param| ... } &#x21d2; <tt>Object</tt> </span>
+      <span class="overload">#<strong>param</strong>(options = {}) {|param| ... } &#x21d2; <tt>ParamProcessor</tt> </span>
     
   
 
@@ -2440,8 +2770,9 @@ If present, this object will only we shown if the rule is met.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define an input parameter (inline or query string) This is used to document
-and validate the parameters.</p>
+<p>Define an input parameter (inline or query string) This is used to document and validate the parameters.</p>
+
+<p>Chain processor &amp;block to this to define a parameter processor and/or validator &amp;block for define a parameter validator</p>
 
 
   </div>
@@ -2453,7 +2784,7 @@ and validate the parameters.</p>
     
       
       <li class="overload_item">
-        <span class="signature">#<strong>param</strong>(name, options = {}) {|param| ... } &#x21d2; <tt>Object</tt> </span>
+        <span class="signature">#<strong>param</strong>(name, options = {}) {|param| ... } &#x21d2; <tt>ParamProcessor</tt> </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -2500,7 +2831,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the name of the parameter</p>
+<p>The name of the parameter</p>
 </div>
           
         </li>
@@ -2513,7 +2844,33 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the parameter type, defaults to String</p>
+<p>The parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:default</span>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>A default value when the parameter is not supplied or is empty</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:default_doc</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Text to document the default with instead of a computed default</p>
 </div>
           
         </li>
@@ -2526,7 +2883,20 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the parameter description</p>
+<p>The parameter description</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:hidden</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>If true don&#39;t document</p>
 </div>
           
         </li>
@@ -2539,7 +2909,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>true for an optional parameter</p>
+<p>True for an optional parameter</p>
 </div>
           
         </li>
@@ -2603,13 +2973,31 @@ and validate the parameters.</p>
     </li>
   
 </ul>
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ParamProcessor</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>chain this with processor or validator</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div>
       </li>
     
       
       <li class="overload_item">
-        <span class="signature">#<strong>param</strong>(options = {}) {|param| ... } &#x21d2; <tt>Object</tt> </span>
+        <span class="signature">#<strong>param</strong>(options = {}) {|param| ... } &#x21d2; <tt>ParamProcessor</tt> </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -2634,7 +3022,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the name of the parameter</p>
+<p>The name of the parameter, which can be in a path</p>
 </div>
           
         </li>
@@ -2647,7 +3035,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the parameter type, defaults to String</p>
+<p>The parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
 </div>
           
         </li>
@@ -2660,7 +3048,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>a default value when the parameter is not supplied</p>
+<p>A default value when the parameter is not supplied or is empty</p>
 </div>
           
         </li>
@@ -2673,7 +3061,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>text to documment the defualt with instead of a computed default</p>
+<p>Text to document the default with instead of a computed default</p>
 </div>
           
         </li>
@@ -2686,7 +3074,20 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>the parameter description</p>
+<p>The parameter description</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:hidden</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>If true don&#39;t document</p>
 </div>
           
         </li>
@@ -2699,7 +3100,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>true for an optional parameter</p>
+<p>True for an optional parameter</p>
 </div>
           
         </li>
@@ -2712,7 +3113,7 @@ and validate the parameters.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>code Code to return when fail is true</p>
+<p>Code to return when fail is true</p>
 </div>
           
         </li>
@@ -2776,6 +3177,24 @@ and validate the parameters.</p>
     </li>
   
 </ul>
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ParamProcessor</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>chain this with processor or validator</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div>
       </li>
@@ -2789,39 +3208,53 @@ and validate the parameters.</p>
       <pre class="lines">
 
 
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382</pre>
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 368</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 548</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_param'>param</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_def_args'>def_args</span> <span class='op'>=</span> <span class='id identifier rubyid_extract_definition_args'>extract_definition_args</span><span class='lparen'>(</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_require_arg'>require_arg</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='comma'>,</span> <span class='symbol'>:name</span>
 
-  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:params</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span>
-      <span class='lbrace'>{</span> <span class='label'>name:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>type:</span> <span class='id identifier rubyid_name_for_type'>name_for_type</span><span class='lparen'>(</span><span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span>
-        <span class='label'>default:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>default_doc:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:default_doc</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>description:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>optional:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:optional</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:optional</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>true</span><span class='comma'>,</span>
-        <span class='label'>validation_block:</span> <span class='id identifier rubyid_block'>block</span><span class='comma'>,</span>
-        <span class='label'>fail_code:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:fail_code</span><span class='rbracket'>]</span>
-      <span class='rbrace'>}</span>
+  <span class='kw'>return</span> <span class='kw'>unless</span> <span class='id identifier rubyid_version_wanted'>version_wanted</span><span class='lparen'>(</span><span class='id identifier rubyid_def_args'>def_args</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_param_def'>param_def</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>name:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                <span class='label'>type:</span> <span class='id identifier rubyid_name_for_type'>name_for_type</span><span class='lparen'>(</span><span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span>
+                <span class='label'>default_doc:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:default_doc</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                <span class='label'>description:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                <span class='label'>hidden:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:hidden</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                <span class='label'>optional:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:optional</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:optional</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>true</span><span class='comma'>,</span>
+                <span class='label'>validation_block:</span> <span class='id identifier rubyid_block'>block</span><span class='comma'>,</span>
+                <span class='label'>fail_code:</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:fail_code</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+
+  <span class='comment'># options that take nil
+</span>  <span class='id identifier rubyid_param_def'>param_def</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_def_args'>def_args</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:default</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:params</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_param_def'>param_def</span>
+
+  <span class='const'>ParamProcessor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_param_def'>param_def</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2840,8 +3273,7 @@ and validate the parameters.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define the path to this endpoint under the API root. This is for
-documentation only.</p>
+<p>Define the path to this endpoint under the API root. This is for documentation only.</p>
 
 
   </div>
@@ -2875,12 +3307,12 @@ documentation only.</p>
       <pre class="lines">
 
 
-312
-313
-314</pre>
+451
+452
+453</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 312</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 451</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -2921,8 +3353,7 @@ documentation only.</p>
       
         
         <div class='inline'>
-<p>A block that will be called to perform the query and return the source
-object</p>
+<p>A block that will be called to perform the query and return the source object</p>
 </div>
       
     </li>
@@ -2973,12 +3404,12 @@ object</p>
       <pre class="lines">
 
 
-389
-390
-391</pre>
+586
+587
+588</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 389</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 586</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -3004,8 +3435,7 @@ object</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates a sideloaded reference to an object created by the block. The
-object must include an ID field</p>
+<p>Creates a sideloaded reference to an object created by the block. The object must include an ID field</p>
 
 
   </div>
@@ -3021,9 +3451,7 @@ object must include an ID field</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Define a reference sourcing data from the enclosing source object. If no
-block is given, the reference object will be extracted from <a
-href="name">source_object</a>, otherwise it will be the block return.</p>
+<p>Define a reference sourcing data from the enclosing source object. If no block is given, the reference object will be extracted from <a href="name">source_object</a>, otherwise it will be the block return.</p>
 
 
   </div>
@@ -3066,7 +3494,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
+<p>Creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
 </div>
           
         </li>
@@ -3079,8 +3507,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>for a polymorphic relation, provide the type that is being
-requested/generated. (This will usually be from model data or request)</p>
+<p>For a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
 </div>
           
         </li>
@@ -3093,7 +3520,20 @@ requested/generated. (This will usually be from model data or request)</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>generate (inline) a name_type field with the type value</p>
+<p>Generate (inline) a name_type field with the type value</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:link_id</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Generate a link id name_id in the source location. Defaults to true</p>
 </div>
           
         </li>
@@ -3133,7 +3573,7 @@ requested/generated. (This will usually be from model data or request)</p>
       
         &mdash;
         <div class='inline'>
-<p>the current source object</p>
+<p>The current source object</p>
 </div>
       
     </li>
@@ -3167,9 +3607,7 @@ requested/generated. (This will usually be from model data or request)</p>
         <div class="docstring">
   <div class="discussion">
     
-<p>Define a reference sourcing data from the enclosing source object. If no
-block is given, the reference object will be extracted from <a
-href="name">source_object</a>, otherwise it will be the block return.</p>
+<p>Define a reference sourcing data from the enclosing source object. If no block is given, the reference object will be extracted from <a href="name">source_object</a>, otherwise it will be the block return.</p>
 
 
   </div>
@@ -3230,7 +3668,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
+<p>Creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
 </div>
           
         </li>
@@ -3243,8 +3681,7 @@ href="name">source_object</a>, otherwise it will be the block return.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>for a polymorphic relation, provide the type that is being
-requested/generated. (This will usually be from model data or request)</p>
+<p>For a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
 </div>
           
         </li>
@@ -3257,7 +3694,20 @@ requested/generated. (This will usually be from model data or request)</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>generate (inline) a name_type field with the type value</p>
+<p>Generate (inline) a name_type field with the type value</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:link_id</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Generate a link id name_id in the source location. Defaults to true</p>
 </div>
           
         </li>
@@ -3278,12 +3728,12 @@ requested/generated. (This will usually be from model data or request)</p>
       <pre class="lines">
 
 
-254
-255
-256</pre>
+385
+386
+387</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 254</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 385</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reference'>reference</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_reference'>reference</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -3305,8 +3755,7 @@ requested/generated. (This will usually be from model data or request)</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Define an example request path (no scheme or host) that will be included in
-documentation. If not specified, the <span class='object_link'><a href="#path-instance_method" title="Flappi::Definition#path (method)">#path</a></span> is used.</p>
+<p>Define an example request path (no scheme or host) that will be included in documentation. If not specified, the <span class='object_link'><a href="#path-instance_method" title="Flappi::Definition#path (method)">#path</a></span> is used.</p>
 
 
   </div>
@@ -3340,12 +3789,12 @@ documentation. If not specified, the <span class='object_link'><a href="#path-in
       <pre class="lines">
 
 
-325
-326
-327</pre>
+464
+465
+466</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 325</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 464</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_request_example'>request_example</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_example'>set_example</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>request</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
@@ -3401,15 +3850,174 @@ documentation. If not specified, the <span class='object_link'><a href="#path-in
       <pre class="lines">
 
 
-318
-319
-320</pre>
+457
+458
+459</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 318</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 457</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_response_example'>response_example</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_example'>set_example</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>response</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="return_error-instance_method">
+  
+    #<strong>return_error</strong>(status_code, error_info)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>From inside a query, return an error</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>status_code</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an HTTP status code to return</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>error_info</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a message String or an error hash to return</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+598
+599
+600</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 598</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span>
+  <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_error</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="return_no_content-instance_method">
+  
+    #<strong>return_no_content</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>From inside a query, return 204 NO CONTENT</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+591
+592
+593</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 591</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_return_no_content'>return_no_content</span>
+  <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_no_content'>return_no_content</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_no_content</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="strict-instance_method">
+  
+    #<strong>strict</strong>(mode = false)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+577
+578
+579</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 577</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_strict'>strict</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:strict_mode</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -3462,12 +4070,12 @@ documentation. If not specified, the <span class='object_link'><a href="#path-in
       <pre class="lines">
 
 
-283
-284
-285</pre>
+416
+417
+418</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 283</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 416</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_title'>title</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:title</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -3491,8 +4099,7 @@ documentation. If not specified, the <span class='object_link'><a href="#path-in
     
 <p>Define the version this endpoint works with.</p>
 
-<p>This assumes that a version plan (which defines semantic versioning and
-version flavours) is configured into Flappi.</p>
+<p>This assumes that a version plan (which defines semantic versioning and version flavours) is configured into Flappi.</p>
 
 
   </div>
@@ -3533,8 +4140,20 @@ version flavours) is configured into Flappi.</p>
           </span>
           
             &mdash; <div class='inline'>
-<p>A version which must be matched for the endpoint to be supported. The
-version can be wildcarded with &#39;*&#39;.</p>
+<p>A version which must be matched for the endpoint to be supported. The version can be wildcarded with &#39;*&#39;.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:matches</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>Synonym for equals</p>
 </div>
           
         </li>
@@ -3549,16 +4168,18 @@ version can be wildcarded with &#39;*&#39;.</p>
       <pre class="lines">
 
 
-298
-299
-300
-301</pre>
+436
+437
+438
+439
+440</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 298</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 436</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_version'>version</span><span class='lparen'>(</span><span class='id identifier rubyid_version_rule'>version_rule</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>No version plan is defined - cannot use &#39;version&#39;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_version_plan'>version_plan</span>
+
   <span class='ivar'>@version_rule</span> <span class='op'>=</span> <span class='id identifier rubyid_version_rule'>version_rule</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -3571,9 +4192,9 @@ version can be wildcarded with &#39;*&#39;.</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Oct  7 15:00:39 2016 by
+  Generated on Tue Nov 17 10:37:40 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.6.5).
 </div>
 
     </div>

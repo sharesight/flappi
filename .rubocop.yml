@@ -13,7 +13,7 @@ Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 Layout/LineLength:
-  Max: 300
+  Max: 200
 
 Layout/ParameterAlignment:
   Enabled: false
