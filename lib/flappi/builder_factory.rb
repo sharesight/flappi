@@ -281,6 +281,7 @@ module Flappi
       if response_object.respond_to?(:status_code)
         error_info = response_object.status_error_info
         response_hash = error_info.is_a?(String) ? { error: error_info } : { errors: error_info }
+        Flappi::Utils::Logger.i "flappi error response: #{response_hash.inspect}"
         controller.render json: response_hash.to_json, status: response_object.status_code
       else
         controller.render json: response_object, status: :ok
