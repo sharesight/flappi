@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.10.10 `(2020-02-21)`
+
+ * Log errors [#46])(https://github.com/sharesight/flappi/pull/46)
+
 ## 0.10.9 `(2020-02-21)`
 
  * Fix issue #43: When an objects source is not found, fields included may be rendered wrongly
