@@ -84,4 +84,5 @@ and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/
 ## Advanced
 
 - [Implementing a POST endpoint](file.POST.html)
+- [Nesting structures in a response](file.NEST.html)
 
