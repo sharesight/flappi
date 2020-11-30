@@ -40,7 +40,7 @@ module Flappi
         controller_params.respond_to?(:permit) ? controller_params.permit(*params_to_permit) : controller_params
       else
         controller_params
-                         end
+      end
 
       if @query_block
         # We have a query block defined, call it to get the model object

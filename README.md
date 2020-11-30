@@ -5,7 +5,9 @@
 Flappi allows Rails APIs to be defined using a simple DSL that avoids repeated and fragmented code and allows the API definition to reflect the request/response structure.
 Support is provided for versioning (semantic with the addition of 'flavours') and documentation (using [apiDoc](http://apidocjs.com/)).
 
-## Quickstart with Rails (4?)
+Interface documentation is [here](https://sharesight.github.io/flappi/Flappi.html)
+
+## Quickstart with Rails (4-6)
 
 Add to Gemfile:
 
@@ -18,7 +20,7 @@ Bundle install:
 Create your initialization file, e.g. in **'initializers/flappi.rb'**
 ```ruby
 Flappi.configure do |conf|
-  conf.definition_paths = 'api_definitions'     # Normally under your controller path
+  conf.definition_paths = { 'default' => 'api_definitions' }    # Normally under your controller path
 end
 ```
 Create a controller and route, e.g in **'controllers/adders_controller'**:
@@ -46,7 +48,7 @@ module ApiDefinitions
 
     def endpoint
       title 'Add numbers'
-      method 'GET'
+      http_method 'GET'
       path '/adder'
 
       # We define two query parameters, 'a' is required
@@ -78,3 +80,8 @@ Now, if you access: [http://localhost:3000/adder.json?a=4](http://localhost:3000
     }
 
 and similarly [http://localhost:3000/adder.json?a=4&b=22](http://localhost:3000/adder.json?a=4&b=22) (etc)
+
+## Advanced
+
+- [Implementing a POST endpoint](file.POST.html)
+

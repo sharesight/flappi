@@ -440,11 +440,12 @@ module Flappi
       ParamProcessor.new(param_def)
     end
 
+    # Enable parameter check for strict parameters in Rails
     def check_params(mode = false)
       endpoint_info[:check_params] = mode
     end
 
-    # Enable/disable strict mode, unknown parameters will cause an error\
+    # Enable/disable strict mode, unknown parameters will cause an error
     # Default is to disable this
     def strict(mode = false)
       endpoint_info[:strict_mode] = mode

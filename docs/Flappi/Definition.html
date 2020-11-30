@@ -247,7 +247,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Enable parameter check for strict parameters in Rails.</p>
+</div></span>
   
 </li>
 
@@ -678,7 +680,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this.</p>
+<p>Enable/disable strict mode, unknown parameters will cause an error Default is to disable this.</p>
 </div></span>
   
 </li>
@@ -963,18 +965,29 @@ end</code></pre>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Enable parameter check for strict parameters in Rails</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-443
 444
-445</pre>
+445
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 443</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 444</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_check_params'>check_params</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:check_params</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
@@ -1908,12 +1921,12 @@ end</code></pre>
       <pre class="lines">
 
 
-475
 476
-477</pre>
+477
+478</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 475</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 476</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_major_version'>major_version</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_requested_version'>requested_version</span><span class='op'>&amp;.</span><span class='id identifier rubyid_major'>major</span>
@@ -3413,12 +3426,12 @@ end</code></pre>
       <pre class="lines">
 
 
-458
 459
-460</pre>
+460
+461</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 458</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 459</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -3936,12 +3949,12 @@ end</code></pre>
       <pre class="lines">
 
 
-470
 471
-472</pre>
+472
+473</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 470</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 471</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_error</span><span class='rparen'>)</span>
@@ -3977,12 +3990,12 @@ end</code></pre>
       <pre class="lines">
 
 
-463
 464
-465</pre>
+465
+466</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 463</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 464</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_return_no_content'>return_no_content</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_no_content'>return_no_content</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_no_content</span><span class='rparen'>)</span>
@@ -4004,7 +4017,7 @@ end</code></pre>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this</p>
+<p>Enable/disable strict mode, unknown parameters will cause an error Default is to disable this</p>
 
 
   </div>
@@ -4018,12 +4031,12 @@ end</code></pre>
       <pre class="lines">
 
 
-449
 450
-451</pre>
+451
+452</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 449</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 450</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_strict'>strict</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:strict_mode</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
@@ -4201,7 +4214,7 @@ end</code></pre>
 </div>
 
       <div id="footer">
-  Generated on Mon Nov 16 18:24:40 2020 by
+  Generated on Tue Dec  1 10:21:43 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.6.5).
 </div>
