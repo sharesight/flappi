@@ -15,7 +15,7 @@ If our query returns a single object, e.g:
 {
     name: 'Stilton',
     soft: false,
-    type: :blue
+    cheese_type: :blue
 }
 ```
 
@@ -25,7 +25,7 @@ then we can format it into a JSON response simply using the `build/field` method
 build do
   field :name
   field :soft, type: BOOLEAN
-  field :type
+  field :cheese_type
 end
 ```
 
@@ -35,8 +35,8 @@ For a query that returns a list of objects, e.g:
 
 ```ruby
 [
-    { name: 'Stilton', soft: false, type: :blue },
-    { name: 'Cheddar', soft: false, type: :regular },
+    { name: 'Stilton', soft: false, cheese_type: :blue },
+    { name: 'Cheddar', soft: false, cheese_type: :regular },
 ]
 ```
 
@@ -69,7 +69,7 @@ You can also nest an object. If we now have a query that returns a nested hash:
 {
     name: 'Stilton',
     soft: false,
-    type: :blue,
+    cheese_type: :blue,
     package: { weight_grams: 1000, price: 34.32 } 
 }
 ```
@@ -81,7 +81,7 @@ build do
   objects :cheeses do
     field :name
     field :soft, type: BOOLEAN
-    field :type
+    field :cheese_type
 
     object name: package, type: Package do
       field :weight, source: :weight_grams, type: Integer
@@ -97,7 +97,7 @@ which will produce:
 {
   "name":"Stilton",
   "soft":false,
-  "type":"blue",
+  "cheese_type":"blue",
   "package":{
     "weight":1000,
     "price":34.32
@@ -118,7 +118,7 @@ build do
   objects :cheeses do
     field :name
     field :soft, type: BOOLEAN
-    field :type
+    field :cheese_type
 
     object inline_always: true do
       field :weight, source: :weight_grams, type: Integer
@@ -134,7 +134,7 @@ produces
 {
   "name":"Stilton",
   "soft":false,
-  "type":"blue",
+  "cheese_type":"blue",
   "weight":1000,
   "price":34.32
 }
@@ -150,7 +150,7 @@ You can easily nest arrays using `objects`. Assuming we now have multiple packag
 {
     name: 'Stilton',
     soft: false,
-    type: :blue,
+    cheese_type: :blue,
     packages: [
       { weight_grams: 1000, price: 34.32 },
       { weight_grams: 250, price: 9.15 }
@@ -165,7 +165,7 @@ build do
   objects :cheeses do
     field :name
     field :soft, type: BOOLEAN
-    field :type
+    field :cheese_type
 
     objects name: packages do
       field :weight, source: :weight_grams, type: Integer
@@ -181,7 +181,7 @@ which will produce:
 {
   "name":"Stilton",
   "soft":false,
-  "type":"blue",
+  "cheese_type":"blue",
   "packages": [
     { "weight":1000, "price":34.32 },
     { "weight":250, "price":9.15 }
@@ -198,7 +198,7 @@ build do
   objects :cheeses, hashed: true do
     hash_key :name
     field :soft
-    field :type
+    field :cheese_type
   end  
 end
 ```
@@ -208,8 +208,8 @@ The `hash_key` extracts the hash key from the data, producing:
 ```json
 {
   "cheeses": { 
-      "Stilton": { "soft":false, "type":"blue" },
-      "Cheddar": { "soft":false, "type":"regular" },
+      "Stilton": { "soft":false, "cheese_type":"blue" },
+      "Cheddar": { "soft":false, "cheese_type":"regular" },
   }  
 }
 ```
