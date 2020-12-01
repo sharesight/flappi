@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: VERSIONS
+  
+    &mdash; Documentation by YARD 0.9.25
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "VERSIONS";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: VERSIONS</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'><h1 id="versions">Versions</h1>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Often an API will need to have multiple versions available.  This can allow new functionality to be restricted for e.g. internal use or to ensure backwards compatibility with an older vesion.</p>
+
+<p>Flappi supports a system of <a href="https://medium.com/the-non-traditional-developer/semantic-versioning-for-dummies-45c7fe04a1f8">semantic versioning</a> and flavouring.</p>
+
+<p>Semantic versioning is a standardised way of labelling ordered releases. An example would be to have versions: 
+<code>V1.0</code>, <code>V2.0</code>, <code>V2.1</code>, <code>V2.1.1</code>, <code>V3</code>, <code>V3.0.1</code></p>
+
+<p>Flavouring allows one release to have multiple flavours, e.g: <code>V3.0</code>, <code>V3.0-internal</code>, <code>V3.0-mobile</code>.</p>
+
+<h1 id="providing-the-version">Providing the version</h1>
+
+<p>The version will generally be provided in the request, e.g: <code>https://api.example.com/v2.1/cheeses.json</code>
+(You could also use a header, or imply it).</p>
+
+<p>Flappi expects that the version text is passed in a <code>version</code> parameter. 
+In Rails, this can be done through a namespace in the Rails routes, such asL</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_namespace'>namespace</span> <span class='symbol'>:v2</span><span class='comma'>,</span> <span class='label'>path:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V2(.:version)</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+ <span class='id identifier rubyid_resources'>resources</span> <span class='symbol'>:cheeses</span>
+ <span class='id identifier rubyid_resources'>resources</span> <span class='symbol'>:chocolates</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>The configuration (in e.g. <strong>&#39;initializers/flappi.rb&#39;</strong>) will also need to change to match the version:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_conf'>conf</span><span class='period'>.</span><span class='id identifier rubyid_definition_paths'>definition_paths</span> <span class='op'>=</span> <span class='lbrace'>{</span> 
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>default</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>api_definitions</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>v2</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>api_definitions</span><span class='tstring_end'>&#39;</span></span> 
+<span class='rbrace'>}</span> 
+</code></pre>
+
+<p>You can use this to direct top level versions to different definition folders.</p>
+
+<p>You now use the URL <code>http://localhost:3000/v2/cheeses.json</code> to do a GET on the cheeses endpoint.</p>
+
+<p>If you have an existing versioning system to fit into, you may want to alter this scheme and maybe change the <code>params[:version]</code> in a base controller.</p>
+
+<h1 id="version-dependent-apis">Version dependent APIs</h1>
+
+<p>You may want to provide a different result dependent on the version.</p>
+
+<p>For instance, we can change the <code>name</code> to <code>product_name</code> in V3 (this is a breaking change for an API consumer).</p>
+
+<p>To serve <code>name</code> in V2 and <code>product_name</code> in V3, we can do:</p>
+
+<pre class="code ruby"><code class="ruby">  <span class='id identifier rubyid_field'>field</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='label'>version:</span> <span class='lbrace'>{</span> <span class='label'>equals:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V2.0</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span> 
+  <span class='id identifier rubyid_field'>field</span> <span class='symbol'>:product_name</span><span class='comma'>,</span> <span class='label'>source:</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='label'>version:</span> <span class='lbrace'>{</span> <span class='label'>matches:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V3.*</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
+</code></pre>
+
+<p>Notice that we use <code>source</code> to map a common source in the backend, and we allow various point versions at V3.</p>
+
+<p>You can specify a version on the <code>object</code>, <code>objects</code> and <code>field</code> methods.</p>
+
+<h1 id="version-plan">Version plan</h1>
+
+<p>It is possible to optionally define a version plan setting out allowable versions and flavours.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>Api</span>
+  <span class='kw'>class</span> <span class='const'>FlappiVersionPlan</span>
+    <span class='id identifier rubyid_extend'>extend</span> <span class='const'><span class='object_link'><a href="Flappi.html" title="Flappi (module)">Flappi</a></span></span><span class='op'>::</span><span class='const'>VersionPlan</span>
+
+    <span class='comment'># Version numbers are of the form [text][N][,]+[-flavour]
+</span>
+    <span class='id identifier rubyid_version'>version</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V2.0.0</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_flavour'>flavour</span> <span class='symbol'>:mobile</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_version'>version</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>v3.0.0</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_flavour'>flavour</span> <span class='symbol'>:internal</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_flavour'>flavour</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>We now allow: <code>V2.0.0</code>, <code>V2.0.0-mobile</code>, <code>V3.0.0</code>, <code>V3.0.0-internal</code>. These can be abbreviated by dropping the trailing zero points,
+so: <code>V2</code>, <code>V2.0-mobile</code> etc. are legal versions.</p>
+
+<p>This is then configured into flappi:</p>
+
+<pre class="code ruby"><code class="ruby">  Flappi.configure do |conf|
+    conf.version_plan = Api::FlappiVersionPlan
+    ...
+  end  
+</code></pre>
+
+<h1 id="version-restricted-endpoints">Version restricted endpoints</h1>
+
+<p>Having created a version plan (and routed calls to the same major release to a common definition) it is possible to configure 
+an endpoint to be only available (and documented) for a particular version.</p>
+
+<p>For instance, to limit an endpoint to internal use, we can do:   </p>
+
+<pre class="code ruby"><code class="ruby">  def endpoint
+    version equals: &#39;V3.0-internal&#39;
+    ...
+  end
+</code></pre>
+
+<p>This makes the endpoint only available with a version of <code>V3.0-internal</code>. </p>
+
+<p>NOTE: limiting access to versions, e.g. by user or OAuth application is not a Flappi concern. 
+You would normally do this in a base controller.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Tue Dec  1 14:56:46 2020 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.25 (ruby-2.6.5).
+</div>
+
+    </div>
+  </body>
+</html>
