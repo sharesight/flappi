@@ -27,7 +27,7 @@ module Flappi
 
     def to_s
       r = version_array.join('.')
-      r << '-' + @flavour.to_s unless @flavour == :_blank
+      r << "-#{@flavour}" unless @flavour == :_blank
       r
     end
 

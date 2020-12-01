@@ -265,7 +265,8 @@ module Flappi
       link_def = if link_params.size == 1 && link_params.first.is_a?(Hash)
                    link_params.first
                  else
-                   Hash[link_params.each_with_index.map { |p, idx| [%i[key path][idx], p] }]
+                   keys = %i[key path]
+                   Hash[link_params.each_with_index.map { |p, idx| [keys[idx], p] }]
                  end
 
       raise 'link to an endpoint apart from :self needs a path' unless link_def[:key] == :self || link_def[:path]
@@ -321,8 +322,6 @@ module Flappi
     def cast_value(src, type, precision)
       # puts "cast_value #{src}, type #{type.to_s}"
       case type&.to_s
-      when nil
-        src
       when 'boolean_type'
         if src.nil?
           nil
@@ -442,7 +441,7 @@ module Flappi
     def check_when(def_args, source)
       return true unless def_args.key?(:when)
 
-      return !!source if def_args[:when]&.is_a?(Symbol) && def_args[:when] == :source_present
+      return !!source if def_args[:when].is_a?(Symbol) && def_args[:when] == :source_present
 
       !!def_args[:when]
     end

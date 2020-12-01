@@ -8,7 +8,7 @@ if ENV['COVERAGE_ME']
 end
 
 require 'maxitest/autorun'
-require 'shoulda'
+require 'shoulda-context'
 require 'mocha/minitest'
 require 'pry'
 require 'flappi'

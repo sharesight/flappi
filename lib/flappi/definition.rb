@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength
 module Flappi
   # DSL for API construction.
   #
@@ -27,7 +26,8 @@ module Flappi
     # Use on {#field} and {#param} types when a boolean type is wanted, null values will be null
     BOOLEAN = :boolean_type
 
-    # Use on {#field} and {#param} types when a boolean type is wanted and falsey values will be false, truthy true
+    # Use on {#field} and {#param} types when a boolean type is wanted and falsey values
+    # will be false, truthy true
     BOOLEAN_STRICT = :boolean_strict
 
     SOURCE_PRESENT = :source_present
@@ -80,14 +80,24 @@ module Flappi
     def document_as_version(documenting_version_text)
       return documenting_version_text || '0.0.0' unless version_plan
 
-      supported_versions = @version_rule ? version_plan.expand_version_rule(@version_rule) : version_plan.available_version_definitions
+      supported_versions = if @version_rule
+                             version_plan.expand_version_rule(@version_rule)
+                           else
+                             version_plan.available_version_definitions
+                           end
       return documenting_version_text || version_plan.minimum_version if supported_versions.blank?
 
       doc_version_matcher = version_plan.parse_version(documenting_version_text).normalise
       use_versions = supported_versions.select { |v| v == doc_version_matcher } # with wildcards
 
-      raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions} - not allowed by documenter as yet in #{endpoint_simple_name}" if use_versions.size > 1
-      raise "#{endpoint_info[:title]}: Version could not be determined, trying to document unsupported endpoint #{documenting_version_text}" if use_versions.empty?
+      if use_versions.size > 1
+        raise "#{endpoint_info[:title]}: Multiple versions supported #{use_versions}"\
+              " - not allowed by documenter as yet in #{endpoint_simple_name}"
+      end
+      if use_versions.empty?
+        raise "#{endpoint_info[:title]}: Version could not be determined, trying to"\
+              " document unsupported endpoint #{documenting_version_text}"
+      end
 
       use_versions.first
     end
@@ -113,20 +123,29 @@ module Flappi
       @delegate.controller_url = p if @delegate.respond_to? :controller_url=
     end
 
-    # Define how to build the API response.
-    # Use this typically with a block that defines how each field of the response is to be generated.
+    # Define how to build the API response. Use this typically with a block that defines
+    # how each field of the response is to be generated.
     #
-    # @option options [Class] :type Specifies a (ruby) type, an instance of which will be retrieved by calling the classes (ActiveRecord-style) 'where' method with the controller's parameters and will become the base object the response is generated from.
-    # @option options [Symbol] :as Specifies the class method to call in place on the `type`
-    # @option options [Hash] :options Optionally specify an array of options which will be passed to the 'where' method of class 'type'
+    # @option options [Class] :type
+    #   Specifies a (ruby) type, an instance of which will be retrieved by calling the
+    #   classes (ActiveRecord-style) 'where' method with the controller's parameters and
+    #   will become the base object the response is generated from.
+    # @option options [Symbol] :as
+    #   Specifies the class method to call in place on the `type`
+    # @option options [Hash] :options
+    #   Optionally specify an array of options which will be passed to the 'where' method
+    #   of class 'type'
     #
     # @example fetch a user record
     #   build type: User do
     #        ...
     #   end
     #
-    # @yield A block that will be called to generate the response using {#field}, {#object} and {#objects} elements.
-    # @yieldparam  [Object] base_object the base object we generate the response from. If you don't use explicit value expressions in {#field} etc, you don't need this.
+    # @yield A block that will be called to generate the response using {#field},
+    #   {#object} and {#objects} elements.
+    # @yieldparam [Object] base_object
+    #   The base object we generate the response from. If you don't use explicit value
+    #   expressions in {#field} etc, you don't need this.
     def build(options = {}, &block)
       @delegate.build options, &block
     end
@@ -138,28 +157,46 @@ module Flappi
     #
     # @overload object(name)
     #   Defines a named object using the enclosing source object.
-    #   @param name (String) the name of the object
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
-    #   @yieldparam  [Object] current_source the current source object from the enclosing context
+    #   @param name (String)
+    #     The name of the object
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements.
+    #   @yieldparam  [Object] current_source the current source object from the enclosing
+    #     context
     #
     # @overload object(name, value)
     #   Define an object using a specified value.
-    #   @param name (String) the name of the object
-    #   @param value (Object) the object to extract fields from
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
+    #   @param name (String)
+    #     The name of the object
+    #   @param value (Object)
+    #     The object to extract fields from
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements.
     #   @yieldparam  [Object] current_source the current source object (passed as value)
     #
     # @overload object(options)
-    #   Define an object (which will be rendered within json as name:hash or inlined into the parent hash).
-    #   @option options [String] :name the name of the object
-    #   @option options [Object] :value the object to extract fields from
-    #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
-    #   @option options [Boolean] :inline_always rather than creating this object's hash, inline its fields into the parent
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
-    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
-    #   @option options [String] :dynamic_key Rather than a fixed name, specify a key that is valid at request time.
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
-    #   @yieldparam  [Object] current_source the current source object (passed as value)
+    #   Define an object (which will be rendered within json as name:hash or inlined into
+    #   the parent hash).
+    #   @option options [String] :name
+    #     The name of the object
+    #   @option options [Object] :value
+    #     The object to extract fields from
+    #   @option options [Object] :source
+    #     The name of a hash or method in the current source to get the data from, instead
+    #     of :name
+    #   @option options [Boolean] :inline_always
+    #     Rather than creating this object's hash, inline its fields into the parent
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
+    #   @option options [Hash] :version
+    #     Specify a versioning rule as a hash (see #version for spec for the rule). If
+    #     present, this object will only we shown if the rule is met.
+    #   @option options [String] :dynamic_key
+    #     Rather than a fixed name, specify a key that is valid at request time.
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements.
+    #   @yieldparam [Object] current_source
+    #     The current source object (passed as value)
     def object(*args_or_name, &block)
       @delegate.object(*args_or_name, block)
     end
@@ -169,52 +206,89 @@ module Flappi
     # by iterating over the source object (if an Array) or with one field (if scalar).
     #
     # @overload objects(name, options={})
-    #   Defines a named array object using the enclosing source object.
-    #   Will generate name: array in json.
-    #   @param name (String) the name of the array field
-    #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements. The block will be called for each array value in sequence.
-    #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
+    #   Defines a named array object using the enclosing source object. Will generate name:
+    #   array in json.
+    #   @param name (String)
+    #     The name of the array field
+    #   @option options [Boolean] :compact
+    #     Remove nil entries from the result array
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements. The block will be called for each
+    #     array value in sequence.
+    #   @yieldparam [Object] current_source
+    #     The current source object iterated from the enclosing context
     #
     # @overload objects(name, value, options={})
     #   Defines a named array object using a specified (array or scalar) value.
     #   Will generate name: array in json.
-    #   @param name (String) the name of the array field
-    #   @param value (Object) either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
-    #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
-    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
-    #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements. The block will be called for each array value in sequence.
-    #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
+    #   @param name (String)
+    #     The name of the array field
+    #   @param value (Object)
+    #     Either an array, in which case each value will become a result entry, or a scalar
+    #     which will produce a single result.
+    #   @option options [Boolean] :compact
+    #     Remove nil entries from the result array
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
+    #   @option options [Hash] :version
+    #     Specify a versioning rule as a hash (see #version for spec for the rule). If
+    #     present, this object will only we shown if the rule is met.
+    #   @option options [Boolean] :hashed
+    #     Produce a hash rather than a collection. The hash key is defined with {#hash_key}
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements. The block will be called for each
+    #     array value in sequence.
+    #   @yieldparam [Object] current_source
+    #     The current source object iterated from the enclosing context
     #
     # @overload objects(options)
-    #   Define an object (which will be rendered within json as name:hash or inlined into the parent hash).
-    #   @option options [String] :name the name of the array field
-    #   @option options [Object] :value either an array, in which case each value will become a result entry, or a scalar which will produce a single result.
-    #   @option options [Object] :source the name of a hash or method in the current source to get the data array from, instead of :name
-    #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
-    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.
-    #   @option options [Boolean] :hashed - produce a hash rather than a collection. The hash key is defined with {#hash_key}
-    #   @yield A block that will be called to generate the response fields using nested {#field}, {#object} and {#objects} elements.
-    #   @yieldparam  [Object] current_source the current source object iterated from the enclosing context
+    #   Define an object (which will be rendered within json as name:hash or inlined into
+    #   the parent hash).
+    #   @option options [String] :name
+    #     The name of the array field
+    #   @option options [Object] :value
+    #     Either an array, in which case each value will become a result entry, or a
+    #     scalar which will produce a single result.
+    #   @option options [Object] :source
+    #     The name of a hash or method in the current source to get the data array from,
+    #     instead of :name
+    #   @option options [Boolean] :compact
+    #     Remove nil entries from the result array
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
+    #   @option options [Hash] :version
+    #     Specify a versioning rule as a hash (see #version for spec for the rule). If
+    #     present, this object will only we shown if the rule is met.
+    #   @option options [Boolean] :hashed
+    #     Produce a hash rather than a collection. The hash key is defined with {#hash_key}
+    #   @yield A block that will be called to generate the response fields using nested
+    #     {#field}, {#object} and {#objects} elements.
+    #   @yieldparam [Object] current_source
+    #     The current source object iterated from the enclosing context
     def objects(*args_or_name, &block)
       @delegate.objects(*args_or_name, block)
     end
 
-    # Define a single (scalar) field in the result. This will produce a name:value pair in the json response.
+    # Define a single (scalar) field in the result. This will produce a name:value
+    # pair in the json response.
     #
     # @overload field(name)
-    #   Define a field sourcing data from the enclosing source object.
-    #   If no block is given, the field value will be extracted from source_object[name], otherwise it will be the block return.
-    #   @param name (String) the name of the field
-    #   @option options [Boolean] :compact remove nil entries from the result array
-    #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.
-    #   @option options [String] :type a type to coerce the value to: :Integer, :BigDecimal, :Float
+    #   Define a field sourcing data from the enclosing source object. If no block
+    #   is given, the field value will be extracted from source_object[name], otherwise
+    #   it will be the block return.
+    #   @param name (String)
+    #     The name of the field
+    #   @option options [Boolean] :compact
+    #     Remove nil entries from the result array
+    #   @option options [String] :doc_name
+    #     Where a field has a dynamic name (computed value) then use this value, enclosed
+    #     in underscores, as the name of the field.
+    #   @option options [String] :type
+    #     A type to coerce the value to: :Integer, :BigDecimal, :Float
     #
     #   @yield A block that will be called to return the field value
-    #   @yieldparam  [Object] current_source the current source object
+    #   @yieldparam [Object] current_source
+    #     The current source object
     #
     # @overload field(name, value)
     #   Define a field with an explicitly specified value.
@@ -223,16 +297,27 @@ module Flappi
     #
     # @overload field(options={})
     #   Define a field with named options
-    #   @option options [String] :name the name of the field
-    #   @option options [Object] :value if given, the value to output
-    #   @option options [Object] :source the name of a hash or method in the current source to get the data from, instead of :name
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
-    #   @option options [Hash] :version specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.
-    #   @option options [String] :doc_name where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.
-    #   @option options [String] :type a type to coerce the value to: :Integer, :BigDecimal, :Float
+    #   @option options [String] :name
+    #     The name of the field
+    #   @option options [Object] :value
+    #     If given, the value to output
+    #   @option options [Object] :source
+    #     The name of a hash or method in the current source to get the data from,
+    #     instead of :name
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source
+    #     is present
+    #   @option options [Hash] :version
+    #     Specify a versioning rule as a hash (see #version for spec for the rule).
+    #     If present, this field will only we shown if the rule is met.
+    #   @option options [String] :doc_name
+    #     Where a field has a dynamic name (computed value) then use this value,
+    #     enclosed in underscores, as the name of the field.
+    #   @option options [String] :type
+    #     A type to coerce the value to: :Integer, :BigDecimal, :Float
     #
     #   @yield A block that will be called to return the field value
-    #   @yieldparam  [Object] current_source the current source object
+    #   @yieldparam [Object] current_source the current source object
     def field(*args_or_name, &block)
       @delegate.field(*args_or_name, block)
     end
@@ -241,41 +326,61 @@ module Flappi
     #
     # @overload hash_key(value, options={})
     #   Define the hash key as having a specified value
-    #   @param value (Object) the value for the hash key
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
+    #   @param value (Object)
+    #     The value for the hash key
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source is
+    #     present
     #
     # @overload hash_key(options={})
     #   Define the hash key with named options
-    #   @option options [Object] :value if given, the value to output
-    #   @option options [Boolean] :when if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present
+    #   @option options [Object] :value
+    #     If given, the value to output
+    #   @option options [Boolean] :when
+    #     If false, omit this object, if SOURCE_PRESENT, omit unless a data source is
+    #     present
     #
     def hash_key(*args, &block)
       @delegate.hash_key(*args, block)
     end
 
-    # Creates a sideloaded reference to an object created by the block. The object must include an ID field
+    # Creates a sideloaded reference to an object created by the block. The object
+    # must include an ID field
     #
     # @overload reference(name, options={})
-    #   Define a reference sourcing data from the enclosing source object.
-    #   If no block is given, the reference object will be extracted from source_object[name], otherwise it will be the block return.
+    #   Define a reference sourcing data from the enclosing source object. If no block
+    #   is given, the reference object will be extracted from source_object[name],
+    #   otherwise it will be the block return.
     #   @param name (String) the name of the field
-    #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
-    #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
-    #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
-    #   @option options [Boolean] :link_id generate a link id name_id in the source location. Defaults to true
+    #   @option options [String] :type
+    #     Creates a polymorphic reference for a named type, requires 'for'
+    #   @option options [Object] :for
+    #     For a polymorphic relation, provide the type that is being requested/generated.
+    #     (This will usually be from model data or request)
+    #   @option options [Boolean] :generate_from_type
+    #     Generate (inline) a name_type field with the type value
+    #   @option options [Boolean] :link_id
+    #     Generate a link id name_id in the source location. Defaults to true
     #   @yield A block that will be called to return the referenced object
-    #   @yieldparam  [Object] current_source the current source object
+    #   @yieldparam [Object] current_source
+    #     The current source object
     #   @yieldreturn the referenced object
     #
     # @overload reference(name, value, options={})
     #   Define a reference sourcing data from the enclosing source object.
-    #   If no block is given, the reference object will be extracted from source_object[name], otherwise it will be the block return.
+    #   If no block is given, the reference object will be extracted from
+    #   source_object[name], otherwise it will be the block return.
     #   @param name (String) the name of the field
     #   @param value (Object) the referenced object
-    #   @option options [String] :type creates a polymorphic reference for a named type, requires 'for'
-    #   @option options [Object] :for for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)
-    #   @option options [Boolean] :generate_from_type generate (inline) a name_type field with the type value
-    #   @option options [Boolean] :link_id generate a link id name_id in the source location. Defaults to true
+    #   @option options [String] :type
+    #     Creates a polymorphic reference for a named type, requires 'for'
+    #   @option options [Object] :for
+    #     For a polymorphic relation, provide the type that is being
+    #     requested/generated. (This will usually be from model data or request)
+    #   @option options [Boolean] :generate_from_type
+    #     Generate (inline) a name_type field with the type value
+    #   @option options [Boolean] :link_id
+    #     Generate a link id name_id in the source location. Defaults to true
     #
     def reference(*args_or_name, &block)
       @delegate.reference(*args_or_name, block)
@@ -320,10 +425,14 @@ module Flappi
 
     # Define the version this endpoint works with.
     #
-    # This assumes that a version plan (which defines semantic versioning and version flavours) is configured into Flappi.
+    # This assumes that a version plan (which defines semantic versioning and
+    # version flavours) is configured into Flappi.
     #
-    # @option version_rule [String] :equals A version which must be matched for the endpoint to be supported. The version can be wildcarded with '*'.
-    # @option version_rule [String] :matches Synonym for equals
+    # @option version_rule [String] :equals
+    #   A version which must be matched for the endpoint to be supported. The
+    #   version can be wildcarded with '*'.
+    # @option version_rule [String] :matches
+    #   Synonym for equals
     def version(version_rule)
       raise "No version plan is defined - cannot use 'version'" unless version_plan
 
@@ -386,18 +495,27 @@ module Flappi
     # This is used to document and validate the parameters.
     #
     # Chain processor &block to this to define a parameter processor
-    #  and/or validator &block for define a parameter validator
+    # and/or validator &block for define a parameter validator
     #
     # @overload param(name, options={})
     #   Define a named parameter
     #   @param name (String) the name of the parameter
-    #   @option options [String] :name the name of the parameter
-    #   @option options [Symbol] :type the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax
-    #   @option options [Object] :default a default value when the parameter is not supplied or is empty
-    #   @option options [String] :default_doc text to document the default with instead of a computed default
-    #   @option options [String] :doc the parameter description
-    #   @option options [Boolean] :hidden if true don't document
-    #   @option options [Boolean] :optional true for an optional parameter
+    #   @option options [String] :name
+    #     The name of the parameter
+    #   @option options [Symbol] :type
+    #     The parameter type, defaults to String, allowed types are `Boolean`,
+    #     `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`,
+    #     the input params can be defined using comma separated or [] syntax
+    #   @option options [Object] :default
+    #     A default value when the parameter is not supplied or is empty
+    #   @option options [String] :default_doc
+    #     Text to document the default with instead of a computed default
+    #   @option options [String] :doc
+    #     The parameter description
+    #   @option options [Boolean] :hidden
+    #     If true don't document
+    #   @option options [Boolean] :optional
+    #     True for an optional parameter
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
@@ -405,14 +523,24 @@ module Flappi
     #
     # @overload param(options={})
     #   Define a parameter
-    #   @option options [String] :name the name of the parameter, which can be in a path
-    #   @option options [Symbol] :type the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax
-    #   @option options [Object] :default a default value when the parameter is not supplied or is empty
-    #   @option options [String] :default_doc text to document the default with instead of a computed default
-    #   @option options [String] :doc the parameter description
-    #   @option options [Boolean] :hidden if true don't document
-    #   @option options [Boolean] :optional true for an optional parameter
-    #   @option options [Integer] :fail code Code to return when fail is true
+    #   @option options [String] :name
+    #     The name of the parameter, which can be in a path
+    #   @option options [Symbol] :type
+    #     The parameter type, defaults to String, allowed types are `Boolean`,
+    #     `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`,
+    #     the input params can be defined using comma separated or [] syntax
+    #   @option options [Object] :default
+    #     A default value when the parameter is not supplied or is empty
+    #   @option options [String] :default_doc
+    #     Text to document the default with instead of a computed default
+    #   @option options [String] :doc
+    #     The parameter description
+    #   @option options [Boolean] :hidden
+    #     If true don't document
+    #   @option options [Boolean] :optional
+    #     True for an optional parameter
+    #   @option options [Integer] :fail
+    #     Code to return when fail is true
     #   @yield A block that will be called to validate the parameter
     #   @yieldparam  [Object] param the actual parameter value to validate
     #   @yieldreturn [String] nil if the parameter is valid, else a failure message
@@ -478,4 +606,3 @@ module Flappi
     end
   end
 end
-# rubocop:enable Metrics/LineLength

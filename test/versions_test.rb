@@ -8,10 +8,14 @@ class Flappi::VersionsTest < MiniTest::Test
       @versions = Flappi::Versions.new [Flappi::Version.new([1, 0, 0], nil, nil), Flappi::Version.new([2, 0, 0], nil, nil)]
     end
 
+    # rubocop:disable Minitest/AssertIncludes
+    # rubocop:disable Minitest/RefuteIncludes
     should 'supports include?' do
       assert @versions.include? Flappi::Version.new([1, 0, 0], nil, nil)
       refute @versions.include? Flappi::Version.new([1, 1, 0], nil, nil)
     end
+    # rubocop:enable Minitest/RefuteIncludes
+    # rubocop:enable Minitest/AssertIncludes
 
     should 'supports to_s?' do
       assert_equal '[1.0.0, 2.0.0]', @versions.to_s

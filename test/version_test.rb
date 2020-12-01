@@ -36,6 +36,7 @@ class Flappi::VersionTest < MiniTest::Test
     end
   end
 
+  # rubocop:disable Minitest/AssertEqual
   context 'equal with ==' do
     should 'return true when exactly same' do
       va = Flappi::Version.new([1, 0], nil, nil)
@@ -79,6 +80,7 @@ class Flappi::VersionTest < MiniTest::Test
       assert va == vb
     end
   end
+  # rubocop:enable Minitest/AssertEqual
 
   context 'not equal with !=' do
     should 'return falsewhen exactly same' do

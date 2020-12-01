@@ -111,7 +111,7 @@ class ::Flappi::ResponseBuilderTest < MiniTest::Test
             end
           end
 
-          assert_equal err.to_s, 'object requires either a name or inline_always: true'
+          assert_equal 'object requires either a name or inline_always: true', err.to_s
         end
       end
 

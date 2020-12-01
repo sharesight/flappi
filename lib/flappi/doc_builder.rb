@@ -47,7 +47,7 @@ module Flappi
       # handle dynamic field names by bracketing either 'doc_name' or the word 'dynamic'
       # with an underscore
       use_name = def_args[:name]
-      use_name = '_' + (def_args[:doc_name] || 'dynamic') + '_' if def_args[:name].is_a?(Flappi::BuilderFactory::DocumentingStub)
+      use_name = "_#{def_args[:doc_name] || 'dynamic'}_" if def_args[:name].is_a?(Flappi::BuilderFactory::DocumentingStub)
 
       # puts "field @object_path=#{get_object_path} def_args=#{def_args}"
       @doc_targets.last << { name: peek_object_path.clone + [use_name],
@@ -67,7 +67,7 @@ module Flappi
       reference_name = def_args[:type].underscore.pluralize
       push_object_path(reference_name, true)
       @doc_targets.last << { name: [reference_name],
-                             type: name_for_type(def_args[:type]) + '[]',
+                             type: "#{name_for_type(def_args[:type])}[]",
                              description: def_args[:doc] }
 
       block.call Flappi::BuilderFactory::DocumentingStub.new
@@ -76,7 +76,7 @@ module Flappi
 
       # And document the id field that links to this block
       if def_args[:from_doc]
-        from_id = def_args[:name].to_s + '_id'
+        from_id = "#{def_args[:name]}_id"
         unless (@sent_reference_ids ||= {})[:from_id]
           @doc_targets.last << { name: peek_object_path.clone + [from_id],
                                  type: @id_type,
