@@ -27,7 +27,7 @@ namespace :v2, path: 'V2(.:version)' do
 end
 ```
 
-The configuration (in e.g. **'initializers/flappi.rb'**) will also need to change to match the version:
+The configuration (in e.g. **'config/initializers/flappi.rb'**) will also need to change to match the version:
 ```ruby
 conf.definition_paths = { 
   'default' => 'api_definitions', 
