@@ -247,7 +247,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Enable parameter check for strict parameters in Rails.</p>
+</div></span>
   
 </li>
 
@@ -678,7 +680,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this.</p>
+<p>Enable/disable strict mode, unknown parameters will cause an error Default is to disable this.</p>
 </div></span>
   
 </li>
@@ -768,16 +770,16 @@
       <pre class="lines">
 
 
-469
-470
-471
-472
-473
-474
-475</pre>
+360
+361
+362
+363
+364
+365
+366</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 469</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 360</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_api_error'>api_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_field_name'>field_name</span><span class='comma'>,</span> <span class='id identifier rubyid_field_description'>field_description</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:api_errors</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lbrace'>{</span>
@@ -926,7 +928,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The base object we generate the response from. If you don&#39;t use explicit value expressions in <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> etc, you don&#39;t need this.</p>
+<p>the base object we generate the response from. If you don&#39;t use explicit value expressions in <span class='object_link'><a href="#field-instance_method" title="Flappi::Definition#field (method)">#field</a></span> etc, you don&#39;t need this.</p>
 </div>
       
     </li>
@@ -939,12 +941,12 @@ end</code></pre>
       <pre class="lines">
 
 
-149
-150
-151</pre>
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_build'>build</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_build'>build</span> <span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -963,18 +965,29 @@ end</code></pre>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Enable parameter check for strict parameters in Rails</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-571
-572
-573</pre>
+444
+445
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 571</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 444</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_check_params'>check_params</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:check_params</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
@@ -1030,12 +1043,12 @@ end</code></pre>
       <pre class="lines">
 
 
-422
-423
-424</pre>
+317
+318
+319</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 422</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 317</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_description'>description</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -1099,7 +1112,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The name of the field</p>
+<p>the name of the field</p>
 </div>
       
     </li>
@@ -1142,7 +1155,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object</p>
+<p>the current source object</p>
 </div>
       
     </li>
@@ -1232,7 +1245,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of the field</p>
+<p>the name of the field</p>
 </div>
           
         </li>
@@ -1245,7 +1258,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If given, the value to output</p>
+<p>if given, the value to output</p>
 </div>
           
         </li>
@@ -1258,7 +1271,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of a hash or method in the current source to get the data from, instead of :name</p>
+<p>the name of a hash or method in the current source to get the data from, instead of :name</p>
 </div>
           
         </li>
@@ -1271,7 +1284,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1284,7 +1297,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.</p>
+<p>specify a versioning rule as a hash (see #version for spec for the rule). If present, this field will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -1297,7 +1310,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.</p>
+<p>where a field has a dynamic name (computed value) then use this value, enclosed in underscores, as the name of the field.</p>
 </div>
           
         </li>
@@ -1310,7 +1323,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>A type to coerce the value to: :Integer, :BigDecimal, :Float</p>
+<p>a type to coerce the value to: :Integer, :BigDecimal, :Float</p>
 </div>
           
         </li>
@@ -1369,12 +1382,12 @@ end</code></pre>
       <pre class="lines">
 
 
-321
-322
-323</pre>
+236
+237
+238</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 321</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 236</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_field'>field</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_field'>field</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1430,12 +1443,12 @@ end</code></pre>
       <pre class="lines">
 
 
-444
-445
-446</pre>
+335
+336
+337</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 444</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 335</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:group</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -1497,7 +1510,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The value for the hash key</p>
+<p>the value for the hash key</p>
 </div>
       
     </li>
@@ -1520,7 +1533,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1559,7 +1572,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If given, the value to output</p>
+<p>if given, the value to output</p>
 </div>
           
         </li>
@@ -1572,7 +1585,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -1593,12 +1606,12 @@ end</code></pre>
       <pre class="lines">
 
 
-343
-344
-345</pre>
+252
+253
+254</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 343</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 252</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_hash_key'>hash_key</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_hash_key'>hash_key</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1654,12 +1667,12 @@ end</code></pre>
       <pre class="lines">
 
 
-410
-411
-412</pre>
+305
+306
+307</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 410</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 305</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_http_method'>http_method</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:http_method</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -1867,12 +1880,12 @@ end</code></pre>
       <pre class="lines">
 
 
-402
-403
-404</pre>
+297
+298
+299</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 402</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 297</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_link_params'>link_params</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_link_params'>link_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:link</span>
@@ -1908,12 +1921,12 @@ end</code></pre>
       <pre class="lines">
 
 
-603
-604
-605</pre>
+476
+477
+478</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 603</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 476</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_major_version'>major_version</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_requested_version'>requested_version</span><span class='op'>&amp;.</span><span class='id identifier rubyid_major'>major</span>
@@ -1977,7 +1990,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The name of the object</p>
+<p>the name of the object</p>
 </div>
       
     </li>
@@ -2052,7 +2065,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The name of the object</p>
+<p>the name of the object</p>
 </div>
       
     </li>
@@ -2068,7 +2081,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The object to extract fields from</p>
+<p>the object to extract fields from</p>
 </div>
       
     </li>
@@ -2144,7 +2157,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of the object</p>
+<p>the name of the object</p>
 </div>
           
         </li>
@@ -2157,7 +2170,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The object to extract fields from</p>
+<p>the object to extract fields from</p>
 </div>
           
         </li>
@@ -2170,7 +2183,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of a hash or method in the current source to get the data from, instead of :name</p>
+<p>the name of a hash or method in the current source to get the data from, instead of :name</p>
 </div>
           
         </li>
@@ -2183,7 +2196,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Rather than creating this object&#39;s hash, inline its fields into the parent</p>
+<p>rather than creating this object&#39;s hash, inline its fields into the parent</p>
 </div>
           
         </li>
@@ -2196,7 +2209,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -2209,7 +2222,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
+<p>specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -2262,7 +2275,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object (passed as value)</p>
+<p>the current source object (passed as value)</p>
 </div>
       
     </li>
@@ -2281,12 +2294,12 @@ end</code></pre>
       <pre class="lines">
 
 
-200
-201
-202</pre>
+163
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 200</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 163</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2350,7 +2363,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The name of the array field</p>
+<p>the name of the array field</p>
 </div>
       
     </li>
@@ -2373,7 +2386,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Remove nil entries from the result array</p>
+<p>remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2413,7 +2426,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object iterated from the enclosing context</p>
+<p>the current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2449,7 +2462,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The name of the array field</p>
+<p>the name of the array field</p>
 </div>
       
     </li>
@@ -2465,7 +2478,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>Either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
+<p>either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
 </div>
       
     </li>
@@ -2490,7 +2503,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Remove nil entries from the result array</p>
+<p>remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2503,7 +2516,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -2516,7 +2529,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
+<p>specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -2528,8 +2541,9 @@ end</code></pre>
             
           </span>
           
-            &mdash; <div class='inline'>
-<p>Produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
+            &mdash; <div class='inline'><ul><li>
+<p>produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
+</li></ul>
 </div>
           
         </li>
@@ -2569,7 +2583,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object iterated from the enclosing context</p>
+<p>the current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2606,7 +2620,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of the array field</p>
+<p>the name of the array field</p>
 </div>
           
         </li>
@@ -2619,7 +2633,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
+<p>either an array, in which case each value will become a result entry, or a scalar which will produce a single result.</p>
 </div>
           
         </li>
@@ -2632,7 +2646,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of a hash or method in the current source to get the data array from, instead of :name</p>
+<p>the name of a hash or method in the current source to get the data array from, instead of :name</p>
 </div>
           
         </li>
@@ -2645,7 +2659,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Remove nil entries from the result array</p>
+<p>remove nil entries from the result array</p>
 </div>
           
         </li>
@@ -2658,7 +2672,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
+<p>if false, omit this object, if SOURCE_PRESENT, omit unless a data source is present</p>
 </div>
           
         </li>
@@ -2671,7 +2685,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
+<p>specify a versioning rule as a hash (see #version for spec for the rule). If present, this object will only we shown if the rule is met.</p>
 </div>
           
         </li>
@@ -2683,8 +2697,9 @@ end</code></pre>
             
           </span>
           
-            &mdash; <div class='inline'>
-<p>Produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
+            &mdash; <div class='inline'><ul><li>
+<p>produce a hash rather than a collection. The hash key is defined with <span class='object_link'><a href="#hash_key-instance_method" title="Flappi::Definition#hash_key (method)">#hash_key</a></span></p>
+</li></ul>
 </div>
           
         </li>
@@ -2724,7 +2739,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object iterated from the enclosing context</p>
+<p>the current source object iterated from the enclosing context</p>
 </div>
       
     </li>
@@ -2743,12 +2758,12 @@ end</code></pre>
       <pre class="lines">
 
 
-268
-269
-270</pre>
+202
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_objects'>objects</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2776,7 +2791,10 @@ end</code></pre>
     
 <p>Define an input parameter (inline or query string) This is used to document and validate the parameters.</p>
 
-<p>Chain processor &amp;block to this to define a parameter processor and/or validator &amp;block for define a parameter validator</p>
+<p>Chain processor &amp;block to this to define a parameter processor</p>
+
+<pre class="code ruby"><code class="ruby">and/or validator &amp;block for define a parameter validator
+</code></pre>
 
 
   </div>
@@ -2835,7 +2853,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of the parameter</p>
+<p>the name of the parameter</p>
 </div>
           
         </li>
@@ -2848,7 +2866,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
+<p>the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
 </div>
           
         </li>
@@ -2861,7 +2879,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>A default value when the parameter is not supplied or is empty</p>
+<p>a default value when the parameter is not supplied or is empty</p>
 </div>
           
         </li>
@@ -2874,7 +2892,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Text to document the default with instead of a computed default</p>
+<p>text to document the default with instead of a computed default</p>
 </div>
           
         </li>
@@ -2887,7 +2905,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The parameter description</p>
+<p>the parameter description</p>
 </div>
           
         </li>
@@ -2900,7 +2918,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If true don&#39;t document</p>
+<p>if true don&#39;t document</p>
 </div>
           
         </li>
@@ -2913,7 +2931,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>True for an optional parameter</p>
+<p>true for an optional parameter</p>
 </div>
           
         </li>
@@ -3026,7 +3044,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The name of the parameter, which can be in a path</p>
+<p>the name of the parameter, which can be in a path</p>
 </div>
           
         </li>
@@ -3039,7 +3057,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
+<p>the parameter type, defaults to String, allowed types are `Boolean`, `BigDecimal`, `Float`, `Integer`, `Date`, `String`, `Array`. For `Array`, the input params can be defined using comma separated or [] syntax</p>
 </div>
           
         </li>
@@ -3052,7 +3070,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>A default value when the parameter is not supplied or is empty</p>
+<p>a default value when the parameter is not supplied or is empty</p>
 </div>
           
         </li>
@@ -3065,7 +3083,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Text to document the default with instead of a computed default</p>
+<p>text to document the default with instead of a computed default</p>
 </div>
           
         </li>
@@ -3078,7 +3096,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>The parameter description</p>
+<p>the parameter description</p>
 </div>
           
         </li>
@@ -3091,7 +3109,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>If true don&#39;t document</p>
+<p>if true don&#39;t document</p>
 </div>
           
         </li>
@@ -3104,7 +3122,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>True for an optional parameter</p>
+<p>true for an optional parameter</p>
 </div>
           
         </li>
@@ -3117,7 +3135,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Code to return when fail is true</p>
+<p>code Code to return when fail is true</p>
 </div>
           
         </li>
@@ -3212,31 +3230,31 @@ end</code></pre>
       <pre class="lines">
 
 
-548
-549
-550
-551
-552
-553
-554
-555
-556
-557
-558
-559
-560
-561
-562
-563
-564
-565
-566
-567
-568
-569</pre>
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 548</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 420</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_param'>param</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_def_args'>def_args</span> <span class='op'>=</span> <span class='id identifier rubyid_extract_definition_args'>extract_definition_args</span><span class='lparen'>(</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='rparen'>)</span>
@@ -3311,12 +3329,12 @@ end</code></pre>
       <pre class="lines">
 
 
-451
-452
-453</pre>
+342
+343
+344</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 451</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 342</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -3408,12 +3426,12 @@ end</code></pre>
       <pre class="lines">
 
 
-586
-587
-588</pre>
+459
+460
+461</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 586</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 459</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -3498,7 +3516,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
+<p>creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
 </div>
           
         </li>
@@ -3511,7 +3529,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>For a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
+<p>for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
 </div>
           
         </li>
@@ -3524,7 +3542,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Generate (inline) a name_type field with the type value</p>
+<p>generate (inline) a name_type field with the type value</p>
 </div>
           
         </li>
@@ -3537,7 +3555,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Generate a link id name_id in the source location. Defaults to true</p>
+<p>generate a link id name_id in the source location. Defaults to true</p>
 </div>
           
         </li>
@@ -3577,7 +3595,7 @@ end</code></pre>
       
         &mdash;
         <div class='inline'>
-<p>The current source object</p>
+<p>the current source object</p>
 </div>
       
     </li>
@@ -3672,7 +3690,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
+<p>creates a polymorphic reference for a named type, requires &#39;for&#39;</p>
 </div>
           
         </li>
@@ -3685,7 +3703,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>For a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
+<p>for a polymorphic relation, provide the type that is being requested/generated. (This will usually be from model data or request)</p>
 </div>
           
         </li>
@@ -3698,7 +3716,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Generate (inline) a name_type field with the type value</p>
+<p>generate (inline) a name_type field with the type value</p>
 </div>
           
         </li>
@@ -3711,7 +3729,7 @@ end</code></pre>
           </span>
           
             &mdash; <div class='inline'>
-<p>Generate a link id name_id in the source location. Defaults to true</p>
+<p>generate a link id name_id in the source location. Defaults to true</p>
 </div>
           
         </li>
@@ -3732,12 +3750,12 @@ end</code></pre>
       <pre class="lines">
 
 
-385
-386
-387</pre>
+280
+281
+282</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 385</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 280</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reference'>reference</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_reference'>reference</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args_or_name'>args_or_name</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -3793,12 +3811,12 @@ end</code></pre>
       <pre class="lines">
 
 
-464
-465
-466</pre>
+355
+356
+357</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 464</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 355</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_request_example'>request_example</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_example'>set_example</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>request</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
@@ -3854,12 +3872,12 @@ end</code></pre>
       <pre class="lines">
 
 
-457
-458
-459</pre>
+348
+349
+350</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 457</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 348</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_response_example'>response_example</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_example'>set_example</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>response</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
@@ -3931,12 +3949,12 @@ end</code></pre>
       <pre class="lines">
 
 
-598
-599
-600</pre>
+471
+472
+473</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 598</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 471</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_error'>return_error</span><span class='lparen'>(</span><span class='id identifier rubyid_status_code'>status_code</span><span class='comma'>,</span> <span class='id identifier rubyid_error_info'>error_info</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_error</span><span class='rparen'>)</span>
@@ -3972,12 +3990,12 @@ end</code></pre>
       <pre class="lines">
 
 
-591
-592
-593</pre>
+464
+465
+466</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 591</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 464</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_return_no_content'>return_no_content</span>
   <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_return_no_content'>return_no_content</span> <span class='kw'>if</span> <span class='ivar'>@delegate</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:return_no_content</span><span class='rparen'>)</span>
@@ -3999,7 +4017,7 @@ end</code></pre>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Enable/disable strict mode, unknown parameters will cause an error\ Default is to disable this</p>
+<p>Enable/disable strict mode, unknown parameters will cause an error Default is to disable this</p>
 
 
   </div>
@@ -4013,12 +4031,12 @@ end</code></pre>
       <pre class="lines">
 
 
-577
-578
-579</pre>
+450
+451
+452</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 577</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 450</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_strict'>strict</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:strict_mode</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span>
@@ -4074,12 +4092,12 @@ end</code></pre>
       <pre class="lines">
 
 
-416
-417
-418</pre>
+311
+312
+313</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 416</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 311</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_title'>title</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint_info'>endpoint_info</span><span class='lbracket'>[</span><span class='symbol'>:title</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
@@ -4172,14 +4190,14 @@ end</code></pre>
       <pre class="lines">
 
 
-436
-437
-438
-439
-440</pre>
+327
+328
+329
+330
+331</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 436</span>
+      <pre class="code"><span class="info file"># File 'lib/flappi/definition.rb', line 327</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_version'>version</span><span class='lparen'>(</span><span class='id identifier rubyid_version_rule'>version_rule</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>No version plan is defined - cannot use &#39;version&#39;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_version_plan'>version_plan</span>
@@ -4196,7 +4214,7 @@ end</code></pre>
 </div>
 
       <div id="footer">
-  Generated on Tue Nov 17 11:33:26 2020 by
+  Generated on Tue Dec  1 14:56:46 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.6.5).
 </div>

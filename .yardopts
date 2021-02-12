@@ -1,1 +1,1 @@
---no-private -o docs lib/flappi/definition.rb - README.md
+--no-private -o docs lib/flappi/definition.rb - README.md docs/explain/POST.md docs/explain/SHARE.md docs/explain/NEST.md docs/explain/VERSIONS.md
