@@ -22,7 +22,7 @@ module Flappi
 
       template_path = "#{Pathname.new(method(:format).source_location.first).dirname}/api_doc_template.rb.erb"
       # NOTE: this will warn but will fail if fixed as suggested in Ruby docs
-      template = ERB.new File.read(template_path), nil, '-'
+      template = ERB.new(File.read(template_path), trim_mode: '-')
       template.result(doc.instance_eval { binding })
     end
   end
