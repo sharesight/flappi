@@ -52,7 +52,7 @@ module Flappi
         # which we should have by virtue of being mixed into the controller
         as_method = options[:as]&.to_sym || :where
         base_object = if options.key?(:options)
-                        options[:type].send(as_method, permitted_params, options[:options])
+                        options[:type].send(as_method, permitted_params, **options[:options])
                       else
                         options[:type].send(as_method, permitted_params)
                       end
