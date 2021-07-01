@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.10.11 `(2021-01-07)`
+
+* Support Ruby 2.7.x [#48])(https://github.com/sharesight/flappi/pull/48)
+
 ## 0.10.10 `(2020-02-21)`
 
  * Log errors [#46])(https://github.com/sharesight/flappi/pull/46)
