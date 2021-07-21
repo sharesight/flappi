@@ -28,7 +28,9 @@ module Flappi
 
     def self.load_all_modules(from, top_module)
       Flappi::Utils::Logger.d "Loading from #{from} : #{top_module}"
-      Dir.glob("#{from}/**/*.rb") do |file|
+      Dir.glob("#{from}/**/*.rb").sort
+         .map { |file| File.expand_path(file) }
+         .each do |file|
         expected_klass = begin
           Module.const_get("#{top_module}::#{File.basename(file, '.*').camelize}")
         rescue StandardError
@@ -37,9 +39,7 @@ module Flappi
         # The autoloader may load our module anyway here
 
         unless all_the_modules(top_module).include?(expected_klass)
-          # puts "loading #{file}"
-
-          load file
+          require file
         end
       end
     end
