@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 0.10.11 `(2021-01-07)`
+## 0.10.12 `(2021-07-21)`
+
+* Fix the Ruby warning about re-initializing the constant [#49])(https://github.com/sharesight/flappi/pull/49)
+
+## 0.10.11 `(2021-07-01)`
 
 * Support Ruby 2.7.x [#48])(https://github.com/sharesight/flappi/pull/48)
 
