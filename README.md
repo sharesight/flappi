@@ -106,7 +106,7 @@ field(:financial_year_end, source: :financial_year_end_s, doc: '…')
 
 ## Advanced
 
-- [Implementing a POST endpoint](file.POST.html)
-- [Nesting structures in a response](file.NEST.html)
-- [Sharing fields](file.SHARE.html)
-- [Versions](file.VERSIONS.html)
+- [Implementing a POST endpoint](docs/file.POST.html)
+- [Nesting structures in a response](docs/file.NEST.html)
+- [Sharing fields](docs/file.SHARE.html)
+- [Versions](docs/file.VERSIONS.html)
