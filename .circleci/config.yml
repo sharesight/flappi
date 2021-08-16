@@ -41,4 +41,4 @@ workflows:
       - test:
           matrix:
             parameters:
-              ruby-version: ["2.6.5", "2.7.1", "2.7.3"]
+              ruby-version: ["2.7.1", "2.7.3"]
