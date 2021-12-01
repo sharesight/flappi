@@ -19,35 +19,35 @@ module Flappi
       end
 
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[skip_docs to_ary method_missing respond_to_missing?].include? meth_name
 
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        !%i[to_ary method_missing respond_to_missing?].include?(method_name) || super
+        !%i[skip_docs to_ary method_missing respond_to_missing?].include?(method_name) || super
       end
 
       def self.method_missing(meth_name, *_args, &_block)
-        return DocumentingStub.new unless %i[to_ary method_missing respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[skip_docs to_ary method_missing respond_to_missing?].include? meth_name
 
         super
       end
 
       def self.respond_to_missing?(method_name, _include_private = false)
-        !%i[method_missing respond_to_missing?].include?(method_name) || super
+        !%i[skip_docs method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
     class DefDocumenter
       def method_missing(meth_name, *args)
-        return DocumentingStub.new unless %i[method_missing respond_to_missing?].include? meth_name
+        return DocumentingStub.new unless %i[skip_docs method_missing respond_to_missing?].include? meth_name
 
         super
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        !%i[method_missing respond_to_missing?].include?(method_name) || super
+        !%i[skip_docs method_missing respond_to_missing?].include?(method_name) || super
       end
     end
 
@@ -97,6 +97,8 @@ module Flappi
     # Called to document an API call into a structure that can be templated into e.g. ApiDoc
     def self.document(definition, for_version)
       documenter_definition, normalised_version = init_documenter_definition(definition, for_version)
+
+      return nil if documenter_definition.respond_to?(:skip_docs)
 
       if Flappi.configuration.version_plan
         raise 'BuilderFactory::build_and_respond has a version plan so needs a version from the router' unless for_version
