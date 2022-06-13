@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Unreleased
+
+ * Run tests and Rubocop with Github Actions [#55](https://github.com/sharesight/flappi/pull/55)
+ * Address CircleCI Ruby image deprecation [#54](https://github.com/sharesight/flappi/pull/54)
+ * Skip file generation if `#skip_docs` method present [#53](https://github.com/sharesight/flappi/pull/53)
+ * Raise on deprecation warnings [#52](https://github.com/sharesight/flappi/pull/52)
+ * Remove support for Ruby 2.6 [#51](https://github.com/sharesight/flappi/pull/51)
+ * Update links in README.md [#50](https://github.com/sharesight/flappi/pull/50)
+
 ## 0.10.12 `(2021-07-21)`
 
 * Fix the Ruby warning about re-initializing the constant [#49])(https://github.com/sharesight/flappi/pull/49)
