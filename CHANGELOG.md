@@ -2,7 +2,8 @@
 
 ## Unreleased
 
- * Add Slack notification for 'tests' and 'linters' Github Actions workflows [#11](https://github.com/sharesight/flappi/pull/56)
+ * Delete CircleCI config [#57](https://github.com/sharesight/flappi/pull/57)
+ * Add Slack notification for 'tests' and 'linters' Github Actions workflows [#56](https://github.com/sharesight/flappi/pull/56)
  * Run tests and Rubocop with Github Actions [#55](https://github.com/sharesight/flappi/pull/55)
  * Address CircleCI Ruby image deprecation [#54](https://github.com/sharesight/flappi/pull/54)
  * Skip file generation if `#skip_docs` method present [#53](https://github.com/sharesight/flappi/pull/53)
