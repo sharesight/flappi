@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## Unreleased
+## 0.11.0 `(2023-03-24)`
 
+ * Add support Ruby 3.0 [#59](https://github.com/sharesight/flappi/pull/59)
  * Delete CircleCI config [#57](https://github.com/sharesight/flappi/pull/57)
  * Add Slack notification for 'tests' and 'linters' Github Actions workflows [#56](https://github.com/sharesight/flappi/pull/56)
  * Run tests and Rubocop with Github Actions [#55](https://github.com/sharesight/flappi/pull/55)
