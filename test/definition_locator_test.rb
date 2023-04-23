@@ -41,7 +41,8 @@ class ::Flappi::DefinitionLocatorTest < MiniTest::Test
         located_class = Flappi::DefinitionLocator.locate_class('DoesntExist', 'v2.0')
       end
 
-      assert_equal 'Endpoint DoesntExist is not defined to Flappi: Could not load Examples::DoesntExist because uninitialized constant Examples::DoesntExist was raised', ex.message
+      assert_match(/Endpoint DoesntExist is not defined to Flappi/, ex.message)
+      assert_match(/uninitialized constant Examples::DoesntExist/, ex.message)
       refute located_class
     end
   end

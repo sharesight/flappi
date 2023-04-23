@@ -3,12 +3,12 @@
 require 'english'
 require 'rubocop'
 
-ADDED_OR_MODIFIED = /A|AM|^M/.freeze
+ADDED_OR_MODIFIED = /A|AM|^M/
 FILE_EXTENSIONS_TO_CONSIDER = ['.rb', '.rake'].freeze
 
 changed_files = `git status --porcelain`.split(/\n/)
                                         .select { |file_name_with_status| file_name_with_status =~ ADDED_OR_MODIFIED }
-                                        .map { |file_name_with_status| file_name_with_status.split(' ')[1] }
+                                        .map { |file_name_with_status| file_name_with_status.split[1] }
                                         .select { |file_name| FILE_EXTENSIONS_TO_CONSIDER.include?(File.extname(file_name)) || file_name == 'Gemfile' }
                                         .join(' ')
 

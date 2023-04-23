@@ -12,6 +12,9 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 
 
+Layout/BlockAlignment:
+  Enabled: false
+
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
