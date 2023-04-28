@@ -14,7 +14,7 @@ require 'pry'
 require 'flappi'
 
 # Requiring custom test helpers
-Dir["#{File.dirname(__FILE__)}/helpers/*.rb"].sort.each { |f| require File.expand_path(f) }
+Dir["#{File.dirname(__FILE__)}/helpers/*.rb"].each { |f| require File.expand_path(f) }
 
 Flappi.configure do |conf|
   conf.definition_paths = {

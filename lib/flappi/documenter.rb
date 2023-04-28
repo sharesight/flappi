@@ -28,7 +28,7 @@ module Flappi
 
     def self.load_all_modules(from, top_module)
       Flappi::Utils::Logger.d "Loading from #{from} : #{top_module}"
-      Dir.glob("#{from}/**/*.rb").sort
+      Dir.glob("#{from}/**/*.rb")
          .map { |file| File.expand_path(file) }
          .each do |file|
         expected_klass = begin
