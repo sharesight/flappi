@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.12.0 `(2023-04-28)`
+
+ * Add support Ruby 3.1 [#60](https://github.com/sharesight/flappi/pull/60)
+
 ## 0.11.0 `(2023-03-24)`
 
  * Add support Ruby 3.0 [#59](https://github.com/sharesight/flappi/pull/59)
