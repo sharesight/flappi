@@ -114,3 +114,7 @@ field(:financial_year_end, source: :financial_year_end_s, doc: '…')
 ## Contributing
 
 See [CONTRIBUTING](./CONTRIBUTING.md).
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md).

@@ -51,3 +51,7 @@ To release a new version of the `flappi` gem follow this checklist:
     # resolve any conflicts
     # maybe deploy to testing
     ```
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md).
