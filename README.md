@@ -1,4 +1,4 @@
-# flappi
+# `flappi`
 
 ## Flexible API builder gem for Rails
 
@@ -110,3 +110,11 @@ field(:financial_year_end, source: :financial_year_end_s, doc: '…')
 - [Nesting structures in a response](docs/file.NEST.html)
 - [Sharing fields](docs/file.SHARE.html)
 - [Versions](docs/file.VERSIONS.html)
+
+## Contributing
+
+See [CONTRIBUTING](./CONTRIBUTING.md).
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md).
