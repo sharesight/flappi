@@ -10,7 +10,7 @@ module Examples
 end
 
 module Integration
-  class EmptyObjectTest < MiniTest::Test
+  class EmptyObjectTest < Minitest::Test
     context 'Response to EmptyObject' do
       setup do
         Flappi.configure do |conf|

@@ -21,7 +21,7 @@ module Examples
 end
 
 module Integration
-  class Exercise3ResponseTest < MiniTest::Test
+  class Exercise3ResponseTest < Minitest::Test
     context 'Response to Exercise3' do
       should 'respond with ok to posted data' do
         controller = Examples::Exercise3Controller.new

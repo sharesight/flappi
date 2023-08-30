@@ -9,7 +9,7 @@ require_relative '../examples/exercise_model'
 require_relative '../examples/exercise2_versioned'
 
 module Integration
-  class Exercise2DocoTest < MiniTest::Test
+  class Exercise2DocoTest < Minitest::Test
     context 'Documentation of Exercise2' do
       setup do
         Flappi.configure do |conf|

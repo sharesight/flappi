@@ -10,7 +10,7 @@ module Examples
 end
 
 module Integration
-  class NoContentReturnTest < MiniTest::Test
+  class NoContentReturnTest < Minitest::Test
     context 'Response to NoContentReturn' do
       setup do
         Flappi.configure do |conf|

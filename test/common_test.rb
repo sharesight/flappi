@@ -3,7 +3,7 @@
 require_relative 'test_helper'
 require 'pp'
 
-class ::Flappi::ResponseBuilderTest < MiniTest::Test
+class ::Flappi::ResponseBuilderTest < Minitest::Test
   context 'when extended' do
     setup do
       @common_test = Object.new

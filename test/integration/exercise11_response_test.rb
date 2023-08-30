@@ -19,7 +19,7 @@ module Examples
 end
 
 module Integration
-  class Exercise11ResponseTest < MiniTest::Test
+  class Exercise11ResponseTest < Minitest::Test
     context 'Response to Exercise11' do
       setup do
         Flappi.configure do |conf|

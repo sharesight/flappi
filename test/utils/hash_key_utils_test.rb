@@ -2,7 +2,7 @@
 
 require_relative '../test_helper'
 
-class ::Flappi::HashKeyUtilsTest < MiniTest::Test
+class ::Flappi::HashKeyUtilsTest < Minitest::Test
   ['symbol', 'string', 'mixed'].each do |key_type|
     context "#{key_type} keys" do
       setup do

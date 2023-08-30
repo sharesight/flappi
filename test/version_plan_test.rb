@@ -4,7 +4,7 @@ require_relative 'test_helper'
 
 require_relative 'examples/version_plan'
 
-class Flappi::VersionPlanTest < MiniTest::Test
+class Flappi::VersionPlanTest < Minitest::Test
   context 'using version_plan' do
     should 'return available_version_definitions' do
       expect_versions = Examples::VersionPlan.parse_versions('v2.0;v2.0-mobile;v2.1;v2.1-ember;v2.1-flat;v2.1-mobile')

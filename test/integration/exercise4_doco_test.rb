@@ -7,7 +7,7 @@ require 'pp'
 require_relative '../examples/exercise4'
 
 module Integration
-  class Exercise4DocoTest < MiniTest::Test
+  class Exercise4DocoTest < Minitest::Test
     context 'Documentation of Exercise1' do
       setup do
         Flappi.configure do |conf|

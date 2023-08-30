@@ -2,7 +2,7 @@
 
 require_relative 'test_helper'
 
-class ::Flappi::ApiDocFormatterTest < MiniTest::Test
+class ::Flappi::ApiDocFormatterTest < Minitest::Test
   context 'format' do
     should 'format and write to file' do
       Flappi::ApiDocFormatter.stubs(:format_to_text).returns('test')

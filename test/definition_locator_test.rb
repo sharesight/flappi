@@ -4,7 +4,7 @@ require_relative 'test_helper'
 require_relative './examples2/exercise1'
 require_relative './examples2/exercise5'
 
-class ::Flappi::DefinitionLocatorTest < MiniTest::Test
+class ::Flappi::DefinitionLocatorTest < Minitest::Test
   context 'locate_class' do
     should 'Locate a valid definition' do
       located_class = Flappi::DefinitionLocator.locate_class('Exercise1', 'v2.0')

@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/sharesight/flappi'
   s.license = 'MIT'
 
-  s.add_runtime_dependency 'activesupport', '>4.2.7'
+  s.add_runtime_dependency 'activesupport', '~> 7.0'
   s.add_runtime_dependency 'recursive-open-struct'
 
   s.add_development_dependency 'maxitest'

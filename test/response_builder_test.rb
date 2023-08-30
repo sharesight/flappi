@@ -15,7 +15,7 @@ class TestObject
   end
 end
 
-class ::Flappi::ResponseBuilderTest < MiniTest::Test
+class ::Flappi::ResponseBuilderTest < Minitest::Test
   context 'Response Builder' do
     setup do
       @response_builder = ::Flappi::ResponseBuilder.new
