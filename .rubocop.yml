@@ -8,9 +8,11 @@ AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
 
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
+
 Gemspec/RequiredRubyVersion:
   Enabled: false
-
 
 Layout/BlockAlignment:
   Enabled: false
