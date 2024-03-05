@@ -26,6 +26,9 @@ Layout/EmptyLineAfterGuardClause:
 Layout/LineContinuationLeadingSpace:
   Enabled: false
 
+Layout/LineContinuationSpacing:
+  Enabled: false
+
 Layout/LineLength:
   Max: 200
 
