@@ -170,6 +170,9 @@ Style/RegexpLiteral:
 Style/StringLiterals:
   Enabled: false
 
+Style/SelectByRegexp:
+  Enabled: false
+
 Style/WordArray:
   Enabled: false
 
