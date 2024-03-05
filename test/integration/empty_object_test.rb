@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pp'
 require_relative '../test_helper'
 require_relative '../examples/empty_object'
 
