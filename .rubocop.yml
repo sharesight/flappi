@@ -14,6 +14,9 @@ Gemspec/DevelopmentDependencies:
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
+Gemspec/RequireMFA:
+  Enabled: false
+
 Layout/BlockAlignment:
   Enabled: false
 
