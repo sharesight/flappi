@@ -113,6 +113,9 @@ Performance/Squeeze:
 Style/AccessorGrouping:
   Enabled: false
 
+Style/ArgumentsForwarding:
+  Enabled: false
+
 Style/BlockComments:
   Exclude:
     - 'test/examples/*_doc.rb'
