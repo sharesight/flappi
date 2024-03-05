@@ -5,7 +5,7 @@ require:
 
 # Common configuration.
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   NewCops: enable
 
 Gemspec/RequiredRubyVersion:
