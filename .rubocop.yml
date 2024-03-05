@@ -141,6 +141,9 @@ Style/IfUnlessModifier:
 Style/MultilineBlockChain:
   Enabled: false
 
+Style/OpenStructUse:
+  Enabled: false
+
 Style/OptionalBooleanParameter:
   Enabled: false
 
