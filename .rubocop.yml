@@ -93,6 +93,8 @@ Minitest/AssertTruthy:
 Minitest/RefuteFalse:
   Enabled: false
 
+Naming/BlockForwarding:
+  Enabled: false
 
 Naming/PredicateName:
   Enabled: false
