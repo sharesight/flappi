@@ -90,11 +90,11 @@ module Flappi
     def equal_numeric_wildcarded(a, b)
       return true if a == '*' || b == '*' # wildcard match
 
-      (a&.to_i || 0) == (b&.to_i || 0)
+      a.to_i == b.to_i
     end
 
     def gt_numeric(a, b)
-      (a&.to_i || 0) > (b&.to_i || 0)
+      a.to_i > b.to_i
     end
 
     def equal_string_wildcarded(a, b)
