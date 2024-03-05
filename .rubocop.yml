@@ -132,6 +132,9 @@ Style/MultilineBlockChain:
 Style/OptionalBooleanParameter:
   Enabled: false
 
+Style/RedundantLineContinuation:
+  Enabled: false
+
 Style/RegexpLiteral:
   Enabled: false
 
