@@ -137,6 +137,9 @@ Style/HashLikeCase:
   Exclude:
     - 'test/**/*.rb'
 
+Style/HashSyntax:
+  Enabled: false
+
 Style/IfUnlessModifier:
   Enabled: false
 
