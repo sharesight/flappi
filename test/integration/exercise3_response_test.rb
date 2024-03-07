@@ -28,8 +28,7 @@ module Integration
         controller.params = { required: 2.718, version: 'v2.1.0-mobile' }
         response = controller.my_method
 
-        assert_equal({ 'ok' => true },
-                     response)
+        assert_equal({ 'ok' => true }, response)
       end
     end
   end

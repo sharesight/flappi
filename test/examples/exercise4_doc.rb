@@ -1,5 +1,5 @@
 =begin
-@api {GET} /examples/exercise1.json Exercise API 4
+@api {GET} /examples/exercise4.json Exercise API 4
 
 @apiName Exercise4
 @apiGroup Test_Exercise

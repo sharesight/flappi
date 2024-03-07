@@ -8,7 +8,7 @@ require_relative '../examples/exercise4'
 
 module Integration
   class Exercise4DocoTest < MiniTest::Test
-    context 'Documentation of Exercise1' do
+    context 'Documentation of Exercise4' do
       setup do
         Flappi.configure do |conf|
           conf.version_plan = nil

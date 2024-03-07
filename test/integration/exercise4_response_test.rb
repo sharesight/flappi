@@ -20,7 +20,7 @@ module Integration
         end
       end
 
-      should 'respond with a composed block' do
+      should 'respond with only selected fields' do
         response = Examples::Exercise4Controller.new.show
 
         assert_equal({ 'a_not' => 100, 'b_how' => 100 }, response)
