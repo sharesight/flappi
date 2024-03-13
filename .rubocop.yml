@@ -5,17 +5,28 @@ require:
 
 # Common configuration.
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   NewCops: enable
+
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
+Gemspec/RequireMFA:
+  Enabled: false
 
 Layout/BlockAlignment:
   Enabled: false
 
 Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/LineContinuationLeadingSpace:
+  Enabled: false
+
+Layout/LineContinuationSpacing:
   Enabled: false
 
 Layout/LineLength:
@@ -30,7 +41,6 @@ Layout/SpaceInsideHashLiteralBraces:
 Layout/TrailingWhitespace:
   Exclude:
     - 'test/examples/*_doc.rb'
-
 
 Lint/BinaryOperatorWithIdenticalOperands:
   Exclude:
@@ -49,6 +59,8 @@ Lint/MissingSuper:
   Exclude:
     - 'test/**/*.rb'
 
+Lint/RedundantCopDisableDirective:
+  Enabled: false
 
 Metrics/AbcSize:
   Max: 50
@@ -81,6 +93,8 @@ Minitest/AssertTruthy:
 Minitest/RefuteFalse:
   Enabled: false
 
+Naming/BlockForwarding:
+  Enabled: false
 
 Naming/PredicateName:
   Enabled: false
@@ -99,6 +113,9 @@ Performance/Squeeze:
 Style/AccessorGrouping:
   Enabled: false
 
+Style/ArgumentsForwarding:
+  Enabled: false
+
 Style/BlockComments:
   Exclude:
     - 'test/examples/*_doc.rb'
@@ -112,6 +129,9 @@ Style/Documentation:
 Style/DoubleNegation:
   Enabled: false
 
+Style/FetchEnvVar:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Exclude:
     - 'test/examples/*_doc.rb'
@@ -123,13 +143,25 @@ Style/HashLikeCase:
   Exclude:
     - 'test/**/*.rb'
 
+Style/HashSyntax:
+  Enabled: false
+
 Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MapToHash:
   Enabled: false
 
 Style/MultilineBlockChain:
   Enabled: false
 
+Style/OpenStructUse:
+  Enabled: false
+
 Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/RedundantLineContinuation:
   Enabled: false
 
 Style/RegexpLiteral:
@@ -138,5 +170,11 @@ Style/RegexpLiteral:
 Style/StringLiterals:
   Enabled: false
 
+Style/SelectByRegexp:
+  Enabled: false
+
 Style/WordArray:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
   Enabled: false

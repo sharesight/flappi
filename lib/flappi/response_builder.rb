@@ -354,7 +354,7 @@ module Flappi
 
       return object.send(name.to_sym) if object.respond_to?(name.to_sym)
 
-      query_name = "#{name}?".to_sym
+      query_name = :"#{name}?"
       return object.send(query_name) if object.respond_to?(query_name)
 
       nil

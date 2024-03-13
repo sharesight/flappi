@@ -485,7 +485,7 @@ module Flappi
                       end
       return unless version_wanted(options)
 
-      endpoint_info["#{example_type}_examples".to_sym] << {
+      endpoint_info[:"#{example_type}_examples"] << {
         label: options[:label],
         content: text
       }
