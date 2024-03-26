@@ -7,10 +7,10 @@ if ENV['COVERAGE_ME']
   SimpleCov.start
 end
 
+require 'debug'
 require 'maxitest/autorun'
 require 'shoulda-context'
 require 'mocha/minitest'
-require 'pry'
 require 'flappi'
 
 # Requiring custom test helpers

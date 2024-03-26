@@ -14,9 +14,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activesupport', '>4.2.7'
   s.add_runtime_dependency 'recursive-open-struct'
 
+  s.add_development_dependency 'debug'
   s.add_development_dependency 'maxitest', '~> 4'
   s.add_development_dependency 'mocha'
-  s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rake', '>= 12.3'
   s.add_development_dependency 'rubocop', '1.59.0'
   s.add_development_dependency 'rubocop-minitest', '0.10.1'
