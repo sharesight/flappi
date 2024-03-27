@@ -2,7 +2,7 @@
 
 require_relative 'test_helper'
 
-class Flappi::VersionsTest < MiniTest::Test
+class Flappi::VersionsTest < Minitest::Test
   context 'versions' do
     setup do
       @versions = Flappi::Versions.new [Flappi::Version.new([1, 0, 0], nil, nil), Flappi::Version.new([2, 0, 0], nil, nil)]

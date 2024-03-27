@@ -2,7 +2,7 @@
 
 require_relative '../test_helper'
 
-class Flappi::ParamTypesTest < MiniTest::Test
+class Flappi::ParamTypesTest < Minitest::Test
   context 'when extended' do
     setup do
       @param_types_test = Object.new

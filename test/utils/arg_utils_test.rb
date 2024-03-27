@@ -2,7 +2,7 @@
 
 require_relative '../test_helper'
 
-class ::Flappi::ArgUtilsTest < MiniTest::Test
+class ::Flappi::ArgUtilsTest < Minitest::Test
   context 'paired_args' do
     should 'return empty array for no args' do
       assert_equal [], Flappi::Utils::ArgUtils.paired_args

@@ -2,7 +2,7 @@
 
 require_relative 'test_helper'
 
-class ::Flappi::BuilderFactoryTest < MiniTest::Test
+class ::Flappi::BuilderFactoryTest < Minitest::Test
   context 'validate_parameters' do
     setup do
       @defined_parameters = [

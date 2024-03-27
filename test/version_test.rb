@@ -4,7 +4,7 @@ require_relative 'test_helper'
 
 require_relative 'examples/version_plan'
 
-class Flappi::VersionTest < MiniTest::Test
+class Flappi::VersionTest < Minitest::Test
   context 'initialize' do
     should 'set flavour to :_blank when nil' do
       v = Flappi::Version.new([1, 0], nil, nil)
