@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../test_helper'
-
-require 'pp'
-
 require_relative '../examples/exercise2_versioned'
 require_relative '../examples/version_plan'
 require_relative '../examples/exercise_model'

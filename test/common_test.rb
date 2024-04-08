@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
-require 'pp'
 
 class ::Flappi::ResponseBuilderTest < Minitest::Test
   context 'when extended' do

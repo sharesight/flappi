@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
-require_relative './examples2/exercise1'
-require_relative './examples2/exercise5'
+require_relative 'examples2/exercise1'
+require_relative 'examples2/exercise5'
 
 class ::Flappi::DefinitionLocatorTest < Minitest::Test
   context 'locate_class' do

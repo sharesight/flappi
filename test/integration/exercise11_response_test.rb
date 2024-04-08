@@ -2,8 +2,6 @@
 
 require_relative '../test_helper'
 
-require 'pp'
-
 require_relative '../examples/exercise11_object_nest'
 
 module Examples

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.13.1 `(2024-03-27)`
+
+ * Replace use of `pry` with `debug` [#64](https://github.com/sharesight/flappi/pull/64)
+
+## 0.13.0 `(2024-03-14)`
+
+ * Add support Ruby 3.3 [#63](https://github.com/sharesight/flappi/pull/63)
+
 ## 0.12.0 `(2023-04-28)`
 
  * Add support Ruby 3.1 [#60](https://github.com/sharesight/flappi/pull/60)

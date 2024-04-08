@@ -10,7 +10,7 @@ module Flappi
       raise "Unable to find a definition_path for #{version}." unless paths
 
       # Ensure an array as a definition_path may be a string or array
-      paths = paths.is_a?(Array) ? paths : [paths]
+      paths = [paths] unless paths.is_a?(Array)
 
       paths.each do |path|
         candidate_class = nil
