@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0 `(2024-05-28)`
+
+ * Switch to Rails 7 [#62](https://github.com/sharesight/flappi/pull/62)
+
 ## 0.13.1 `(2024-03-27)`
 
  * Replace use of `pry` with `debug` [#64](https://github.com/sharesight/flappi/pull/64)
