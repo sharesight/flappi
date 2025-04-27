@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.1.0 `(2025-04-28)`
+
+ * Support both Rails 7.0 and 7.1 [#65](https://github.com/sharesight/flappi/pull/65)
+
 ## 1.0.0 `(2024-05-28)`
 
  * Switch to Rails 7 [#62](https://github.com/sharesight/flappi/pull/62)
