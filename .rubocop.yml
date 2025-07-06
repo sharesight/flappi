@@ -91,10 +91,6 @@ Metrics/PerceivedComplexity:
 Minitest/AssertInDelta:
   Enabled: false
 
-
-
-
-
 Minitest/AssertOperator:
   Enabled: false
 
@@ -107,8 +103,6 @@ Minitest/AssertTruthy:
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
 
-Minitest/RefuteEqual:
-  Enabled: false
 
 Minitest/RefuteFalse:
   Enabled: false

@@ -47,7 +47,7 @@ class Flappi::VersionTest < Minitest::Test
     should 'return false when not same' do
       v1_0 = Flappi::Version.new([1, 0], nil, nil)
       v1_1 = Flappi::Version.new([1, 1], nil, nil)
-      refute v1_0 == v1_1
+      refute_equal v1_0, v1_1
     end
 
     should 'treat points not provided as zero' do
@@ -56,7 +56,7 @@ class Flappi::VersionTest < Minitest::Test
       assert va == vb
 
       vc = Flappi::Version.new([1, 0, 1], nil, nil)
-      refute vc == vb
+      refute_equal vc, vb
     end
 
     should 'match with wildcard' do
@@ -71,7 +71,7 @@ class Flappi::VersionTest < Minitest::Test
       assert va == vb
 
       vc = Flappi::Version.new([1, 0], nil, nil)
-      refute va == vc
+      refute_equal va, vc
     end
 
     should 'match wildcard flavours' do
