@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'recursive-open-struct'
 
   s.add_development_dependency 'debug'
-  s.add_development_dependency 'maxitest', '~> 4'
+  s.add_development_dependency 'maxitest', '~> 6'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'rake', '>= 12.3'
   s.add_development_dependency 'rubocop', '1.59.0'
