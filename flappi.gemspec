@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop-minitest', '0.38.1'
   s.add_development_dependency 'rubocop-performance', '1.25.0'
   s.add_development_dependency 'shoulda-context'
-  s.add_development_dependency 'simplecov'
   s.add_development_dependency 'warning'
   s.add_development_dependency 'yard'
 end
