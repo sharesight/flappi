@@ -92,8 +92,6 @@ Minitest/AssertInDelta:
   Enabled: false
 
 
-Minitest/AssertKindOf:
-  Enabled: false
 
 Minitest/AssertMatch:
   Enabled: false

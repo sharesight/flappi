@@ -41,7 +41,7 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
         yielded = false
         built_response = @response_builder.build(type: TestObject) do |obj|
           yielded = true
-          assert obj.is_a?(TestObject)
+          assert_kind_of TestObject, obj
         end
 
         assert yielded
