@@ -7,6 +7,9 @@ require:
 AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - '_ignore/**/*'
 
 Gemspec/DevelopmentDependencies:
   EnforcedStyle: gemspec
@@ -96,7 +99,10 @@ Minitest/RefuteFalse:
 Naming/BlockForwarding:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicateMethod:
+  Enabled: false
+
+Naming/PredicatePrefix:
   Enabled: false
 
 Naming/VariableNumber:
