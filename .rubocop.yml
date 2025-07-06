@@ -125,13 +125,6 @@ Naming/VariableNumber:
   Enabled: false
 
 
-
-
-
-Performance/Squeeze:
-  Enabled: false
-
-
 Style/AccessorGrouping:
   Enabled: false
 
