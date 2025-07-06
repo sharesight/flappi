@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'rake', '>= 12.3'
   s.add_development_dependency 'rubocop', '1.77.0'
-  s.add_development_dependency 'rubocop-minitest', '0.10.1'
+  s.add_development_dependency 'rubocop-minitest', '0.38.1'
   s.add_development_dependency 'rubocop-performance', '1.9.0'
   s.add_development_dependency 'shoulda-context'
   s.add_development_dependency 'simplecov'

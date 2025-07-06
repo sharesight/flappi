@@ -1,6 +1,8 @@
 inherit_from: .rubocop_todo.yml
 require:
   - rubocop-performance
+
+plugins:
   - rubocop-minitest
 
 # Common configuration.
@@ -87,13 +89,56 @@ Metrics/PerceivedComplexity:
   Max: 15
 
 
+
+Minitest/AssertIncludes:
+  Enabled: false
+
 Minitest/AssertInDelta:
+  Enabled: false
+
+Minitest/AssertInstanceOf:
+  Enabled: false
+
+Minitest/AssertKindOf:
+  Enabled: false
+
+Minitest/AssertMatch:
+  Enabled: false
+
+Minitest/AssertNil:
+  Enabled: false
+
+Minitest/AssertOperator:
+  Enabled: false
+
+Minitest/AssertPredicate:
   Enabled: false
 
 Minitest/AssertTruthy:
   Enabled: false
 
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false
+
+Minitest/RefuteEqual:
+  Enabled: false
+
 Minitest/RefuteFalse:
+  Enabled: false
+
+Minitest/RefuteIncludes:
+  Enabled: false
+
+Minitest/RefuteMatch:
+  Enabled: false
+
+Minitest/RefuteNil:
+  Enabled: false
+
+Minitest/RefuteOperator:
+  Enabled: false
+
+Minitest/RefutePredicate:
   Enabled: false
 
 Naming/BlockForwarding:

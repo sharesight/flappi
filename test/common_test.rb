@@ -11,7 +11,7 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
 
     context 'extract_definition_args' do
       should 'return an empty hash for empty input' do
-        assert_equal({}, @common_test.extract_definition_args([]))
+        assert_empty(@common_test.extract_definition_args([]))
       end
 
       should 'raise an exception for four positional args' do
@@ -38,7 +38,7 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
 
     context 'extract_definition_args_nameless' do
       should 'return an empty hash for empty input' do
-        assert_equal({}, @common_test.extract_definition_args_nameless([]))
+        assert_empty(@common_test.extract_definition_args_nameless([]))
       end
 
       should 'raise an exception for three positional args' do

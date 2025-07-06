@@ -5,7 +5,7 @@ require_relative '../test_helper'
 class ::Flappi::ArgUtilsTest < Minitest::Test
   context 'paired_args' do
     should 'return empty array for no args' do
-      assert_equal [], Flappi::Utils::ArgUtils.paired_args
+      assert_empty Flappi::Utils::ArgUtils.paired_args
     end
 
     should 'extract a single pair' do
