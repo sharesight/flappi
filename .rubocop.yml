@@ -103,12 +103,10 @@ Minitest/AssertTruthy:
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
 
-
 Minitest/RefuteFalse:
   Enabled: false
 
-Minitest/RefuteIncludes:
-  Enabled: false
+
 
 Minitest/RefuteMatch:
   Enabled: false
