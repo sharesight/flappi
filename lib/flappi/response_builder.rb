@@ -472,11 +472,11 @@ module Flappi
     end
 
     def param_group_names
-      source_definition.endpoint_info[:params].map do |param_def|
+      source_definition.endpoint_info[:params].filter_map do |param_def|
         keys = param_def[:name].to_s.split('/').map(&:to_sym)
         next nil unless keys.size > 1
         keys.first
-      end.compact.uniq
+      end.uniq
     end
 
     def make_param_arg(param_defs)

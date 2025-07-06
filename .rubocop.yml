@@ -126,8 +126,6 @@ Naming/VariableNumber:
 
 
 
-Performance/MapCompact:
-  Enabled: false
 
 Performance/RedundantEqualityComparisonBlock:
   Enabled: false
