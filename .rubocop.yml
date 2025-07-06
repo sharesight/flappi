@@ -125,8 +125,6 @@ Naming/VariableNumber:
   Enabled: false
 
 
-Performance/ArraySemiInfiniteRangeSlice:
-  Enabled: false
 
 Performance/MapCompact:
   Enabled: false
