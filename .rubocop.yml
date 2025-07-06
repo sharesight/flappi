@@ -93,8 +93,6 @@ Minitest/AssertInDelta:
 
 
 
-Minitest/AssertMatch:
-  Enabled: false
 
 Minitest/AssertNil:
   Enabled: false
