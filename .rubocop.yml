@@ -127,8 +127,6 @@ Naming/VariableNumber:
 
 
 
-Performance/RedundantEqualityComparisonBlock:
-  Enabled: false
 
 Performance/Squeeze:
   Enabled: false

@@ -14,7 +14,7 @@ module Flappi
 
     def include?(version)
       #        puts "include? #{@versions_array} #{version}"
-      @versions_array.any? { |tv| tv == version }
+      @versions_array.any?(version)
     end
 
     def to_s
