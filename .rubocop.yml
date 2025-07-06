@@ -11,7 +11,7 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - '_ignore/**/*'
-    - vendor/**/*.rb
+    - 'vendor/**/*'
 
 Gemspec/DevelopmentDependencies:
   EnforcedStyle: gemspec
