@@ -106,12 +106,6 @@ Minitest/EmptyLineBeforeAssertionMethods:
 Minitest/RefuteFalse:
   Enabled: false
 
-
-
-
-Minitest/RefuteNil:
-  Enabled: false
-
 Minitest/RefuteOperator:
   Enabled: false
 
