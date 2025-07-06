@@ -1,8 +1,7 @@
 inherit_from: .rubocop_todo.yml
-require:
-  - rubocop-performance
 
 plugins:
+  - rubocop-performance
   - rubocop-minitest
 
 # Common configuration.
@@ -126,6 +125,12 @@ Naming/VariableNumber:
 
 
 Performance/ArraySemiInfiniteRangeSlice:
+  Enabled: false
+
+Performance/MapCompact:
+  Enabled: false
+
+Performance/RedundantEqualityComparisonBlock:
   Enabled: false
 
 Performance/Squeeze:
