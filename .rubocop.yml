@@ -88,14 +88,9 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 15
 
-
-
-
 Minitest/AssertInDelta:
   Enabled: false
 
-Minitest/AssertInstanceOf:
-  Enabled: false
 
 Minitest/AssertKindOf:
   Enabled: false
