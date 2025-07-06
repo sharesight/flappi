@@ -94,8 +94,6 @@ Minitest/AssertInDelta:
 
 
 
-Minitest/AssertNil:
-  Enabled: false
 
 Minitest/AssertOperator:
   Enabled: false
