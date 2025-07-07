@@ -1,5 +1,6 @@
 inherit_from: .rubocop_todo.yml
-require:
+
+plugins:
   - rubocop-performance
   - rubocop-minitest
 
@@ -7,6 +8,10 @@ require:
 AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - '_ignore/**/*'
+    - 'vendor/**/*'
 
 Gemspec/DevelopmentDependencies:
   EnforcedStyle: gemspec
@@ -83,30 +88,40 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 15
 
-
 Minitest/AssertInDelta:
+  Enabled: false
+
+Minitest/AssertOperator:
+  Enabled: false
+
+Minitest/AssertPredicate:
   Enabled: false
 
 Minitest/AssertTruthy:
   Enabled: false
 
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false
+
 Minitest/RefuteFalse:
+  Enabled: false
+
+Minitest/RefuteOperator:
+  Enabled: false
+
+Minitest/RefutePredicate:
   Enabled: false
 
 Naming/BlockForwarding:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicateMethod:
+  Enabled: false
+
+Naming/PredicatePrefix:
   Enabled: false
 
 Naming/VariableNumber:
-  Enabled: false
-
-
-Performance/ArraySemiInfiniteRangeSlice:
-  Enabled: false
-
-Performance/Squeeze:
   Enabled: false
 
 

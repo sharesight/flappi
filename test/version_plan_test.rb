@@ -49,7 +49,7 @@ class Flappi::VersionPlanTest < Minitest::Test
       should 'compare different without wildcard' do
         v1 = Examples::VersionPlan.parse_version('m2.1-ember')
         v2 = Examples::VersionPlan.parse_version('m2.2-ember')
-        refute v1 == v2
+        refute_equal v1, v2
       end
 
       should 'compare same with wildcard' do
@@ -61,7 +61,7 @@ class Flappi::VersionPlanTest < Minitest::Test
       should 'compare different with wildcard' do
         v1 = Examples::VersionPlan.parse_version('m2.1-ember')
         v2 = Examples::VersionPlan.parse_version('m2.*-flat')
-        refute v1 == v2
+        refute_equal v1, v2
       end
     end
     # rubocop:enable Minitest/AssertEqual

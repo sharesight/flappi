@@ -34,18 +34,18 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
         end
 
         assert yielded
-        assert_equal({}, built_response)
+        assert_empty(built_response)
       end
 
       should 'yield to block with object created using where' do
         yielded = false
         built_response = @response_builder.build(type: TestObject) do |obj|
           yielded = true
-          assert obj.is_a?(TestObject)
+          assert_kind_of TestObject, obj
         end
 
         assert yielded
-        assert_equal({}, built_response)
+        assert_empty(built_response)
       end
 
       should 'yield to block with object created using query block' do
@@ -58,7 +58,7 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
         end
 
         assert yielded
-        assert_equal({}, built_response)
+        assert_empty(built_response)
       end
 
       context 'object' do
@@ -95,7 +95,7 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
             @response_builder.object({ inline_always: true, version: { equals: 'v2.0' } }, object_block)
           end
 
-          assert_equal({}, built_response)
+          assert_empty(built_response)
         end
 
         should 'raise an error when no name or inline_always' do

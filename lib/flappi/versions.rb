@@ -8,13 +8,11 @@ module Flappi
     delegate :size, :first, :last, :select, :each, :map, :[], :to_a, to: :versions_array
 
     def initialize(versions_array)
-      #        puts "Versions: #{versions_array}"
       @versions_array = versions_array
     end
 
     def include?(version)
-      #        puts "include? #{@versions_array} #{version}"
-      @versions_array.any? { |tv| tv == version }
+      @versions_array.any?(version)
     end
 
     def to_s

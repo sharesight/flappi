@@ -22,7 +22,7 @@ module Integration
         response = controller.show
 
         refute_equal(:no_content, controller.last_head_params)
-        assert_equal({}, response)
+        assert_empty(response)
       end
     end
   end

@@ -27,7 +27,7 @@ module Integration
     private
 
     def spaceless(s)
-      s.gsub(/ +/, ' ').gsub(/^ *$/, '')
+      s.squeeze(' ').gsub(/^ *$/, '')
     end
   end
 end
