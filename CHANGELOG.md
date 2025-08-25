@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.0 `(2025-08-25)`
+
+ * Update dependencies for Rails 7.2 [#67](https://github.com/sharesight/flappi/pull/67)
+
 ## 1.1.0 `(2025-04-28)`
 
  * Support both Rails 7.0 and 7.1 [#65](https://github.com/sharesight/flappi/pull/65)

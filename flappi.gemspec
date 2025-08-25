@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'flappi'
-  s.version     = '1.1.0'
+  s.version     = '1.2.0'
   s.summary     = 'Flappi API Builder'
   s.description = 'A flexible DSL-based API builder'
   s.authors     = ['Richard Parratt', 'Sharesight']
