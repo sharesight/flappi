@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.0 `(2026-03-27)`
+
+ * Bump activesupport to v8.0 for flappi [#68](https://github.com/sharesight/flappi/pull/68)
+
 ## 1.2.0 `(2025-08-25)`
 
  * Update dependencies for Rails 7.2 [#67](https://github.com/sharesight/flappi/pull/67)
