@@ -41,7 +41,7 @@ To release a new version of the `flappi` gem follow this checklist:
 
     ```sh
     # in flappi
-    vi lib/flappi/version.rb
+    vi flappi.gemspec
 
     # change version and describe your changes
     vi CHANGELOG.md
