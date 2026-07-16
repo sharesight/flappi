@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.1 `(2026-07-16)`
+
+ * Support Rails 8.1.x [#70](https://github.com/sharesight/flappi/pull/70)
+
 ## 1.3.0 `(2026-03-27)`
 
  * Bump activesupport to v8.0 for flappi [#68](https://github.com/sharesight/flappi/pull/68)
