@@ -16,7 +16,11 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
 
       should 'raise an exception for four positional args' do
         exception = assert_raises(RuntimeError) { @common_test.extract_definition_args(['name', 2, 3, { option: 666 }]) }
-        assert_equal 'Unexpected >3 positional arguments at ["name", 2, 3, {:option=>666}]', exception.message
+        if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.4")
+          assert_equal 'Unexpected >3 positional arguments at ["name", 2, 3, {:option=>666}]', exception.message
+        else
+          assert_equal 'Unexpected >3 positional arguments at ["name", 2, 3, {option: 666}]', exception.message
+        end
       end
 
       should 'extract a single name from an array' do
@@ -43,7 +47,11 @@ class ::Flappi::ResponseBuilderTest < Minitest::Test
 
       should 'raise an exception for three positional args' do
         exception = assert_raises(RuntimeError) { @common_test.extract_definition_args_nameless(['name', 2, { option: 666 }]) }
-        assert_equal 'Unexpected >2 positional arguments at ["name", 2, {:option=>666}]', exception.message
+        if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.4")
+          assert_equal 'Unexpected >2 positional arguments at ["name", 2, {:option=>666}]', exception.message
+        else
+          assert_equal 'Unexpected >2 positional arguments at ["name", 2, {option: 666}]', exception.message
+        end
       end
 
       should 'extract a single value from an array' do
